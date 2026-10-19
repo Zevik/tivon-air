@@ -1,0 +1,118 @@
+pollutant  year     station  id  official   api  diff  api_coverage_pct
+    PM2.5  2023       אחוזה 136      13.9 13.86 -0.04             98.60
+    PM2.5  2023   נווה שאנן  86      13.0 13.02  0.02             99.76
+    PM2.5  2023         נשר  87      13.5 13.55  0.05             98.24
+    PM2.5  2023      עצמאות 189      18.0 17.57 -0.43             93.26
+    PM2.5  2023  פארק הכרמל  69      15.0 15.16  0.16             96.46
+    PM2.5  2023    קרית אתא  88      17.0 16.99 -0.01             94.54
+    PM2.5  2023 קרית בנימין  97      13.7 13.73  0.03             95.64
+    PM2.5  2023   קרית חיים 499      13.8 13.88  0.08             96.60
+    PM2.5  2023  קרית טבעון 137      15.4 15.35 -0.05             98.80
+    PM2.5  2023     קרית ים  92      16.2 16.16 -0.04             95.62
+    PM2.5  2023 קרית מוצקין 382      18.9 18.79 -0.11             97.39
+    PM2.5  2024       אחוזה 136      12.9 12.86 -0.04             96.97
+    PM2.5  2024   נווה שאנן  86      14.3 12.02 -2.28             93.64
+    PM2.5  2024         נשר  87      12.0 13.51  1.51             97.85
+    PM2.5  2024      עצמאות 189      13.5 16.53  3.03             97.34
+    PM2.5  2024  פארק הכרמל  69      16.2 14.62 -1.58             98.34
+    PM2.5  2024    קרית אתא  88      14.5 16.10  1.60             90.06
+    PM2.5  2024 קרית בנימין  97      16.5 13.92 -2.58             97.88
+    PM2.5  2024   קרית חיים 499      13.9 15.39  1.49             96.47
+    PM2.5  2024  קרית טבעון 137      15.4 14.19 -1.21             97.48
+    PM2.5  2024     קרית ים  92      14.2 15.14  0.94             85.02
+    PM2.5  2024 קרית מוצקין 382      14.7 15.68  0.98             93.34
+    PM2.5  2025       אחוזה 136      12.5 12.58  0.08             96.21
+    PM2.5  2025   נווה שאנן  86      11.8 11.90  0.10             95.01
+    PM2.5  2025         נשר  87      13.5 13.52  0.02             93.08
+    PM2.5  2025      עצמאות 189      16.0 15.58 -0.42             97.01
+    PM2.5  2025  פארק הכרמל  69      13.0 13.53  0.53             91.82
+    PM2.5  2025    קרית אתא  88      17.2 17.27  0.07             65.80
+    PM2.5  2025 קרית בנימין  97      15.3 15.32  0.02             96.11
+    PM2.5  2025   קרית חיים 499      16.1 15.98 -0.12             93.29
+    PM2.5  2025  קרית טבעון 137      14.5 14.58  0.08             98.81
+    PM2.5  2025     קרית ים  92      15.7 15.66 -0.04             95.84
+    PM2.5  2025 קרית מוצקין 382      18.0 17.90 -0.10             69.00
+     PM10  2023       אחוזה 136      29.0 28.98 -0.02             99.04
+     PM10  2023   נווה שאנן  86      27.0 27.04  0.04             99.76
+     PM10  2023         נשר  87      25.7 25.69 -0.01             97.76
+     PM10  2023    קרית אתא  88      36.1 36.08 -0.02             92.27
+     PM10  2023 קרית בנימין  97      30.0 30.07  0.07             96.52
+     PM10  2023   קרית חיים 499      34.0 34.03  0.03             97.03
+     PM10  2023  קרית טבעון 137      27.8 27.84  0.04             98.82
+     PM10  2023 קרית מוצקין 382      38.8 38.75 -0.05             95.03
+     PM10  2024         נשר  87      28.6 28.60  0.00             97.13
+     PM10  2024    קרית אתא  88      33.5 33.44 -0.06             89.42
+     PM10  2024 קרית בנימין  97      28.9 28.97  0.07             97.96
+     PM10  2024   קרית חיים 499      33.6 33.76  0.16             96.85
+     PM10  2024  קרית טבעון 137      28.7 28.77  0.07             97.64
+     PM10  2024 קרית מוצקין 382      32.8 32.88  0.08             93.70
+
+PM2.5: n=33 | mean diff +0.05 | mean abs diff 0.60 | max abs diff 3.03 | within 0.5: 22 of 33 | within 1.0: 25 of 33
+
+PM10: n=14 | mean diff +0.03 | mean abs diff 0.05 | max abs diff 0.16 | within 0.5: 14 of 14 | within 1.0: 14 of 14
+
+Tivon:
+pollutant  year    station  id  official   api  diff  api_coverage_pct
+    PM2.5  2023 קרית טבעון 137      15.4 15.35 -0.05             98.80
+    PM2.5  2024 קרית טבעון 137      15.4 14.19 -1.21             97.48
+    PM2.5  2025 קרית טבעון 137      14.5 14.58  0.08             98.81
+     PM10  2023 קרית טבעון 137      27.8 27.84  0.04             98.82
+     PM10  2024 קרית טבעון 137      28.7 28.77  0.07             97.64
+
+===== 2024 PM2.5 table (Table 20 of the 2024 report): test for a one-row shift between labels and values =====
+API 2024 per station (annual mean, max daily): {'אחוזה': (np.float64(12.86), np.float64(51.1)), 'נווה שאנן': (np.float64(12.02), np.float64(49.4)), 'נשר': (np.float64(13.51), np.float64(58.7)), 'עצמאות': (np.float64(16.53), np.float64(118.7)), 'פארק הכרמל': (np.float64(14.62), np.float64(57.4)), 'קרית אתא': (np.float64(16.1), np.float64(54.8)), 'קרית בנימין': (np.float64(13.92), np.float64(33.3)), 'קרית חיים': (np.float64(15.39), np.float64(35.0)), 'קרית טבעון': (np.float64(14.19), np.float64(40.0)), 'קרית ים': (np.float64(15.14), np.float64(38.6)), 'קרית מוצקין': (np.float64(15.68), np.float64(36.0)), 'קרית ביאליק (לפי יישוב, תחנה 380)': (np.float64(16.45), np.float64(45.3)), 'הדר (תחבורתית; לפי שם, תחנה 391)': (np.float64(14.25), np.float64(47.2))}
+row  1  label=אחוזה        published mean/max 12.9/52.0 -> API station(s) matching both: [('אחוזה', np.float64(12.86), np.float64(51.1))]
+row  2  label=איגוד        published mean/max 12.9/52.0 -> API station(s) matching both: [('אחוזה', np.float64(12.86), np.float64(51.1))]
+row  3  label=הדר          published mean/max 16.4/40.3 -> API station(s) matching both: []
+row  4  label=נווה שאנן    published mean/max 14.3/46.3 -> API station(s) matching both: [('הדר (תחבורתית; לפי שם, תחנה 391)', np.float64(14.25), np.float64(47.2))]
+row  5  label=נשר          published mean/max 12.0/48.0 -> API station(s) matching both: [('נווה שאנן', np.float64(12.02), np.float64(49.4))]
+row  6  label=עצמאות       published mean/max 13.5/58.6 -> API station(s) matching both: [('נשר', np.float64(13.51), np.float64(58.7))]
+row  7  label=פארק הכרמל   published mean/max 16.2/116.0 -> API station(s) matching both: []
+row  8  label=קרית אתא     published mean/max 14.5/46.0 -> API station(s) matching both: []
+row  9  label=קרית ביאליק  published mean/max 16.1/54.1 -> API station(s) matching both: [('קרית אתא', np.float64(16.1), np.float64(54.8))]
+row 10  label=קרית בנימין  published mean/max 16.5/44.2 -> API station(s) matching both: [('קרית ביאליק (לפי יישוב, תחנה 380)', np.float64(16.45), np.float64(45.3))]
+row 11  label=קרית חיים    published mean/max 13.9/34.0 -> API station(s) matching both: [('קרית בנימין', np.float64(13.92), np.float64(33.3))]
+row 12  label=קרית טבעון   published mean/max 15.4/40.3 -> API station(s) matching both: []
+row 13  label=קרית ים      published mean/max 14.2/39.1 -> API station(s) matching both: [('קרית טבעון', np.float64(14.19), np.float64(40.0))]
+row 14  label=קרית מוצקין  published mean/max 14.7/33.1 -> API station(s) matching both: []
+
+Same-label match vs previous-row match (annual mean, ug/m3):
+  נווה שאנן    API 12.02 | published at its own row 14.3 (diff -2.28) | published at the NEXT row 12.0 (diff 0.02)
+  נשר          API 13.51 | published at its own row 12.0 (diff 1.51) | published at the NEXT row 13.5 (diff 0.01)
+  עצמאות       API 16.53 | published at its own row 13.5 (diff 3.03) | published at the NEXT row 16.2 (diff 0.33)
+  פארק הכרמל   API 14.62 | published at its own row 16.2 (diff -1.58) | published at the NEXT row 14.5 (diff 0.12)
+  קרית אתא     API 16.10 | published at its own row 14.5 (diff 1.60) | published at the NEXT row 16.1 (diff 0.00)
+  קרית בנימין  API 13.92 | published at its own row 16.5 (diff -2.58) | published at the NEXT row 13.9 (diff 0.02)
+  קרית חיים    API 15.39 | published at its own row 13.9 (diff 1.49) | published at the NEXT row 15.4 (diff -0.01)
+  קרית טבעון   API 14.19 | published at its own row 15.4 (diff -1.21) | published at the NEXT row 14.2 (diff -0.01)
+  קרית ים      API 15.14 | published at its own row 14.2 (diff 0.94) | published at the NEXT row 14.7 (diff 0.44)
+  קרית מוצקין  API 15.68 | published at its own row 14.7 (diff 0.98) | published at the NEXT row nan (diff nan)
+mean abs diff, own row: 1.72 | next row: 0.11 (stations where the next row exists)
+
+2025 report, Table 24 (comparison): labels list 12 stations, Table 22 lists 14 (Atzmaut and Carmel Park removed from labels but their values kept):
+  Table 24 label אחוזה        value 12.5 | Table 22 value of the SAME station 12.5 | Table 22 value at the same ROW POSITION (אחוזה) 12.5
+  Table 24 label איגוד        value 19.4 | Table 22 value of the SAME station 19.4 | Table 22 value at the same ROW POSITION (איגוד) 19.4
+  Table 24 label הדר          value 14.6 | Table 22 value of the SAME station 14.6 | Table 22 value at the same ROW POSITION (הדר) 14.6
+  Table 24 label נווה שאנן    value 11.8 | Table 22 value of the SAME station 11.8 | Table 22 value at the same ROW POSITION (נווה שאנן) 11.8
+  Table 24 label נשר          value 13.5 | Table 22 value of the SAME station 13.5 | Table 22 value at the same ROW POSITION (נשר) 13.5
+  Table 24 label קרית אתא     value 16.0 | Table 22 value of the SAME station 17.2 | Table 22 value at the same ROW POSITION (עצמאות) 16.0
+  Table 24 label קרית ביאליק  value 13.0 | Table 22 value of the SAME station 16.6 | Table 22 value at the same ROW POSITION (פארק הכרמל) 13.0
+  Table 24 label קרית בנימין  value 17.2 | Table 22 value of the SAME station 15.3 | Table 22 value at the same ROW POSITION (קרית אתא) 17.2
+  Table 24 label קרית חיים    value 16.6 | Table 22 value of the SAME station 16.1 | Table 22 value at the same ROW POSITION (קרית ביאליק) 16.6
+  Table 24 label קרית טבעון   value 15.3 | Table 22 value of the SAME station 14.5 | Table 22 value at the same ROW POSITION (קרית בנימין) 15.3
+  Table 24 label קרית מוצקין  value 16.1 | Table 22 value of the SAME station 18.0 | Table 22 value at the same ROW POSITION (קרית חיים) 16.1
+  Table 24 label קרית ים      value 14.5 | Table 22 value of the SAME station 15.7 | Table 22 value at the same ROW POSITION (קרית טבעון) 14.5
+
+2023 report, Table 25 (comparison 2022 vs 2023, column 2023): labels list 12 stations, Table 23 lists 14 (Atzmaut and Carmel Park removed from the labels but their values kept):
+  Table 25 label אחוזה        printed 14 | Table 23 value of the SAME station 13.9 (rounds to 14) | Table 23 value at the same ROW POSITION (אחוזה) 13.9 (rounds to 14)
+  Table 25 label איגוד        printed 17 | Table 23 value of the SAME station 17.3 (rounds to 17) | Table 23 value at the same ROW POSITION (איגוד) 17.3 (rounds to 17)
+  Table 25 label הדר          printed 14 | Table 23 value of the SAME station 14.1 (rounds to 14) | Table 23 value at the same ROW POSITION (הדר) 14.1 (rounds to 14)
+  Table 25 label נווה שאנן    printed 13 | Table 23 value of the SAME station 13.0 (rounds to 13) | Table 23 value at the same ROW POSITION (נווה שאנן) 13.0 (rounds to 13)
+  Table 25 label נשר          printed 14 | Table 23 value of the SAME station 13.5 (rounds to 14) | Table 23 value at the same ROW POSITION (נשר) 13.5 (rounds to 14)
+  Table 25 label קרית אתא     printed 18 | Table 23 value of the SAME station 17.0 (rounds to 17) | Table 23 value at the same ROW POSITION (עצמאות) 18.0 (rounds to 18)
+  Table 25 label קרית ביאליק  printed 15 | Table 23 value of the SAME station 16.7 (rounds to 17) | Table 23 value at the same ROW POSITION (פארק הכרמל) 15.0 (rounds to 15)
+  Table 25 label קרית בנימין  printed 17 | Table 23 value of the SAME station 13.7 (rounds to 14) | Table 23 value at the same ROW POSITION (קרית אתא) 17.0 (rounds to 17)
+  Table 25 label קרית חיים    printed 17 | Table 23 value of the SAME station 13.8 (rounds to 14) | Table 23 value at the same ROW POSITION (קרית ביאליק) 16.7 (rounds to 17)
+  Table 25 label קרית טבעון   printed 14 | Table 23 value of the SAME station 15.4 (rounds to 15) | Table 23 value at the same ROW POSITION (קרית בנימין) 13.7 (rounds to 14)
+  Table 25 label קרית מוצקין  printed 14 | Table 23 value of the SAME station 18.9 (rounds to 19) | Table 23 value at the same ROW POSITION (קרית חיים) 13.8 (rounds to 14)
+  Table 25 label קרית ים      printed 15 | Table 23 value of the SAME station 16.2 (rounds to 16) | Table 23 value at the same ROW POSITION (קרית טבעון) 15.4 (rounds to 15)

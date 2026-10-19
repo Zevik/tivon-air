@@ -1,0 +1,9212 @@
+<!doctype html>
+<html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>נספח המקורות והחישובים</title><style>:root{--bg:#fff;--ink:#1c2430;--muted:#5d6b7b;--line:#dfe5ec;--accent:#1a5fb4;--card:#f6f8fa}
+@media (prefers-color-scheme:dark){:root{--bg:#12161c;--ink:#e6ebf1;--muted:#9aa7b6;--line:#2a323d;--accent:#7db3f5;--card:#1a2029}}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.75 system-ui,"Segoe UI",Arial,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:20px 16px 60px}
+a{color:var(--accent)}nav{font-size:.9rem;margin-bottom:18px}
+h1,h2,h3{line-height:1.35}
+.tbl{overflow-x:auto;margin:12px 0}table{border-collapse:collapse;font-size:.9rem}
+th,td{border:1px solid var(--line);padding:5px 9px;text-align:start;vertical-align:top}th{background:var(--card)}
+code{background:var(--card);padding:1px 5px;border-radius:4px;direction:ltr;unicode-bidi:embed}
+pre{background:var(--card);padding:10px;overflow-x:auto;direction:ltr}img{max-width:100%}
+blockquote{border-inline-start:3px solid var(--line);margin:0;padding-inline-start:14px;color:var(--muted)}</style></head>
+<body><div class="wrap"><nav><a href="./">← טבעון מול שאר הארץ</a></nav>
+<h1>נספח: מקורות, נתונים וחישובים (השוואה ארצית, קריית טבעון מול שאר הארץ)</h1>
+<p>תאריך: 18.10.2026. נספח ל<a href="report.html">דוח ההשוואה הארצית</a> ול<a href="./">גרפים</a>. המטרה: שכל מספר, טענה וחישוב בהשוואה יהיו ניתנים לבדיקה עצמאית. הקבצים עצמם בתיקייה <strong><code>חבילת ראיות - השוואה ארצית/</code></strong> (מצורפת), והם רשומים בסעיף 10 עם SHA-256.</p>
+<h2>1. תוכן החבילה</h2>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>תיקייה</th>
+<th>תוכן</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>01 - דוחות רשמיים ומסמכי ייחוס</code></td>
+<td>שלושת הדוחות השנתיים של איגוד ערים חיפה (2023–2025; עותקים זהים לקובצי האתר), חמישה דוחות של איגודי ערים אחרים (אשדוד-חבל יבנה 2023–2025, אשקלון 2024, שרון-כרמל 2024), קטעי העמודים הרלוונטיים מכל דוח, מסמך WHO 2021 ועמוד הטבלה 0.1, וטקסט הדף של gov.il</td>
+</tr>
+<tr>
+<td><code>02 - רשימת תחנות</code></td>
+<td>רשימת התחנות המלאה של מנ"א (JSON, 278 תחנות) ו-161 התחנות שנשלפו (CSV)</td>
+</tr>
+<tr>
+<td><code>03 - נתונים גולמיים (zip)</code></td>
+<td>נתונים שעתיים גולמיים של 161 תחנות (PM2.5, PM10, O3, NO2), קובץ לכל תחנה, זיפ לכל שנה</td>
+</tr>
+<tr>
+<td><code>04 - תוצאות מעובדות ופלטי בדיקה</code></td>
+<td>טבלאות התוצאות (CSV) ופלטי הסקריפטים והביקורות</td>
+</tr>
+<tr>
+<td><code>05 - סקריפטים</code></td>
+<td>כל הקוד שיצר את המספרים, ההשוואות והמסמכים</td>
+</tr>
+<tr>
+<td><code>06 - מסמכי הפרסום</code></td>
+<td>דוח ההשוואה, הגרפים, הסיכום בשפה פשוטה, דוח הביקורת הפנימית והנספח הזה</td>
+</tr>
+</tbody>
+</table></div>
+<h2>2. מקורות וקישורים</h2>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>מקור</th>
+<th>כתובת</th>
+<th>שימוש בדוח ההשוואה</th>
+<th>סטטוס בדיקה</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>מנ"א: אתר ממשלתי לנתוני איכות אוויר</td>
+<td>https://air.sviva.gov.il/</td>
+<td>מקור אסימון האורח לקריאת ה-API; תיעוד ציבורי</td>
+<td>נבדק 18.10.2026 (HTTP 200)</td>
+</tr>
+<tr>
+<td>מנ"א: ממשק הנתונים (API)</td>
+<td>https://air-papi.sviva.gov.il/v1/envista/stations/{id}/data?timebase=60&amp;from=YYYY/MM/DD&amp;to=YYYY/MM/DD</td>
+<td>כל הנתונים השעתיים (PM2.5, PM10, O3, NO2) ל-161 תחנות, 2023–2025; כותרת Authorization: ApiToken (אסימון אורח מהאתר, מתחלף)</td>
+<td>נקרא 17–18.10.2026; נתונים גולמיים בחבילה (03)</td>
+</tr>
+<tr>
+<td>מנ"א: רשימת התחנות</td>
+<td>https://air-papi.sviva.gov.il/v1/envista/stations</td>
+<td>מטא-דאטה: שם, יישוב, בעלים, סוג, גובה, קואורדינטות, ערוצים (278 תחנות)</td>
+<td>עותק בחבילה (02)</td>
+</tr>
+<tr>
+<td>איגוד ערים אזור מפרץ חיפה: דוח שנתי 2023</td>
+<td>https://www.envihaifa.org.il/%D7%93%D7%95%D7%97%20%D7%A9%D7%A0%D7%AA%D7%99%202023-compressed.pdf</td>
+<td>אימות ה-API: עמ' 100: טבלה 23: PM2.5 לפי תחנה, 2023; עמ' 95: PM10 לפי תחנה, 2023; עמ' 104: טבלה 25: השוואת PM2.5 2022–2023 (ערכים מוסטים בשורה)</td>
+<td>זהה לקובץ באתר האיגוד (SHA-256 זהה, נבדק 18.10.2026); SHA-256: 9d6f89eadc64b8a5</td>
+</tr>
+<tr>
+<td>איגוד ערים אזור מפרץ חיפה: דוח שנתי 2024</td>
+<td>https://www.envihaifa.org.il/prdFiles/%D7%93%D7%95%D7%97%20%D7%A9%D7%A0%D7%AA%D7%99%202024%20-%20%D7%90%D7%99%D7%92%D7%95%D7%93%20%D7%A2%D7%A8%D7%99%D7%9D%20%D7%9E%D7%A4%D7%A8%D7%A5%20%D7%97%D7%99%D7%A4%D7%94%20%D7%9C%D7%94%D7%92%D7%A0%D7%AA%20%D7%94%D7%A1%D7%91%D7%99%D7%91%D7%94_compressed.pdf</td>
+<td>אימות ה-API: עמ' 107: טבלה 20: PM2.5 לפי תחנה, 2024 (מוסטת בשורה); עמ' 103: PM10 לפי תחנה, 2024; ערכי סביבה לפי סוג (PM10); עמ' 111: טבלת השוואה PM2.5 2023–2024</td>
+<td>זהה לקובץ באתר האיגוד (SHA-256 זהה, נבדק 18.10.2026); SHA-256: 3e22460bccb9b8be</td>
+</tr>
+<tr>
+<td>איגוד ערים אזור מפרץ חיפה: דוח שנתי 2025</td>
+<td>https://www.envihaifa.org.il/prdFiles/%D7%93%D7%95%D7%97%20%D7%A9%D7%A0%D7%AA%D7%99%202025-%20%D7%90%D7%99%D7%92%D7%95%D7%93%20%D7%A2%D7%A8%D7%99%D7%9D%20%D7%9E%D7%A4%D7%A8%D7%A5%20%D7%97%D7%99%D7%A4%D7%94%20%D7%9C%D7%94%D7%92%D7%A0%D7%AA%20%D7%94%D7%A1%D7%91%D7%99%D7%91%D7%94_compressed.pdf</td>
+<td>אימות ה-API: עמ' 106: טבלה 22: PM2.5 לפי תחנה, 2025; ערכי סביבה ויעד; עמ' 110: טבלה 24: השוואת PM2.5 2024–2025 (ערכים מוסטים בשורה)</td>
+<td>זהה לקובץ באתר האיגוד (SHA-256 זהה, נבדק 18.10.2026); SHA-256: 5322a5bb4a1dc346</td>
+</tr>
+<tr>
+<td>WHO: Global air quality guidelines 2021 (דף הפרסום)</td>
+<td>https://www.who.int/publications/i/item/9789240034228</td>
+<td>הנחיות WHO: PM2.5 5/15, PM10 15/45, אוזון 100 (8 שעות, אחוזון 99: 3–4 ימים) ו-60 (עונה), NO2 10/25 (מק"ג/מ"ק)</td>
+<td>דף נפתח (HTTP 200)</td>
+</tr>
+<tr>
+<td>WHO: המסמך המלא (עותק משוכפל)</td>
+<td>https://www.winchester.gov.uk/assets/attach/31475/9789240034228-eng.pdf</td>
+<td>טבלה 0.1 (עמ' xvii, עמוד 19 ב-PDF): הערכים לעיל; עותק בחבילה</td>
+<td>נקרא 18.10.2026; מקור רשמי: https://iris.who.int/handle/10665/345329</td>
+</tr>
+<tr>
+<td>המשרד להגנת הסביבה: ערכי איכות אוויר</td>
+<td>https://www.gov.il/he/pages/air_quality_values</td>
+<td>תוקף תקנות 2022 (1.3.2022) ועדכון אבק (1.1.2023)</td>
+<td>נקרא בדפדפן 18.10.2026 (בקשות אוטומטיות מקבלות 403)</td>
+</tr>
+<tr>
+<td>איגוד ערים, דוחות 2023–2025: ערכי הסביבה בישראל</td>
+<td>ראו שורות הדוחות לעיל</td>
+<td>PM2.5: ערך סביבה שנתי 25 (טבלה 22, עמ' 106 בדוח 2025); PM10: ערך סביבה שנתי 50 אחרי הורדת ימי סופת אבק (עמ' 103 בדוח 2024)</td>
+<td>נבדק בתמונת העמוד</td>
+</tr>
+<tr>
+<td>איגוד ערים אשדוד-חבל יבנה: דוח שנתי 2023</td>
+<td>https://www.env.org.il/wp-content/uploads/2024/09/%D7%90%D7%99%D7%92%D7%95%D7%93-%D7%A2%D7%A8%D7%99%D7%9D-%D7%90%D7%A9%D7%93%D7%95%D7%93-%D7%97%D7%91%D7%9C-%D7%99%D7%91%D7%A0%D7%94-%D7%93%D7%95%D7%97-%D7%A9%D7%A0%D7%AA%D7%99-2023.pdf</td>
+<td>אימות ה-API: עמ' 53: NO2; עמ' 54: אוזון; עמ' 55: PM2.5 לפי תחנה (בשימוש לאימות); עמ' 56: בנזן (בקובץ החיפוש מסומן כ-PM10; בפועל בנזן)</td>
+<td>אומת: PM2.5, 8 תחנות; נקרא 18.10.2026; SHA-256: bfe8923459dfca0a; 12.2 MB, 123 עמ'</td>
+</tr>
+<tr>
+<td>איגוד ערים אשדוד-חבל יבנה: דוח פעילות 2024</td>
+<td>https://www.env.org.il/wp-content/uploads/2025/09/%D7%93%D7%95%D7%97-%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA-2024.pdf</td>
+<td>אימות ה-API: עמ' 38: NO2; עמ' 39: אוזון; עמ' 40: PM2.5 לפי תחנה (בשימוש לאימות); עמ' 41: בנזן</td>
+<td>אומת: PM2.5, 8 תחנות; נקרא 18.10.2026; SHA-256: 0d94be38dd7c5d49; 13.1 MB, 116 עמ'</td>
+</tr>
+<tr>
+<td>איגוד ערים אשדוד-חבל יבנה: דוח 2025</td>
+<td>https://www.env.org.il/wp-content/uploads/2026/08/%D7%93%D7%95%D7%97-2025.pdf</td>
+<td>אימות ה-API: עמ' 34: NO2; עמ' 35: אוזון; עמ' 36: PM2.5 לפי תחנה (בשימוש לאימות); עמ' 37: בנזן</td>
+<td>אומת: PM2.5, 8 תחנות; נקרא 18.10.2026; SHA-256: 2adc933ae1f25739; 11.9 MB, 97 עמ'</td>
+</tr>
+<tr>
+<td>איגוד ערים אשקלון: דוח שנתי 2024</td>
+<td>https://www.e-a.org.il/prdFiles/%D7%90%D7%99%D7%92%D7%95%D7%93%20%D7%A2%D7%A8%D7%99%D7%9D%D7%A9%D7%A0%D7%AA%D7%99%202024__compressed.pdf</td>
+<td>אימות ה-API: עמ' 35: אוזון; עמ' 37: NO2; עמ' 38: טבלה 7: PM2.5 לפי תחנה (בשימוש לאימות)</td>
+<td>אומת: PM2.5, 10 תחנות; נקרא 18.10.2026; SHA-256: 6608af307701ac3a; 5.2 MB, 105 עמ'</td>
+</tr>
+<tr>
+<td>איגוד ערים לסביבה שרון כרמל: דוח שנתי 2024</td>
+<td>https://www.sviva-sc.org.il/uploads/n/1763991683.5760.pdf</td>
+<td>אימות ה-API: עמ' 13: PM2.5 ו-PM10: טקסט; עמ' 14: PM2.5: תרשים מגמה; עמ' 15: PM10: סיכום</td>
+<td>נפתח (בקובץ החיפוש מסומן כחסום 403); טבלת ממוצעים לפי תחנה לא אותרה בטקסט, ולכן לא אומת; נקרא 18.10.2026; SHA-256: 3f964cb6cc8f7e27; 3.8 MB, 82 עמ'</td>
+</tr>
+<tr>
+<td>קישורים בקובץ החיפוש ש<strong>אינם פעילים</strong> (HTTP 404, נבדקו 18.10.2026)</td>
+<td>איגוד אשקלון 2025 (e-a.org.il, "דוח שנת 2025 - ניטור.pdf"); חברת החשמל 2023 ו-2024 (ieccontent.iec.co.il, iecmedia.iec.co.il)</td>
+<td>לא שימשו</td>
+<td>שלושה קישורים לחברת החשמל ואחד לאשקלון 2025 מחזירים 404; צריך למצוא כתובות נכונות</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>הערה על קישורים:</strong> בקשות אוטומטיות לחלק מהאתרים הממשלתיים (gov.il, data.gov.il, האתר של עיריית קריית ים) נחסמות (403 או הפניה); בדפדפן הם נפתחים. לכן העותקים בחבילה הם העוגן: דוח 2024 באתר האיגוד זהה (SHA-256) לקובץ השמור, ולא נעשה שימוש בעותק של עיריית קריית ים.</p>
+<h2>3. הגדרות ונוסחאות</h2>
+<ol>
+<li><strong>ממוצע שנתי:</strong> ממוצע כל השעות עם <code>valid=True</code> בשנה. <strong>כיסוי:</strong> שעות תקפות חלקי שעות השנה (8,760; 8,784 ב-2024).</li>
+<li><strong>תחנה-שנה נכללת</strong> אם הכיסוי השנתי לפחות 75% <strong>ובכל עונה</strong> (חורף דצמבר–פברואר, אביב מרץ–מאי, קיץ יוני–אוגוסט, סתיו ספטמבר–נובמבר) לפחות 50% שעות תקפות במזהם (למניעת הטיה עונתית). נדרש לפחות שנתיים תקפות לממוצע תלת-שנתי. תחנה-שנה עם PM2.5 מתחת ל-5 או מעל 60 (ערך שלילי באורות רבין, חדרה, 2024) הוצאה. PM10 מתחת ל-15 או מעל 150 הוצא (ערך מתחת ל-15 אינו סביר בישראל; נמצא אחד: אורות רבין 2024, 13.6). <strong>יציבות האוזון:</strong> תחנה שמספר ימי האוזון השנתי שלה (אחרי הכיסוי) משתנה פי יותר מ-2.5 בין שנותיה הוצאה מדירוג האוזון (שונות גבוהה; אינה בהכרח טעות, ותחנה 122 למשל תואמת לדוח האיגוד): תחנות 7, 11, 122, 472, 539.</li>
+<li><strong>יום תקף ל-PM2.5:</strong> לפחות 18 שעות תקפות. <strong>% ימים מעל 15:</strong> ימי ממוצע יממתי מעל 15 מק"ג/מ"ק חלקי הימים התקפים (15 = הנחיית WHO היממתית).</li>
+<li><strong>MDA8:</strong> לכל שעה, ממוצע ה-8 שעות המסתיימות בה (6 שעות תקפות לפחות מתוך 8); ה-MDA8 של יום הוא המרבי של ממוצעים אלה בשעות היום, ליום תקף נדרשים 18 ממוצעים לפחות. <strong>ימי אוזון:</strong> ימים עם MDA8 של 51 ppb לפחות, מנורמל ל-365 ימים (<code>ימים × 365 / ימים תקפים</code>). <strong>51 ppb:</strong> 1 ppb אוזון = 48.00/24.4655 = 1.962 מק"ג/מ"ק ב-25°C ו-1 atm, ולכן 100/1.962 = 50.97, כלומר 100 מק"ג/מ"ק (הנחיית WHO ל-8 שעות) הם כ-51 ppb. ההשוואה ב-ppb מבטלת את תלות הדירוג בגורם ההמרה.</li>
+<li><strong>NO2:</strong> ממוצע ב-ppb × 46.0055/24.4655 = 1.8804 (25°C, 1 atm).</li>
+<li><strong>ימי אבק אזוריים:</strong> בכל שנה, חציון ה-PM10 היומי (יממה תקפה: 18 שעות) על פני כל תחנות ה-PM10 גבוה מ-60 מק"ג/מ"ק; נוסף היום שאחריו (53–61 ימים בשנה). <strong>PM2.5 בלי אבק:</strong> ממוצע הימים התקפים שאינם ימי אבק (נדרשים 150 ימים לפחות).</li>
+<li><strong>ממוצע תלת-שנתי לתחנה:</strong> ממוצע הערכים של השנים התקפות. <strong>חציון, רבעונים ודירוג:</strong> על פני תחנות. <strong>"X% מהתחנות נמוכות מטבעון":</strong> שיעור התחנות עם ערך נמוך ממש מערך טבעון. <strong>דירוג:</strong> מספר התחנות עם ערך גבוה ממש, ועוד אחת (1 = הגבוה ביותר).</li>
+<li><strong>סוג תחנה:</strong> <em>תחבורה</em> (סוג "תחבורתית" או "תחנות פנים מבניות", או בעלות נתיבי ישראל, נתיבי איילון, רכבת ישראל או התחנה המרכזית); <em>תעשייה/מחצבה/תחנת כוח</em> (סוג "על הגדר", "תעשייתית" או "נמלי ים", או בעלות/שם עם מחצבה, אבן וסיד, תחנת כוח, ת"כ, MRC, או.פי, נאות חובב, שברון, ים המלח, או שם התחנה כולל "תעשייה", או בעלות "נשר" או "שפיר"); <em>רקע עירוני/כללי</em>: השאר. <strong>מגבלה:</strong> הסיווג יוריסטי; אינו מבחין בין תחנות של חברת החשמל לתחנות כוח פרטיות, ותחנה אחת הסומנה כלא פעילה במטא-דאטה נשארת במדגם. נבדקה רגישות לסיווג ולהשמטת אזורים (סעיף 7).</li>
+<li><strong>אזור:</strong> לפי יישוב ובעלות וקואורדינטות (תל אביב וגוש דן, חיפה והקריות, ירושלים, נגב וערבה, דרום החוף והשפלה הדרומית, שרון וכרמל, עמקים וגליל, שפלה ומודיעין); טבעון בנפרד. קוד הסיווג ב-<code>national_analysis.py</code> (פונקציות <code>klass</code> ו-<code>region</code>).</li>
+<li><strong>מרחק מהחוף:</strong> <code>(קו אורך התחנה − קו אורך החוף באותו קו רוחב) × 95 ק"מ</code>, כשקו החוף הוא אינטרפולציה לינארית בין נקודות (קו רוחב 31.50→34.47, 31.66→34.55, 31.80→34.64, 32.08→34.76, 32.33→34.85, 32.45→34.88, 32.70→34.95, 32.82→35.00, 32.90→35.07, 33.09→35.10); הערכה גסה. <strong>גובה:</strong> מרשימת התחנות; לתחנות 384, 385 ו-454 שדה הגובה ב-API מכיל ערך שאינו גובה (קו אורך), ולתחנות 563 (0 מ') ו-586 (+232 מ' בבקעת הירדן) ערך לא סביר; כולן הוצאו. ארבע תחנות דרומית ל-31.1°N (דרום הנגב והערבה) נשארות בלי מרחק מחוף, כי קו החוף שבשימוש מכסה 31.5–33.1°N.</li>
+<li><strong>התאמה (סעיף 4.6 בדוח):</strong> <code>ערך ~ תחבורה + תעשייה + גובה/100 + מרחק מחוף/10</code> (OLS, שגיאות תקן HC1), על ממוצעי תחנות, בלי תחנות מתחת ל-100 מ' מתחת לפני הים או רחוקות מ-80 ק"מ מהחוף; לאוזון בלי משתנה התחבורה (אין תחנות תחבורה עם אוזון).</li>
+<li><strong>ערכי ייחוס בגרפים:</strong> PM2.5: WHO 5 (שנתי), ישראל 25 (טבלה 22 בדוח 2025); NO2 ישראל 40 ואוזון ישראל 140 מק"ג/מ"ק ל-8 שעות (טבלאות האוזון והחנקן הדו-חמצני בדוח אשקלון 2024, עמ' 35 ו-37); PM10: WHO 15, ישראל 50 (ערך סביבה שנתי אחרי הורדת ימי סופת אבק, עמ' 103 בדוח 2024); NO2: WHO 10; אוזון: WHO 100 מק"ג/מ"ק ל-8 שעות, 3–4 ימים בשנה (טבלה 0.1 של WHO, הערה a).</li>
+</ol>
+<h2>4. תהליך (צעד אחר צעד)</h2>
+<ol>
+<li><code>fetch_national_year.py &lt;שנה&gt;</code>: קורא את אסימון האורח מ-<code>air.sviva.gov.il</code>, ולכל תחנה פעילה ונייחת עם PM2.5 או אוזון (161) שולף חודש אחר חודש את הנתונים השעתיים מה-API ושומר ערוצי PM2.5, PM10, O3 ו-NO2.</li>
+<li><code>national_analysis.py</code>: מחשב מדדי תחנה-שנה, בקרת איכות, ימי אבק, סיווג, ממוצעי תחנה, דירוגים, רגרסיות; כותב <code>national_summary_station_year.csv</code>, <code>national_summary_station.csv</code> ופלט.</li>
+<li><code>validate_national_vs_official.py</code>: משווה ל-API את הערכים הרשמיים שהועתקו מדוחות האיגוד.</li>
+<li><code>audit_recompute.py</code>: חישוב עצמאי של כל המדדים מהנתונים הגולמיים, בקוד אחר (numpy), והשוואה לתוצאות הצינור.</li>
+<li><code>classification_sensitivity.py</code>: רגישות הדירוג לסיווג ולהשמטת אזורים.</li>
+<li><code>build_national_report2.py</code> ו-<code>build_charts.py</code>: מייצרים את הדוח והגרפים מהקבצים; כל מספר בדוח מחושב, והבנייה נכשלת אם טענה איכותית שנבדקת בקוד (למשל "טבעון נמוכה מכל האזורים באוזון") אינה נכונה.</li>
+</ol>
+<p><strong>הרצה מחדש:</strong> <code>python -I fetch_national_year.py 2023</code> (וכן 2024 ו-2025), <code>python -I national_analysis.py</code>, <code>python -I audit_recompute.py</code>.</p>
+<h2>5. דוגמת חישוב מלאה: טבעון, 2025</h2>
+<ul>
+<li><strong>PM2.5:</strong> 8,656 שעות תקפות מתוך 8,760 (98.8%), סכום 126,242.8, ממוצע שנתי <strong>14.58</strong> מק"ג/מ"ק. ימים תקפים (18 שעות לפחות): 362; מתוכם 135 עם ממוצע יממתי מעל 15, כלומר 37.3%.</li>
+<li><strong>NO2:</strong> 7,526 שעות תקפות, ממוצע 5.02 ppb × 1.8804 = <strong>9.44</strong> מק"ג/מ"ק.</li>
+<li><strong>MDA8, יום לדוגמה 10.7.2025:</strong> ערכי האוזון השעתיים (ppb, שעות 00:00–23:00 לפי שעון חורף קבוע): [36.1, 32.8, 32.3, 30.3, 30.2, 27.7, 23.1, None, 41.2, 49.0, 55.6, 58.7, 55.6, 55.5, 53.8, 53.6, 51.7, 46.1, 39.6, 37.2, 34.0, 32.3, 35.6, 37.6]. ממוצעי 8 השעות המסתיימים בכל שעה: [40.69, 38.72, 36.7, 34.81, 33.29, 32.38, 30.78, 30.36, 31.09, 33.4, 36.73, 40.79, 44.41, 48.39, 52.77, 52.88, 54.19, 53.83, 51.83, 49.14, 46.44, 43.54, 41.26, 39.26]. ה-MDA8 של היום = המרבי = <strong>54.1875</strong> ppb.</li>
+<li>הערכים לכל שלוש השנים והממוצע התלת-שנתי: בטבלת תחנה-שנה (סעיף 9) ובקובץ <code>national_summary_station_year.csv</code>.</li>
+</ul>
+<h2>6. אימות מול הדוחות הרשמיים</h2>
+<p><strong>הערה:</strong> שורות PM2.5 של 2024 מוצגות לשקיפות בלבד. בטבלה 20 בדוח 2024 השמות מוסטים בשורה אחת ביחס לערכים (ראו הסיכום והפלט להלן), ולכן ההפרשים בשורות אלה גדולים ואינם מעידים על שגיאת API.</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>מזהם</th>
+<th>שנה</th>
+<th>תחנה</th>
+<th>מזהה</th>
+<th>דוח האיגוד</th>
+<th>API</th>
+<th>הפרש</th>
+<th>כיסוי API %</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PM2.5</td>
+<td>2023</td>
+<td>אחוזה</td>
+<td>136</td>
+<td>13.9</td>
+<td>13.86</td>
+<td>-0.04</td>
+<td>99</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2023</td>
+<td>נווה שאנן</td>
+<td>86</td>
+<td>13.0</td>
+<td>13.02</td>
+<td>+0.02</td>
+<td>100</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2023</td>
+<td>נשר</td>
+<td>87</td>
+<td>13.5</td>
+<td>13.55</td>
+<td>+0.05</td>
+<td>98</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2023</td>
+<td>עצמאות</td>
+<td>189</td>
+<td>18.0</td>
+<td>17.57</td>
+<td>-0.43</td>
+<td>93</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2023</td>
+<td>פארק הכרמל</td>
+<td>69</td>
+<td>15.0</td>
+<td>15.16</td>
+<td>+0.16</td>
+<td>96</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2023</td>
+<td>קרית אתא</td>
+<td>88</td>
+<td>17.0</td>
+<td>16.99</td>
+<td>-0.01</td>
+<td>95</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2023</td>
+<td>קרית בנימין</td>
+<td>97</td>
+<td>13.7</td>
+<td>13.73</td>
+<td>+0.03</td>
+<td>96</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2023</td>
+<td>קרית חיים</td>
+<td>499</td>
+<td>13.8</td>
+<td>13.88</td>
+<td>+0.08</td>
+<td>97</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2023</td>
+<td>קרית טבעון</td>
+<td>137</td>
+<td>15.4</td>
+<td>15.35</td>
+<td>-0.05</td>
+<td>99</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2023</td>
+<td>קרית ים</td>
+<td>92</td>
+<td>16.2</td>
+<td>16.16</td>
+<td>-0.04</td>
+<td>96</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2023</td>
+<td>קרית מוצקין</td>
+<td>382</td>
+<td>18.9</td>
+<td>18.79</td>
+<td>-0.11</td>
+<td>97</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2024</td>
+<td>אחוזה</td>
+<td>136</td>
+<td>12.9</td>
+<td>12.86</td>
+<td>-0.04</td>
+<td>97</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2024</td>
+<td>נווה שאנן</td>
+<td>86</td>
+<td>14.3</td>
+<td>12.02</td>
+<td>-2.28</td>
+<td>94</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2024</td>
+<td>נשר</td>
+<td>87</td>
+<td>12.0</td>
+<td>13.51</td>
+<td>+1.51</td>
+<td>98</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2024</td>
+<td>עצמאות</td>
+<td>189</td>
+<td>13.5</td>
+<td>16.53</td>
+<td>+3.03</td>
+<td>97</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2024</td>
+<td>פארק הכרמל</td>
+<td>69</td>
+<td>16.2</td>
+<td>14.62</td>
+<td>-1.58</td>
+<td>98</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2024</td>
+<td>קרית אתא</td>
+<td>88</td>
+<td>14.5</td>
+<td>16.10</td>
+<td>+1.60</td>
+<td>90</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2024</td>
+<td>קרית בנימין</td>
+<td>97</td>
+<td>16.5</td>
+<td>13.92</td>
+<td>-2.58</td>
+<td>98</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2024</td>
+<td>קרית חיים</td>
+<td>499</td>
+<td>13.9</td>
+<td>15.39</td>
+<td>+1.49</td>
+<td>96</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2024</td>
+<td>קרית טבעון</td>
+<td>137</td>
+<td>15.4</td>
+<td>14.19</td>
+<td>-1.21</td>
+<td>97</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2024</td>
+<td>קרית ים</td>
+<td>92</td>
+<td>14.2</td>
+<td>15.14</td>
+<td>+0.94</td>
+<td>85</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2024</td>
+<td>קרית מוצקין</td>
+<td>382</td>
+<td>14.7</td>
+<td>15.68</td>
+<td>+0.98</td>
+<td>93</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2025</td>
+<td>אחוזה</td>
+<td>136</td>
+<td>12.5</td>
+<td>12.58</td>
+<td>+0.08</td>
+<td>96</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2025</td>
+<td>נווה שאנן</td>
+<td>86</td>
+<td>11.8</td>
+<td>11.90</td>
+<td>+0.10</td>
+<td>95</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2025</td>
+<td>נשר</td>
+<td>87</td>
+<td>13.5</td>
+<td>13.52</td>
+<td>+0.02</td>
+<td>93</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2025</td>
+<td>עצמאות</td>
+<td>189</td>
+<td>16.0</td>
+<td>15.58</td>
+<td>-0.42</td>
+<td>97</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2025</td>
+<td>פארק הכרמל</td>
+<td>69</td>
+<td>13.0</td>
+<td>13.53</td>
+<td>+0.53</td>
+<td>92</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2025</td>
+<td>קרית אתא</td>
+<td>88</td>
+<td>17.2</td>
+<td>17.27</td>
+<td>+0.07</td>
+<td>66</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2025</td>
+<td>קרית בנימין</td>
+<td>97</td>
+<td>15.3</td>
+<td>15.32</td>
+<td>+0.02</td>
+<td>96</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2025</td>
+<td>קרית חיים</td>
+<td>499</td>
+<td>16.1</td>
+<td>15.98</td>
+<td>-0.12</td>
+<td>93</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2025</td>
+<td>קרית טבעון</td>
+<td>137</td>
+<td>14.5</td>
+<td>14.58</td>
+<td>+0.08</td>
+<td>99</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2025</td>
+<td>קרית ים</td>
+<td>92</td>
+<td>15.7</td>
+<td>15.66</td>
+<td>-0.04</td>
+<td>96</td>
+</tr>
+<tr>
+<td>PM2.5</td>
+<td>2025</td>
+<td>קרית מוצקין</td>
+<td>382</td>
+<td>18.0</td>
+<td>17.90</td>
+<td>-0.10</td>
+<td>69</td>
+</tr>
+<tr>
+<td>PM10</td>
+<td>2023</td>
+<td>אחוזה</td>
+<td>136</td>
+<td>29.0</td>
+<td>28.98</td>
+<td>-0.02</td>
+<td>99</td>
+</tr>
+<tr>
+<td>PM10</td>
+<td>2023</td>
+<td>נווה שאנן</td>
+<td>86</td>
+<td>27.0</td>
+<td>27.04</td>
+<td>+0.04</td>
+<td>100</td>
+</tr>
+<tr>
+<td>PM10</td>
+<td>2023</td>
+<td>נשר</td>
+<td>87</td>
+<td>25.7</td>
+<td>25.69</td>
+<td>-0.01</td>
+<td>98</td>
+</tr>
+<tr>
+<td>PM10</td>
+<td>2023</td>
+<td>קרית אתא</td>
+<td>88</td>
+<td>36.1</td>
+<td>36.08</td>
+<td>-0.02</td>
+<td>92</td>
+</tr>
+<tr>
+<td>PM10</td>
+<td>2023</td>
+<td>קרית בנימין</td>
+<td>97</td>
+<td>30.0</td>
+<td>30.07</td>
+<td>+0.07</td>
+<td>97</td>
+</tr>
+<tr>
+<td>PM10</td>
+<td>2023</td>
+<td>קרית חיים</td>
+<td>499</td>
+<td>34.0</td>
+<td>34.03</td>
+<td>+0.03</td>
+<td>97</td>
+</tr>
+<tr>
+<td>PM10</td>
+<td>2023</td>
+<td>קרית טבעון</td>
+<td>137</td>
+<td>27.8</td>
+<td>27.84</td>
+<td>+0.04</td>
+<td>99</td>
+</tr>
+<tr>
+<td>PM10</td>
+<td>2023</td>
+<td>קרית מוצקין</td>
+<td>382</td>
+<td>38.8</td>
+<td>38.75</td>
+<td>-0.05</td>
+<td>95</td>
+</tr>
+<tr>
+<td>PM10</td>
+<td>2024</td>
+<td>נשר</td>
+<td>87</td>
+<td>28.6</td>
+<td>28.60</td>
+<td>+0.00</td>
+<td>97</td>
+</tr>
+<tr>
+<td>PM10</td>
+<td>2024</td>
+<td>קרית אתא</td>
+<td>88</td>
+<td>33.5</td>
+<td>33.44</td>
+<td>-0.06</td>
+<td>89</td>
+</tr>
+<tr>
+<td>PM10</td>
+<td>2024</td>
+<td>קרית בנימין</td>
+<td>97</td>
+<td>28.9</td>
+<td>28.97</td>
+<td>+0.07</td>
+<td>98</td>
+</tr>
+<tr>
+<td>PM10</td>
+<td>2024</td>
+<td>קרית חיים</td>
+<td>499</td>
+<td>33.6</td>
+<td>33.76</td>
+<td>+0.16</td>
+<td>97</td>
+</tr>
+<tr>
+<td>PM10</td>
+<td>2024</td>
+<td>קרית טבעון</td>
+<td>137</td>
+<td>28.7</td>
+<td>28.77</td>
+<td>+0.07</td>
+<td>98</td>
+</tr>
+<tr>
+<td>PM10</td>
+<td>2024</td>
+<td>קרית מוצקין</td>
+<td>382</td>
+<td>32.8</td>
+<td>32.88</td>
+<td>+0.08</td>
+<td>94</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>סיכום:</strong> PM2.5 2023 ו-2025 (22 השוואות, 11 תחנות בכל שנה, איגוד חיפה): תואם; PM10 2023–2024 (14 השוואות): הפער הממוצע המוחלט 0.05, המרבי 0.16. <strong>איגוד אשדוד-חבל יבנה</strong> (PM2.5, 8 תחנות, 2023–2025, 24 השוואות) ו<strong>איגוד אשקלון</strong> (PM2.5 2024, 10 תחנות): טבלאות בסעיף 6א. <strong>PM2.5 ב-2024 לא שימש לאימות:</strong> טבלה 20 בדוח 2024 מוסטת בשורה אחת. הוכחה (פלט <code>validate_national_vs_official.py</code>):</p>
+<pre><code>===== 2024 PM2.5 table (Table 20 of the 2024 report): test for a one-row shift between labels and values =====
+API 2024 per station (annual mean, max daily): {'אחוזה': (12.86, 51.1), 'נווה שאנן': (12.02, 49.4), 'נשר': (13.51, 58.7), 'עצמאות': (16.53, 118.7), 'פארק הכרמל': (14.62, 57.4), 'קרית אתא': (16.1, 54.8), 'קרית בנימין': (13.92, 33.3), 'קרית חיים': (15.39, 35.0), 'קרית טבעון': (14.19, 40.0), 'קרית ים': (15.14, 38.6), 'קרית מוצקין': (15.68, 36.0), 'קרית ביאליק (לפי יישוב, תחנה 380)': (16.45, 45.3), 'הדר (תחבורתית; לפי שם, תחנה 391)': (14.25, 47.2)}
+row  1  label=אחוזה        published mean/max 12.9/52.0 -&gt; API station(s) matching both: [('אחוזה', 12.86, 51.1)]
+row  2  label=איגוד        published mean/max 12.9/52.0 -&gt; API station(s) matching both: [('אחוזה', 12.86, 51.1)]
+row  3  label=הדר          published mean/max 16.4/40.3 -&gt; API station(s) matching both: []
+row  4  label=נווה שאנן    published mean/max 14.3/46.3 -&gt; API station(s) matching both: [('הדר (תחבורתית; לפי שם, תחנה 391)', 14.25, 47.2)]
+row  5  label=נשר          published mean/max 12.0/48.0 -&gt; API station(s) matching both: [('נווה שאנן', 12.02, 49.4)]
+row  6  label=עצמאות       published mean/max 13.5/58.6 -&gt; API station(s) matching both: [('נשר', 13.51, 58.7)]
+row  7  label=פארק הכרמל   published mean/max 16.2/116.0 -&gt; API station(s) matching both: []
+row  8  label=קרית אתא     published mean/max 14.5/46.0 -&gt; API station(s) matching both: []
+row  9  label=קרית ביאליק  published mean/max 16.1/54.1 -&gt; API station(s) matching both: [('קרית אתא', 16.1, 54.8)]
+row 10  label=קרית בנימין  published mean/max 16.5/44.2 -&gt; API station(s) matching both: [('קרית ביאליק (לפי יישוב, תחנה 380)', 16.45, 45.3)]
+row 11  label=קרית חיים    published mean/max 13.9/34.0 -&gt; API station(s) matching both: [('קרית בנימין', 13.92, 33.3)]
+row 12  label=קרית טבעון   published mean/max 15.4/40.3 -&gt; API station(s) matching both: []
+row 13  label=קרית ים      published mean/max 14.2/39.1 -&gt; API station(s) matching both: [('קרית טבעון', 14.19, 40.0)]
+row 14  label=קרית מוצקין  published mean/max 14.7/33.1 -&gt; API station(s) matching both: []
+
+Same-label match vs previous-row match (annual mean, ug/m3):
+  נווה שאנן    API 12.02 | published at its own row 14.3 (diff -2.28) | published at the NEXT row 12.0 (diff 0.02)
+  נשר          API 13.51 | published at its own row 12.0 (diff 1.51) | published at the NEXT row 13.5 (diff 0.01)
+  עצמאות       API 16.53 | published at its own row 13.5 (diff 3.03) | published at the NEXT row 16.2 (diff 0.33)
+  פארק הכרמל   API 14.62 | published at its own row 16.2 (diff -1.58) | published at the NEXT row 14.5 (diff 0.12)
+  קרית אתא     API 16.10 | published at its own row 14.5 (diff 1.60) | published at the NEXT row 16.1 (diff 0.00)
+  קרית בנימין  API 13.92 | published at its own row 16.5 (diff -2.58) | published at the NEXT row 13.9 (diff 0.02)
+  קרית חיים    API 15.39 | published at its own row 13.9 (diff 1.49) | published at the NEXT row 15.4 (diff -0.01)
+  קרית טבעון   API 14.19 | published at its own row 15.4 (diff -1.21) | published at the NEXT row 14.2 (diff -0.01)
+  קרית ים      API 15.14 | published at its own row 14.2 (diff 0.94) | published at the NEXT row 14.7 (diff 0.44)
+  קרית מוצקין  API 15.68 | published at its own row 14.7 (diff 0.98) | published at the NEXT row nan (diff nan)
+mean abs diff, own row: 1.72 | next row: 0.11 (stations where the next row exists)
+
+2025 report, Table 24 (comparison): labels list 12 stations, Table 22 lists 14 (Atzmaut and Carmel Park removed from labels but their values kept):
+  Table 24 label אחוזה        value 12.5 | Table 22 value of the SAME station 12.5 | Table 22 value at the same ROW POSITION (אחוזה) 12.5
+  Table 24 label איגוד        value 19.4 | Table 22 value of the SAME station 19.4 | Table 22 value at the same ROW POSITION (איגוד) 19.4
+  Table 24 label הדר          value 14.6 | Table 22 value of the SAME station 14.6 | Table 22 value at the same ROW POSITION (הדר) 14.6
+  Table 24 label נווה שאנן    value 11.8 | Table 22 value of the SAME station 11.8 | Table 22 value at the same ROW POSITION (נווה שאנן) 11.8
+  Table 24 label נשר          value 13.5 | Table 22 value of the SAME station 13.5 | Table 22 value at the same ROW POSITION (נשר) 13.5
+  Table 24 label קרית אתא     value 16.0 | Table 22 value of the SAME station 17.2 | Table 22 value at the same ROW POSITION (עצמאות) 16.0
+  Table 24 label קרית ביאליק  value 13.0 | Table 22 value of the SAME station 16.6 | Table 22 value at the same ROW POSITION (פארק הכרמל) 13.0
+  Table 24 label קרית בנימין  value 17.2 | Table 22 value of the SAME station 15.3 | Table 22 value at the same ROW POSITION (קרית אתא) 17.2
+  Table 24 label קרית חיים    value 16.6 | Table 22 value of the SAME station 16.1 | Table 22 value at the same ROW POSITION (קרית ביאליק) 16.6
+  Table 24 label קרית טבעון   value 15.3 | Table 22 value of the SAME station 14.5 | Table 22 value at the same ROW POSITION (קרית בנימין) 15.3
+  Table 24 label קרית מוצקין  value 16.1 | Table 22 value of the SAME station 18.0 | Table 22 value at the same ROW POSITION (קרית חיים) 16.1
+  Table 24 label קרית ים      value 14.5 | Table 22 value of the SAME station 15.7 | Table 22 value at the same ROW POSITION (קרית טבעון) 14.5
+
+2023 report, Table 25 (comparison 2022 vs 2023, column 2023): labels list 12 stations, Table 23 lists 14 (Atzmaut and Carmel Park removed from the labels but their values kept):
+  Table 25 label אחוזה        printed 14 | Table 23 value of the SAME station 13.9 (rounds to 14) | Table 23 value at the same ROW POSITION (אחוזה) 13.9 (rounds to 14)
+  Table 25 label איגוד        printed 17 | Table 23 value of the SAME station 17.3 (rounds to 17) | Table 23 value at the same ROW POSITION (איגוד) 17.3 (rounds to 17)
+  Table 25 label הדר          printed 14 | Table 23 value of the SAME station 14.1 (rounds to 14) | Table 23 value at the same ROW POSITION (הדר) 14.1 (rounds to 14)
+  Table 25 label נווה שאנן    printed 13 | Table 23 value of the SAME station 13.0 (rounds to 13) | Table 23 value at the same ROW POSITION (נווה שאנן) 13.0 (rounds to 13)
+  Table 25 label נשר          printed 14 | Table 23 value of the SAME station 13.5 (rounds to 14) | Table 23 value at the same ROW POSITION (נשר) 13.5 (rounds to 14)
+  Table 25 label קרית אתא     printed 18 | Table 23 value of the SAME station 17.0 (rounds to 17) | Table 23 value at the same ROW POSITION (עצמאות) 18.0 (rounds to 18)
+  Table 25 label קרית ביאליק  printed 15 | Table 23 value of the SAME station 16.7 (rounds to 17) | Table 23 value at the same ROW POSITION (פארק הכרמל) 15.0 (rounds to 15)
+  Table 25 label קרית בנימין  printed 17 | Table 23 value of the SAME station 13.7 (rounds to 14) | Table 23 value at the same ROW POSITION (קרית אתא) 17.0 (rounds to 17)
+  Table 25 label קרית חיים    printed 17 | Table 23 value of the SAME station 13.8 (rounds to 14) | Table 23 value at the same ROW POSITION (קרית ביאליק) 16.7 (rounds to 17)
+  Table 25 label קרית טבעון   printed 14 | Table 23 value of the SAME station 15.4 (rounds to 15) | Table 23 value at the same ROW POSITION (קרית בנימין) 13.7 (rounds to 14)
+  Table 25 label קרית מוצקין  printed 14 | Table 23 value of the SAME station 18.9 (rounds to 19) | Table 23 value at the same ROW POSITION (קרית חיים) 13.8 (rounds to 14)
+  Table 25 label קרית ים      printed 15 | Table 23 value of the SAME station 16.2 (rounds to 16) | Table 23 value at the same ROW POSITION (קרית טבעון) 15.4 (rounds to 15)
+</code></pre>
+<p>בטבלה 24 בדוח 2025, כל הערכים אחרי "נשר" זהים לערך בטבלה 22 <strong>במיקום השורה</strong> (לא באותה תחנה), כי שתי תחנות הוסרו מרשימת התוויות והערכים שלהן נשארו.</p>
+<h2>6א. אימות מול דוחות איגודים נוספים (PM2.5)</h2>
+<p>הדוחות נמצאו בחיפוש ידני (קובץ "היכן חיפשנו ומה לא נמצא") ונבדקו: הקבצים בתיקייה 01. ערכי הדוח הועתקו מהטבלאות בעמודים המצוינים בסעיף 2, והושוו לממוצע שעות תקפות ב-API (<code>validate_other_associations.py</code>). <strong>הערה:</strong> בקובץ החיפוש עמוד 56 (2023), 41 (2024) ו-37 (2025) של אשדוד מסומנים כ-PM10, אך בפועל הם טבלאות בנזן; לכן PM10 באשדוד לא אומת.</p>
+<p><strong>איגוד אשדוד-חבל יבנה, PM2.5 2023–2025</strong> (n=24, הפער הממוצע המוחלט 0.04, המרבי 0.13):</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>שנה</th>
+<th>תחנה</th>
+<th>מזהה</th>
+<th>דוח האיגוד</th>
+<th>API</th>
+<th>הפרש</th>
+<th>כיסוי API %</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2023</td>
+<td>שדרות ירושלים</td>
+<td>405</td>
+<td>16.4</td>
+<td>16.37</td>
+<td>-0.03</td>
+<td>98</td>
+</tr>
+<tr>
+<td>2023</td>
+<td>רובע ט"ו החדשה</td>
+<td>383</td>
+<td>15.6</td>
+<td>15.57</td>
+<td>-0.03</td>
+<td>96</td>
+</tr>
+<tr>
+<td>2023</td>
+<td>אזור תעשיה קלה</td>
+<td>115</td>
+<td>15.7</td>
+<td>15.70</td>
+<td>+0.00</td>
+<td>92</td>
+</tr>
+<tr>
+<td>2023</td>
+<td>פארק לכיש</td>
+<td>423</td>
+<td>18.0</td>
+<td>17.96</td>
+<td>-0.04</td>
+<td>97</td>
+</tr>
+<tr>
+<td>2023</td>
+<td>בני דרום</td>
+<td>365</td>
+<td>16.5</td>
+<td>16.55</td>
+<td>+0.05</td>
+<td>98</td>
+</tr>
+<tr>
+<td>2023</td>
+<td>גן יבנה</td>
+<td>116</td>
+<td>16.2</td>
+<td>16.17</td>
+<td>-0.03</td>
+<td>91</td>
+</tr>
+<tr>
+<td>2023</td>
+<td>אזור תעשייה צפוני</td>
+<td>535</td>
+<td>19.9</td>
+<td>19.85</td>
+<td>-0.05</td>
+<td>97</td>
+</tr>
+<tr>
+<td>2023</td>
+<td>יד בנימין</td>
+<td>122</td>
+<td>16.2</td>
+<td>16.20</td>
+<td>-0.00</td>
+<td>98</td>
+</tr>
+<tr>
+<td>2024</td>
+<td>שדרות ירושלים</td>
+<td>405</td>
+<td>15.5</td>
+<td>15.61</td>
+<td>+0.11</td>
+<td>94</td>
+</tr>
+<tr>
+<td>2024</td>
+<td>רובע ט"ו החדשה</td>
+<td>383</td>
+<td>14.6</td>
+<td>14.73</td>
+<td>+0.13</td>
+<td>93</td>
+</tr>
+<tr>
+<td>2024</td>
+<td>אזור תעשיה קלה</td>
+<td>115</td>
+<td>15.5</td>
+<td>15.51</td>
+<td>+0.01</td>
+<td>96</td>
+</tr>
+<tr>
+<td>2024</td>
+<td>פארק לכיש</td>
+<td>423</td>
+<td>16.4</td>
+<td>16.34</td>
+<td>-0.06</td>
+<td>95</td>
+</tr>
+<tr>
+<td>2024</td>
+<td>בני דרום</td>
+<td>365</td>
+<td>16.0</td>
+<td>16.01</td>
+<td>+0.01</td>
+<td>97</td>
+</tr>
+<tr>
+<td>2024</td>
+<td>גן יבנה</td>
+<td>116</td>
+<td>18.2</td>
+<td>18.15</td>
+<td>-0.05</td>
+<td>85</td>
+</tr>
+<tr>
+<td>2024</td>
+<td>אזור תעשייה צפוני</td>
+<td>535</td>
+<td>23.9</td>
+<td>23.90</td>
+<td>+0.00</td>
+<td>98</td>
+</tr>
+<tr>
+<td>2024</td>
+<td>יד בנימין</td>
+<td>122</td>
+<td>16.8</td>
+<td>16.79</td>
+<td>-0.01</td>
+<td>99</td>
+</tr>
+<tr>
+<td>2025</td>
+<td>שדרות ירושלים</td>
+<td>405</td>
+<td>16.8</td>
+<td>16.74</td>
+<td>-0.06</td>
+<td>96</td>
+</tr>
+<tr>
+<td>2025</td>
+<td>רובע ט"ו החדשה</td>
+<td>383</td>
+<td>14.6</td>
+<td>14.60</td>
+<td>-0.00</td>
+<td>92</td>
+</tr>
+<tr>
+<td>2025</td>
+<td>אזור תעשיה קלה</td>
+<td>115</td>
+<td>15.5</td>
+<td>15.54</td>
+<td>+0.04</td>
+<td>96</td>
+</tr>
+<tr>
+<td>2025</td>
+<td>פארק לכיש</td>
+<td>423</td>
+<td>16.4</td>
+<td>16.47</td>
+<td>+0.07</td>
+<td>98</td>
+</tr>
+<tr>
+<td>2025</td>
+<td>בני דרום</td>
+<td>365</td>
+<td>15.3</td>
+<td>15.28</td>
+<td>-0.02</td>
+<td>98</td>
+</tr>
+<tr>
+<td>2025</td>
+<td>גן יבנה</td>
+<td>116</td>
+<td>17.8</td>
+<td>17.82</td>
+<td>+0.02</td>
+<td>94</td>
+</tr>
+<tr>
+<td>2025</td>
+<td>אזור תעשייה צפוני</td>
+<td>535</td>
+<td>21.0</td>
+<td>21.02</td>
+<td>+0.02</td>
+<td>95</td>
+</tr>
+<tr>
+<td>2025</td>
+<td>יד בנימין</td>
+<td>122</td>
+<td>17.6</td>
+<td>17.57</td>
+<td>-0.03</td>
+<td>97</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>איגוד אשקלון, PM2.5 2024</strong> (n=10, הפער הממוצע המוחלט 0.05, המרבי 0.12). הוצאה תחנה שבה ל-API פחות מ-50% מהשעות: שדרות (מזהה 126, כיסוי API 4%).</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>שנה</th>
+<th>תחנה</th>
+<th>מזהה</th>
+<th>דוח האיגוד</th>
+<th>API</th>
+<th>הפרש</th>
+<th>כיסוי API %</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2024</td>
+<td>ארז</td>
+<td>131</td>
+<td>15.1</td>
+<td>15.10</td>
+<td>-0.03</td>
+<td>96</td>
+</tr>
+<tr>
+<td>2024</td>
+<td>אשקלון שמשון</td>
+<td>160</td>
+<td>14.7</td>
+<td>14.77</td>
+<td>+0.12</td>
+<td>96</td>
+</tr>
+<tr>
+<td>2024</td>
+<td>אשקלון גן הוורדים</td>
+<td>123</td>
+<td>15.5</td>
+<td>15.56</td>
+<td>+0.03</td>
+<td>98</td>
+</tr>
+<tr>
+<td>2024</td>
+<td>כפר מנחם הרחבה</td>
+<td>331</td>
+<td>14.6</td>
+<td>14.60</td>
+<td>+0.00</td>
+<td>98</td>
+</tr>
+<tr>
+<td>2024</td>
+<td>כרמיה</td>
+<td>130</td>
+<td>17.3</td>
+<td>17.31</td>
+<td>+0.02</td>
+<td>88</td>
+</tr>
+<tr>
+<td>2024</td>
+<td>מבקיעים</td>
+<td>306</td>
+<td>15.0</td>
+<td>14.84</td>
+<td>-0.12</td>
+<td>96</td>
+</tr>
+<tr>
+<td>2024</td>
+<td>ניר ישראל</td>
+<td>129</td>
+<td>15.3</td>
+<td>15.32</td>
+<td>+0.06</td>
+<td>51</td>
+</tr>
+<tr>
+<td>2024</td>
+<td>קריית גת</td>
+<td>124</td>
+<td>17.4</td>
+<td>17.35</td>
+<td>-0.02</td>
+<td>94</td>
+</tr>
+<tr>
+<td>2024</td>
+<td>קריית מלאכי</td>
+<td>125</td>
+<td>16.2</td>
+<td>16.18</td>
+<td>-0.04</td>
+<td>98</td>
+</tr>
+<tr>
+<td>2024</td>
+<td>שדה יואב</td>
+<td>128</td>
+<td>15.5</td>
+<td>15.60</td>
+<td>+0.10</td>
+<td>91</td>
+</tr>
+</tbody>
+</table></div>
+<h2>6ב. אימות NO2 ואוזון מול דוחות אשדוד ואשקלון</h2>
+<p>הערכים הועתקו מהטבלאות בדוחות (אשדוד: NO2 עמ' 53, 38, 34; אוזון עמ' 54, 39, 35; אשקלון 2024: אוזון טבלה 4 עמ' 35, NO2 טבלה 6 עמ' 37) והושוו ל-API (<code>validate_no2_o3_other_associations.py</code>, פלט <code>validate_no2_o3_other_associations_output.txt</code>). <strong>NO2:</strong> ממוצע API ב-ppb × 1.8804 מול הממוצע הרשמי (מק"ג/מ"ק). <strong>אוזון:</strong> גורם ההמרה אינו מפורסם, ולכן מחושב היחס הרשמי/API; יחס יציב בסביבות 1.96 (הגורם הפיזיקלי ב-25°C) פירושו התאמה.</p>
+<p><strong>תוצאות (תחנות עם כיסוי API של 85% לפחות):</strong> NO2 באשדוד 21 השוואות, פער ממוצע מוחלט 0.05 ומרבי 0.14; באשקלון 10 השוואות, 0.09 ו-0.17. אוזון: יחס הממוצע השנתי 1.952 (טווח 1.91–1.98, 17 השוואות); יחס המרבי השמונה-שעתי 1.81–1.96 (ה-API גבוה יותר מהרשמי בשיעור משתנה).</p>
+<p><strong>חריגים:</strong> תחנה 535 (אזור תעשייה צפוני, אשדוד 2025): ב-API כיסוי 63% וממוצע 25.7 מול 14.9 רשמי; תחנת שדרות (126): כיסוי API 4%; תחנה 365 (בני דרום) אינה בנתוני ה-API שנשלפו (הועברה לקבוצת יבנה מערב, 511, בפברואר 2025); תחנה 511 באוזון 2025: כיסוי API 67% וערך רשמי (31.2) שנראה כמספר ppb ולא מק"ג/מ"ק. הם הוצאו מהסטטיסטיקה ומוצגים בטבלאות.</p>
+<p><strong>הערה על יציבות האוזון:</strong> תחנת יד בנימין (122) הוצאה מדירוג האוזון הארצי בכלל היציבות (שונות פי יותר מ-2.5 בין שנים), אך נתוניה תואמים לדוחות האיגוד (ממוצע רשמי 52.9, 63.2, 69.5 ומרבי 132, 153, 182). הכלל מסמן שונות גבוהה, לא בהכרח טעות.</p>
+<p><strong>NO2:</strong></p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>איגוד</th>
+<th>שנה</th>
+<th>תחנה</th>
+<th>מזהה</th>
+<th>דוח האיגוד</th>
+<th>API</th>
+<th>הפרש</th>
+<th>כיסוי API %</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2023</td>
+<td>שדרות ירושלים</td>
+<td>405</td>
+<td>22.6</td>
+<td>22.46</td>
+<td>-0.14</td>
+<td>99</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2023</td>
+<td>רובע ט"ו החדשה</td>
+<td>383</td>
+<td>12.6</td>
+<td>12.71</td>
+<td>+0.11</td>
+<td>97</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2023</td>
+<td>אזור תעשיה קלה</td>
+<td>115</td>
+<td>17.5</td>
+<td>17.47</td>
+<td>-0.03</td>
+<td>98</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2023</td>
+<td>פארק לכיש</td>
+<td>423</td>
+<td>17.2</td>
+<td>17.27</td>
+<td>+0.07</td>
+<td>99</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2023</td>
+<td>בני דרום</td>
+<td>365</td>
+<td>14.7</td>
+<td></td>
+<td></td>
+<td>0</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2023</td>
+<td>גן יבנה</td>
+<td>116</td>
+<td>17.3</td>
+<td>17.32</td>
+<td>+0.02</td>
+<td>94</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2023</td>
+<td>קבוצת יבנה מערב</td>
+<td>511</td>
+<td>13.5</td>
+<td>13.45</td>
+<td>-0.05</td>
+<td>99</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2023</td>
+<td>יד בנימין</td>
+<td>122</td>
+<td>12.9</td>
+<td>12.90</td>
+<td>-0.00</td>
+<td>99</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2024</td>
+<td>שדרות ירושלים</td>
+<td>405</td>
+<td>19.6</td>
+<td>19.62</td>
+<td>+0.02</td>
+<td>96</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2024</td>
+<td>רובע ט"ו החדשה</td>
+<td>383</td>
+<td>13.1</td>
+<td>13.19</td>
+<td>+0.09</td>
+<td>95</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2024</td>
+<td>אזור תעשיה קלה</td>
+<td>115</td>
+<td>16.9</td>
+<td>16.90</td>
+<td>-0.00</td>
+<td>98</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2024</td>
+<td>פארק לכיש</td>
+<td>423</td>
+<td>15.7</td>
+<td>15.77</td>
+<td>+0.07</td>
+<td>96</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2024</td>
+<td>בני דרום</td>
+<td>365</td>
+<td>13.0</td>
+<td></td>
+<td></td>
+<td>0</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2024</td>
+<td>גן יבנה</td>
+<td>116</td>
+<td>14.5</td>
+<td>14.54</td>
+<td>+0.04</td>
+<td>86</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2024</td>
+<td>קבוצת יבנה מערב</td>
+<td>511</td>
+<td>12.0</td>
+<td>11.98</td>
+<td>-0.02</td>
+<td>96</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2024</td>
+<td>יד בנימין</td>
+<td>122</td>
+<td>12.6</td>
+<td>12.57</td>
+<td>-0.03</td>
+<td>99</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2025</td>
+<td>שדרות ירושלים</td>
+<td>405</td>
+<td>19.3</td>
+<td>19.34</td>
+<td>+0.04</td>
+<td>99</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2025</td>
+<td>רובע ט"ו החדשה</td>
+<td>383</td>
+<td>14.0</td>
+<td>14.03</td>
+<td>+0.03</td>
+<td>95</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2025</td>
+<td>אזור תעשייה צפוני</td>
+<td>535</td>
+<td>14.9</td>
+<td>25.72</td>
+<td>+10.82</td>
+<td>63</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2025</td>
+<td>אזור תעשיה קלה</td>
+<td>115</td>
+<td>19.5</td>
+<td>19.54</td>
+<td>+0.04</td>
+<td>97</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2025</td>
+<td>פארק לכיש</td>
+<td>423</td>
+<td>16.1</td>
+<td>16.14</td>
+<td>+0.04</td>
+<td>97</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2025</td>
+<td>גן יבנה</td>
+<td>116</td>
+<td>15.8</td>
+<td>15.84</td>
+<td>+0.04</td>
+<td>97</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2025</td>
+<td>קבוצת יבנה מערב</td>
+<td>511</td>
+<td>14.3</td>
+<td>14.35</td>
+<td>+0.05</td>
+<td>99</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2025</td>
+<td>יד בנימין</td>
+<td>122</td>
+<td>14.7</td>
+<td>14.74</td>
+<td>+0.04</td>
+<td>97</td>
+</tr>
+<tr>
+<td>איגוד אשקלון</td>
+<td>2024</td>
+<td>ארז</td>
+<td>131</td>
+<td>7.9</td>
+<td>8.00</td>
+<td>+0.10</td>
+<td>95</td>
+</tr>
+<tr>
+<td>איגוד אשקלון</td>
+<td>2024</td>
+<td>אשקלון שמשון</td>
+<td>160</td>
+<td>8.2</td>
+<td>8.18</td>
+<td>-0.02</td>
+<td>97</td>
+</tr>
+<tr>
+<td>איגוד אשקלון</td>
+<td>2024</td>
+<td>אשקלון גן הוורדים</td>
+<td>123</td>
+<td>11.9</td>
+<td>12.05</td>
+<td>+0.15</td>
+<td>94</td>
+</tr>
+<tr>
+<td>איגוד אשקלון</td>
+<td>2024</td>
+<td>גברעם</td>
+<td>127</td>
+<td>5.9</td>
+<td>6.00</td>
+<td>+0.10</td>
+<td>88</td>
+</tr>
+<tr>
+<td>איגוד אשקלון</td>
+<td>2024</td>
+<td>כפר מנחם הרחבה</td>
+<td>331</td>
+<td>6.3</td>
+<td>6.33</td>
+<td>+0.03</td>
+<td>94</td>
+</tr>
+<tr>
+<td>איגוד אשקלון</td>
+<td>2024</td>
+<td>כרמיה</td>
+<td>130</td>
+<td>13.2</td>
+<td>13.19</td>
+<td>-0.01</td>
+<td>92</td>
+</tr>
+<tr>
+<td>איגוד אשקלון</td>
+<td>2024</td>
+<td>מבקיעים</td>
+<td>306</td>
+<td>8.3</td>
+<td>8.35</td>
+<td>+0.05</td>
+<td>91</td>
+</tr>
+<tr>
+<td>איגוד אשקלון</td>
+<td>2024</td>
+<td>ניר ישראל</td>
+<td>129</td>
+<td>6.9</td>
+<td>6.92</td>
+<td>+0.02</td>
+<td>51</td>
+</tr>
+<tr>
+<td>איגוד אשקלון</td>
+<td>2024</td>
+<td>קריית גת</td>
+<td>124</td>
+<td>11.2</td>
+<td>11.37</td>
+<td>+0.17</td>
+<td>97</td>
+</tr>
+<tr>
+<td>איגוד אשקלון</td>
+<td>2024</td>
+<td>קריית מלאכי</td>
+<td>125</td>
+<td>12.1</td>
+<td>12.26</td>
+<td>+0.16</td>
+<td>99</td>
+</tr>
+<tr>
+<td>איגוד אשקלון</td>
+<td>2024</td>
+<td>שדה יואב</td>
+<td>128</td>
+<td>7.1</td>
+<td>7.20</td>
+<td>+0.10</td>
+<td>93</td>
+</tr>
+<tr>
+<td>איגוד אשקלון</td>
+<td>2024</td>
+<td>שדרות</td>
+<td>126</td>
+<td>9.1</td>
+<td>12.13</td>
+<td>+3.03</td>
+<td>4</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>אוזון:</strong></p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>איגוד</th>
+<th>שנה</th>
+<th>תחנה</th>
+<th>מזהה</th>
+<th>ממוצע רשמי (מק"ג/מ"ק)</th>
+<th>ממוצע API (ppb)</th>
+<th>יחס</th>
+<th>מרבי 8 שעות רשמי</th>
+<th>מרבי 8 שעות API (ppb)</th>
+<th>יחס</th>
+<th>כיסוי API %</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2023</td>
+<td>רובע ט"ו החדשה</td>
+<td>383</td>
+<td>65.4</td>
+<td>33.17</td>
+<td>1.971</td>
+<td>128.7</td>
+<td>69.67</td>
+<td>1.847</td>
+<td>95</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2023</td>
+<td>אזור תעשיה קלה</td>
+<td>115</td>
+<td>58.1</td>
+<td>29.38</td>
+<td>1.978</td>
+<td>137.9</td>
+<td>71.36</td>
+<td>1.932</td>
+<td>97</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2023</td>
+<td>בני דרום</td>
+<td>365</td>
+<td>57.0</td>
+<td></td>
+<td></td>
+<td>127.5</td>
+<td></td>
+<td></td>
+<td>0</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2023</td>
+<td>יד בנימין</td>
+<td>122</td>
+<td>52.9</td>
+<td>26.80</td>
+<td>1.974</td>
+<td>132.3</td>
+<td>71.79</td>
+<td>1.843</td>
+<td>99</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2024</td>
+<td>רובע ט"ו החדשה</td>
+<td>383</td>
+<td>68.4</td>
+<td>34.67</td>
+<td>1.973</td>
+<td>129.1</td>
+<td>67.16</td>
+<td>1.922</td>
+<td>95</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2024</td>
+<td>אזור תעשיה קלה</td>
+<td>115</td>
+<td>63.1</td>
+<td>31.87</td>
+<td>1.980</td>
+<td>125.6</td>
+<td>69.47</td>
+<td>1.808</td>
+<td>97</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2024</td>
+<td>בני דרום</td>
+<td>365</td>
+<td>54.6</td>
+<td></td>
+<td></td>
+<td>118.8</td>
+<td></td>
+<td></td>
+<td>0</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2024</td>
+<td>יד בנימין</td>
+<td>122</td>
+<td>63.2</td>
+<td>32.04</td>
+<td>1.973</td>
+<td>153.1</td>
+<td>78.10</td>
+<td>1.960</td>
+<td>91</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2025</td>
+<td>רובע ט"ו החדשה</td>
+<td>383</td>
+<td>74.4</td>
+<td>38.06</td>
+<td>1.955</td>
+<td>164.0</td>
+<td>86.52</td>
+<td>1.896</td>
+<td>94</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2025</td>
+<td>אזור תעשיה קלה</td>
+<td>115</td>
+<td>61.9</td>
+<td>31.58</td>
+<td>1.960</td>
+<td>166.0</td>
+<td>84.71</td>
+<td>1.960</td>
+<td>97</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2025</td>
+<td>קבוצת יבנה מערב</td>
+<td>511</td>
+<td>31.2</td>
+<td>31.62</td>
+<td>0.987</td>
+<td>74.2</td>
+<td>76.94</td>
+<td>0.964</td>
+<td>67</td>
+</tr>
+<tr>
+<td>איגוד אשדוד-חבל יבנה</td>
+<td>2025</td>
+<td>יד בנימין</td>
+<td>122</td>
+<td>69.5</td>
+<td>35.46</td>
+<td>1.960</td>
+<td>182.4</td>
+<td>93.04</td>
+<td>1.960</td>
+<td>97</td>
+</tr>
+<tr>
+<td>איגוד אשקלון</td>
+<td>2024</td>
+<td>ארז</td>
+<td>131</td>
+<td>65.1</td>
+<td>33.52</td>
+<td>1.942</td>
+<td>142.4</td>
+<td>78.20</td>
+<td>1.821</td>
+<td>99</td>
+</tr>
+<tr>
+<td>איגוד אשקלון</td>
+<td>2024</td>
+<td>אשקלון שמשון</td>
+<td>160</td>
+<td>79.7</td>
+<td>41.14</td>
+<td>1.938</td>
+<td>153.2</td>
+<td>78.16</td>
+<td>1.960</td>
+<td>94</td>
+</tr>
+<tr>
+<td>איגוד אשקלון</td>
+<td>2024</td>
+<td>אשקלון גן הוורדים</td>
+<td>123</td>
+<td>73.0</td>
+<td>38.17</td>
+<td>1.912</td>
+<td>159.4</td>
+<td>82.22</td>
+<td>1.939</td>
+<td>88</td>
+</tr>
+<tr>
+<td>איגוד אשקלון</td>
+<td>2024</td>
+<td>גברעם</td>
+<td>127</td>
+<td>77.5</td>
+<td>40.47</td>
+<td>1.915</td>
+<td>160.8</td>
+<td>82.86</td>
+<td>1.941</td>
+<td>93</td>
+</tr>
+<tr>
+<td>איגוד אשקלון</td>
+<td>2024</td>
+<td>כרמיה</td>
+<td>130</td>
+<td>59.4</td>
+<td>30.34</td>
+<td>1.958</td>
+<td>132.8</td>
+<td>71.83</td>
+<td>1.849</td>
+<td>93</td>
+</tr>
+<tr>
+<td>איגוד אשקלון</td>
+<td>2024</td>
+<td>מבקיעים</td>
+<td>306</td>
+<td>69.3</td>
+<td>36.01</td>
+<td>1.924</td>
+<td>134.2</td>
+<td>71.33</td>
+<td>1.881</td>
+<td>92</td>
+</tr>
+<tr>
+<td>איגוד אשקלון</td>
+<td>2024</td>
+<td>קריית גת</td>
+<td>124</td>
+<td>74.0</td>
+<td>38.11</td>
+<td>1.942</td>
+<td>152.6</td>
+<td>78.71</td>
+<td>1.939</td>
+<td>98</td>
+</tr>
+<tr>
+<td>איגוד אשקלון</td>
+<td>2024</td>
+<td>קריית מלאכי</td>
+<td>125</td>
+<td>68.1</td>
+<td>35.18</td>
+<td>1.936</td>
+<td>132.0</td>
+<td>70.99</td>
+<td>1.859</td>
+<td>95</td>
+</tr>
+<tr>
+<td>איגוד אשקלון</td>
+<td>2024</td>
+<td>שדרות</td>
+<td>126</td>
+<td>81.6</td>
+<td>32.56</td>
+<td>2.506</td>
+<td>157.6</td>
+<td>57.16</td>
+<td>2.757</td>
+<td>4</td>
+</tr>
+</tbody>
+</table></div>
+<h2>7. בדיקות ביקורת עצמאיות</h2>
+<p><strong>חישוב מחדש בקוד נפרד (<code>audit_recompute.py</code>):</strong></p>
+<pre><code>audit: ozone-unstable stations excluded: [7, 11, 122, 472, 539] | implausible PM2.5 station-years set to NaN: 1
+station-years recomputed: 415 | in pipeline file: 415
+pm25         compared  262 | max abs diff 0.0000 | diffs above tol 0 | only audit has value 0 | only pipeline has value 0
+pm10         compared  133 | max abs diff 0.0000 | diffs above tol 0 | only audit has value 0 | only pipeline has value 0
+no2          compared  342 | max abs diff 0.0000 | diffs above tol 0 | only audit has value 0 | only pipeline has value 0
+o3_days51    compared  194 | max abs diff 0.0000 | diffs above tol 0 | only audit has value 0 | only pipeline has value 0
+o3_jja       compared  194 | max abs diff 0.0000 | diffs above tol 0 | only audit has value 0 | only pipeline has value 0
+pm25_days15  compared  262 | max abs diff 0.0000 | diffs above tol 0 | only audit has value 0 | only pipeline has value 0
+
+sanity: station-years with negative valid hourly values: {'NO2': 87, 'O3': 17, 'PM10': 102, 'PM2.5': 239} | total negative hours by channel: {'NO2': 8831, 'O3': 66, 'PM10': 2008, 'PM2.5': 19555} | values above 1000: 349
+ id  year    ch  negatives  above1000
+472  2024   NO2       1710          0
+453  2024   NO2        961          0
+551  2025   NO2        930          0
+183  2025   NO2        511          0
+160  2025   NO2        500          0
+128  2025 PM2.5        433          0
+ 21  2024 PM2.5        425          0
+472  2023   NO2        423          0
+453  2025   NO2        362          0
+499  2023   NO2        352          0
+
+Tivon recomputed by year:
+          pm25_cov   pm25   pm10   no2  o3_cov  o3_days51  o3_jja  pm25_days15
+id  year                                                                      
+137 2023     98.80  15.35  27.84  6.82   95.30     117.29   51.02        45.28
+    2024     97.48  14.19  28.77  8.58   95.55     107.00   51.53        32.96
+    2025     98.81  14.58  29.62  9.44   95.57     162.89   55.16        37.29
+</code></pre>
+<p><strong>רגישות לערכים שליליים וקיצוניים (<code>audit_sensitivity</code>):</strong></p>
+<pre><code>hours above 1000 by channel: {'NO2': 0, 'PM10': 346, 'PM2.5': 3} | channels with such values: {'PM10': 77, 'PM2.5': 2}
+stations/years with max&gt;1000 PM2.5 or NO2:
+ id  year    ch  n_gt1000     max
+306  2023 PM2.5         1 1174.45
+607  2025 PM2.5         2 1083.69
+(stations with at least two valid years, as in the report)
+PM2.5 | base: Tivon 14.71 rank 67 of 88 median 16.17 | noneg: Tivon 14.83 rank 68 of 88 median 16.36 | zero: Tivon 14.72 rank 69 of 88 median 16.22 | nohi: Tivon 14.71 rank 67 of 88 median 16.17
+NO2 | base: Tivon 8.28 rank 91 of 113 median 12.61 | noneg: Tivon 8.28 rank 91 of 113 median 12.71 | zero: Tivon 8.28 rank 91 of 113 median 12.64 | nohi: Tivon 8.28 rank 91 of 113 median 12.61
+PM10 | base: Tivon 28.74 rank 41 of 45 median 40.85 | noneg: Tivon 28.76 rank 41 of 45 median 41.05 | zero: Tivon 28.74 rank 41 of 45 median 40.95 | nohi: Tivon 28.74 rank 41 of 45 median 39.69
+</code></pre>
+<p><strong>רגישות לסיווג ולהשמטת אזורים (<code>classification_sensitivity.py</code>):</strong></p>
+<pre><code>baseline (all stations): {'PM2.5': '23% lower, median 16.2, n=87', 'PM2.5 בלי אבק': '37% lower, median 14.6, n=87', 'אוזון ימים': '18% lower, median 176.7, n=65', 'NO2': '19% lower, median 12.6, n=113', 'PM10': '9% lower, median 40.9, n=45'}
+רקע בלבד (בסיס)                                  {'PM2.5': '22%/15.8', 'PM2.5 בלי אבק': '40%/14.2', 'אוזון ימים': '15%/186.1', 'NO2': '23%/11.5', 'PM10': '11%/36.4'}
+רקע בלי תחנות רשות שדות התעופה (371, 357)        {'PM2.5': '23%/15.7', 'PM2.5 בלי אבק': '42%/14.2', 'אוזון ימים': '15%/176.7', 'NO2': '24%/11.5', 'PM10': '11%/36.4'}
+רקע בלי תחנות חברת חשמל                          {'PM2.5': '21%/15.7', 'PM2.5 בלי אבק': '40%/14.2', 'אוזון ימים': '12%/187.0', 'NO2': '21%/12.1', 'PM10': '12%/36.0'}
+רקע בלי הנגב והערבה                              {'PM2.5': '22%/15.9', 'PM2.5 בלי אבק': '38%/14.2', 'אוזון ימים': '16%/176.7', 'NO2': '20%/11.7', 'PM10': '12%/36.0'}
+כל התחנות, בלי תחנות תחבורה                      {'PM2.5': '26%/15.8', 'PM2.5 בלי אבק': '41%/14.2', 'אוזון ימים': '18%/176.7', 'NO2': '23%/11.6', 'PM10': '9%/40.9'}
+
+jackknife over regions (drop one region at a time; % of remaining stations lower than Tivon):
+  PM2.5          range 18% - 29% (full sample 23%)
+  PM2.5 בלי אבק  range 35% - 43% (full sample 37%)
+  אוזון ימים     range 15% - 20% (full sample 18%)
+  NO2            range 16% - 24% (full sample 19%)
+  PM10           range 3% - 12% (full sample 9%)
+</code></pre>
+<h2>8. מגבלות ידועות</h2>
+<ul>
+<li>נתוני API גולמיים. אומתו מול דוחות: איגוד חיפה (PM2.5 2023 ו-2025; PM10 2023–2024), אשדוד (PM2.5 2023–2025) ואשקלון (PM2.5 2024). לא אומתו: שרון-כרמל, ירושלים ותחנות המשרד להגנת הסביבה, חברת החשמל, הנגב והצפון; וכן NO2 ואוזון מול דוחות.</li>
+<li>שלוש שנים; 2025 שנת אוזון גבוהה בטבעון.</li>
+<li>סיווג התחנות והאזורים היוריסטי, ומרחק מהחוף מקורב.</li>
+<li>כלל ימי האבק פשוט, ואינו זהה לכלל של האיגוד.</li>
+<li>השוואה בין תחנות, לא חשיפת תושבים. תחנת טבעון על גג ברכס (201 מ').</li>
+<li>ערכים שליליים ב-PM2.5 ו-NO2 נשארו (נבדקה רגישות). תחנות עם נתונים עד 25% חסרים נכללות.</li>
+<li>אין תחנה בטבריה.</li>
+</ul>
+<h2>9. נתוני תחנות</h2>
+<h3>9.1 מטא-דאטה, סיווג ואזור (כל התחנות ברשימה, גם אלה שלא עברו בקרת איכות)</h3>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>מזהה</th>
+<th>תחנה</th>
+<th>יישוב</th>
+<th>בעלים</th>
+<th>סוג</th>
+<th>אזור</th>
+<th>גובה (מ')</th>
+<th>מרחק מחוף (ק"מ)</th>
+<th>קו רוחב</th>
+<th>קו אורך</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>עפולה</td>
+<td>עפולה</td>
+<td>המשרד להגנת הסביבה</td>
+<td>רקע עירוני/כללי</td>
+<td>עמקים וגליל (עפולה, בית שאן, כרמיאל)</td>
+<td>57</td>
+<td>35</td>
+<td>32.6037</td>
+<td>35.2918</td>
+</tr>
+<tr>
+<td>2</td>
+<td>רחוב לחי</td>
+<td>תל אביב-יפו</td>
+<td>המשרד להגנת הסביבה</td>
+<td>תחבורה</td>
+<td>תל אביב וגוש דן</td>
+<td>20</td>
+<td>4</td>
+<td>32.0474</td>
+<td>34.7934</td>
+</tr>
+<tr>
+<td>3</td>
+<td>אריאל</td>
+<td>אריאל</td>
+<td>המשרד להגנת הסביבה</td>
+<td>רקע עירוני/כללי</td>
+<td>שפלה ומודיעין (רחובות, מודיעין, בית שמש)</td>
+<td>546</td>
+<td>38</td>
+<td>32.1038</td>
+<td>35.1693</td>
+</tr>
+<tr>
+<td>5</td>
+<td>רחוב בר אילן</td>
+<td>ירושלים</td>
+<td>המשרד להגנת הסביבה</td>
+<td>תחבורה</td>
+<td>ירושלים</td>
+<td>770</td>
+<td>55</td>
+<td>31.7950</td>
+<td>35.2204</td>
+</tr>
+<tr>
+<td>6</td>
+<td>שכונה ו</td>
+<td>באר שבע</td>
+<td>המשרד להגנת הסביבה</td>
+<td>רקע עירוני/כללי</td>
+<td>נגב וערבה (באר שבע, ערד, אילת)</td>
+<td>297</td>
+<td>30</td>
+<td>31.2572</td>
+<td>34.7821</td>
+</tr>
+<tr>
+<td>7</td>
+<td>בית שמש</td>
+<td>בית שמש</td>
+<td>המשרד להגנת הסביבה</td>
+<td>רקע עירוני/כללי</td>
+<td>שפלה ומודיעין (רחובות, מודיעין, בית שמש)</td>
+<td>305</td>
+<td>37</td>
+<td>31.7506</td>
+<td>34.9938</td>
+</tr>
+<tr>
+<td>11</td>
+<td>גליל מערבי</td>
+<td>כרמיאל</td>
+<td>המשרד להגנת הסביבה</td>
+<td>רקע עירוני/כללי</td>
+<td>עמקים וגליל (עפולה, בית שאן, כרמיאל)</td>
+<td>351</td>
+<td>21</td>
+<td>32.9159</td>
+<td>35.2943</td>
+</tr>
+<tr>
+<td>13</td>
+<td>בקעה</td>
+<td>ירושלים</td>
+<td>המשרד להגנת הסביבה</td>
+<td>רקע עירוני/כללי</td>
+<td>ירושלים</td>
+<td>749</td>
+<td>58</td>
+<td>31.7572</td>
+<td>35.2183</td>
+</tr>
+<tr>
+<td>21</td>
+<td>גוש עציון</td>
+<td>אלון שבות</td>
+<td>המשרד להגנת הסביבה</td>
+<td>רקע עירוני/כללי</td>
+<td>שפלה ומודיעין (רחובות, מודיעין, בית שמש)</td>
+<td>987</td>
+<td>54</td>
+<td>31.6568</td>
+<td>35.1184</td>
+</tr>
+<tr>
+<td>24</td>
+<td>חולון</td>
+<td>חולון</td>
+<td>המשרד להגנת הסביבה</td>
+<td>רקע עירוני/כללי</td>
+<td>תל אביב וגוש דן</td>
+<td>24</td>
+<td>3</td>
+<td>32.0182</td>
+<td>34.7689</td>
+</tr>
+<tr>
+<td>26</td>
+<td>רחוב יהודה המכבי</td>
+<td>תל אביב-יפו</td>
+<td>המשרד להגנת הסביבה</td>
+<td>תחבורה</td>
+<td>תל אביב וגוש דן</td>
+<td>12</td>
+<td>2</td>
+<td>32.0938</td>
+<td>34.7909</td>
+</tr>
+<tr>
+<td>32</td>
+<td>רחובות</td>
+<td>רחובות</td>
+<td>המשרד להגנת הסביבה</td>
+<td>רקע עירוני/כללי</td>
+<td>שפלה ומודיעין (רחובות, מודיעין, בית שמש)</td>
+<td>70</td>
+<td>13</td>
+<td>31.8995</td>
+<td>34.8164</td>
+</tr>
+<tr>
+<td>33</td>
+<td>רחוב ז'בוטינסקי</td>
+<td>בני ברק</td>
+<td>המשרד להגנת הסביבה</td>
+<td>תחבורה</td>
+<td>תל אביב וגוש דן</td>
+<td>107</td>
+<td>6</td>
+<td>32.0922</td>
+<td>34.8269</td>
+</tr>
+<tr>
+<td>34</td>
+<td>כביש 4</td>
+<td>בני ברק</td>
+<td>המשרד להגנת הסביבה</td>
+<td>תחבורה</td>
+<td>תל אביב וגוש דן</td>
+<td>50</td>
+<td>8</td>
+<td>32.0712</td>
+<td>34.8422</td>
+</tr>
+<tr>
+<td>36</td>
+<td>כיכר ספרא</td>
+<td>ירושלים</td>
+<td>המשרד להגנת הסביבה</td>
+<td>רקע עירוני/כללי</td>
+<td>ירושלים</td>
+<td>797</td>
+<td>57</td>
+<td>31.7805</td>
+<td>35.2247</td>
+</tr>
+<tr>
+<td>39</td>
+<td>אוניברסיטה</td>
+<td>תל אביב-יפו</td>
+<td>המשרד להגנת הסביבה</td>
+<td>רקע עירוני/כללי</td>
+<td>תל אביב וגוש דן</td>
+<td>39</td>
+<td>3</td>
+<td>32.1194</td>
+<td>34.8050</td>
+</tr>
+<tr>
+<td>53</td>
+<td>רחוב גיסין</td>
+<td>פתח תקווה</td>
+<td>המשרד להגנת הסביבה</td>
+<td>תחבורה</td>
+<td>תל אביב וגוש דן</td>
+<td>28</td>
+<td>10</td>
+<td>32.0999</td>
+<td>34.8712</td>
+</tr>
+<tr>
+<td>56</td>
+<td>מכבי אש</td>
+<td>רמת גן</td>
+<td>חברת חשמל</td>
+<td>רקע עירוני/כללי</td>
+<td>תל אביב וגוש דן</td>
+<td>50</td>
+<td>7</td>
+<td>32.0680</td>
+<td>34.8329</td>
+</tr>
+<tr>
+<td>59</td>
+<td>הצפון החדש</td>
+<td>תל אביב-יפו</td>
+<td>חברת חשמל</td>
+<td>רקע עירוני/כללי</td>
+<td>תל אביב וגוש דן</td>
+<td>19</td>
+<td>2</td>
+<td>32.0843</td>
+<td>34.7826</td>
+</tr>
+<tr>
+<td>61</td>
+<td>ניר גלים 1</td>
+<td>ניר גלים</td>
+<td>ת"כ דליה אנרגיה</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>27</td>
+<td>3</td>
+<td>31.8250</td>
+<td>34.6799</td>
+</tr>
+<tr>
+<td>63</td>
+<td>גן דרום</td>
+<td>גן דרום</td>
+<td>ת"כ דליה אנרגיה</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>45</td>
+<td>6</td>
+<td>31.8057</td>
+<td>34.7012</td>
+</tr>
+<tr>
+<td>64</td>
+<td>מודיעין</td>
+<td>מודיעין</td>
+<td>חברת חשמל</td>
+<td>רקע עירוני/כללי</td>
+<td>שפלה ומודיעין (רחובות, מודיעין, בית שמש)</td>
+<td>262</td>
+<td>30</td>
+<td>31.8930</td>
+<td>34.9953</td>
+</tr>
+<tr>
+<td>65</td>
+<td>יבנה</td>
+<td>יבנה</td>
+<td>ת"כ דליה אנרגיה</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>שפלה ומודיעין (רחובות, מודיעין, בית שמש)</td>
+<td>38</td>
+<td>6</td>
+<td>31.8751</td>
+<td>34.7386</td>
+</tr>
+<tr>
+<td>69</td>
+<td>פארק הכרמל</td>
+<td>חיפה</td>
+<td>חברת חשמל</td>
+<td>רקע עירוני/כללי</td>
+<td>חיפה והקריות</td>
+<td>527</td>
+<td>7</td>
+<td>32.7370</td>
+<td>35.0355</td>
+</tr>
+<tr>
+<td>71</td>
+<td>כפר מנחם</td>
+<td>כפר מנחם</td>
+<td>חברת חשמל</td>
+<td>רקע עירוני/כללי</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>119</td>
+<td>23</td>
+<td>31.7291</td>
+<td>34.8335</td>
+</tr>
+<tr>
+<td>73</td>
+<td>דחי</td>
+<td>גבעת המורה</td>
+<td>תחנת הכוח MRC(אלון תבור)</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>עמקים וגליל (עפולה, בית שאן, כרמיאל)</td>
+<td>495</td>
+<td>41</td>
+<td>32.6196</td>
+<td>35.3549</td>
+</tr>
+<tr>
+<td>76</td>
+<td>כרמי יוסף</td>
+<td>כרמי יוסף</td>
+<td>חברת חשמל</td>
+<td>רקע עירוני/כללי</td>
+<td>שפלה ומודיעין (רחובות, מודיעין, בית שמש)</td>
+<td>260</td>
+<td>25</td>
+<td>31.8466</td>
+<td>34.9195</td>
+</tr>
+<tr>
+<td>78</td>
+<td>אחיסמך</td>
+<td>אחיסמך</td>
+<td>חברת חשמל</td>
+<td>רקע עירוני/כללי</td>
+<td>שפלה ומודיעין (רחובות, מודיעין, בית שמש)</td>
+<td>108</td>
+<td>20</td>
+<td>31.9350</td>
+<td>34.9087</td>
+</tr>
+<tr>
+<td>80</td>
+<td>מרכז הכרמל</td>
+<td>חיפה</td>
+<td>חברת חשמל</td>
+<td>רקע עירוני/כללי</td>
+<td>חיפה והקריות</td>
+<td>274</td>
+<td>0</td>
+<td>32.8012</td>
+<td>34.9914</td>
+</tr>
+<tr>
+<td>81</td>
+<td>בת הדר</td>
+<td>בת הדר</td>
+<td>חברת חשמל</td>
+<td>רקע עירוני/כללי</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>59</td>
+<td>5</td>
+<td>31.6477</td>
+<td>34.5973</td>
+</tr>
+<tr>
+<td>82</td>
+<td>לב תל אביב</td>
+<td>תל אביב-יפו</td>
+<td>חברת חשמל</td>
+<td>רקע עירוני/כללי</td>
+<td>תל אביב וגוש דן</td>
+<td>28</td>
+<td>2</td>
+<td>32.0622</td>
+<td>34.7773</td>
+</tr>
+<tr>
+<td>84</td>
+<td>תחנת הכוח אורות רבין</td>
+<td>חדרה</td>
+<td>חברת חשמל</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>שרון וכרמל (חדרה, קיסריה)</td>
+<td>15</td>
+<td>0</td>
+<td>32.4671</td>
+<td>34.8859</td>
+</tr>
+<tr>
+<td>85</td>
+<td>לוזית</td>
+<td>לוזית</td>
+<td>חברת חשמל</td>
+<td>רקע עירוני/כללי</td>
+<td>שפלה ומודיעין (רחובות, מודיעין, בית שמש)</td>
+<td>189</td>
+<td>30</td>
+<td>31.6851</td>
+<td>34.8826</td>
+</tr>
+<tr>
+<td>86</td>
+<td>נווה שאנן</td>
+<td>חיפה</td>
+<td>איגוד ערים חיפה</td>
+<td>רקע עירוני/כללי</td>
+<td>חיפה והקריות</td>
+<td>235</td>
+<td>3</td>
+<td>32.7875</td>
+<td>35.0214</td>
+</tr>
+<tr>
+<td>87</td>
+<td>נשר</td>
+<td>נשר</td>
+<td>איגוד ערים חיפה</td>
+<td>רקע עירוני/כללי</td>
+<td>חיפה והקריות</td>
+<td>96</td>
+<td>6</td>
+<td>32.7703</td>
+<td>35.0426</td>
+</tr>
+<tr>
+<td>88</td>
+<td>מרכז העיר</td>
+<td>קריית אתא</td>
+<td>איגוד ערים חיפה</td>
+<td>רקע עירוני/כללי</td>
+<td>חיפה והקריות</td>
+<td>44</td>
+<td>11</td>
+<td>32.8119</td>
+<td>35.1131</td>
+</tr>
+<tr>
+<td>90</td>
+<td>אינשטיין</td>
+<td>חיפה</td>
+<td>חברת חשמל</td>
+<td>רקע עירוני/כללי</td>
+<td>חיפה והקריות</td>
+<td>391</td>
+<td>2</td>
+<td>32.7779</td>
+<td>35.0007</td>
+</tr>
+<tr>
+<td>92</td>
+<td>קריית ים</td>
+<td>קריית ים</td>
+<td>איגוד ערים חיפה</td>
+<td>רקע עירוני/כללי</td>
+<td>חיפה והקריות</td>
+<td>21</td>
+<td>5</td>
+<td>32.8522</td>
+<td>35.0796</td>
+</tr>
+<tr>
+<td>93</td>
+<td>קריית שפרינצק</td>
+<td>חיפה</td>
+<td>איגוד ערים חיפה</td>
+<td>רקע עירוני/כללי</td>
+<td>חיפה והקריות</td>
+<td>122</td>
+<td>0</td>
+<td>32.8230</td>
+<td>34.9658</td>
+</tr>
+<tr>
+<td>96</td>
+<td>צ'ק פוסט</td>
+<td>חיפה</td>
+<td>איגוד ערים חיפה</td>
+<td>רקע עירוני/כללי</td>
+<td>חיפה והקריות</td>
+<td>5</td>
+<td>5</td>
+<td>32.7893</td>
+<td>35.0407</td>
+</tr>
+<tr>
+<td>97</td>
+<td>קריית בנימין</td>
+<td>קריית אתא</td>
+<td>איגוד ערים חיפה</td>
+<td>רקע עירוני/כללי</td>
+<td>חיפה והקריות</td>
+<td>27</td>
+<td>9</td>
+<td>32.7882</td>
+<td>35.0859</td>
+</tr>
+<tr>
+<td>98</td>
+<td>כפר חסידים</td>
+<td>כפר חסידים</td>
+<td>איגוד ערים חיפה</td>
+<td>רקע עירוני/כללי</td>
+<td>חיפה והקריות</td>
+<td>20</td>
+<td>12</td>
+<td>32.7431</td>
+<td>35.0952</td>
+</tr>
+<tr>
+<td>100</td>
+<td>אזור התעשייה</td>
+<td>חדרה</td>
+<td>איגוד ערים שרון-כרמל</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>שרון וכרמל (חדרה, קיסריה)</td>
+<td>99</td>
+<td>3</td>
+<td>32.4476</td>
+<td>34.9141</td>
+</tr>
+<tr>
+<td>102</td>
+<td>אליקים</td>
+<td>אליקים</td>
+<td>איגוד ערים שרון-כרמל</td>
+<td>רקע עירוני/כללי</td>
+<td>שרון וכרמל (חדרה, קיסריה)</td>
+<td>248</td>
+<td>13</td>
+<td>32.6326</td>
+<td>35.0661</td>
+</tr>
+<tr>
+<td>104</td>
+<td>פרדס חנה</td>
+<td>פרדס חנה</td>
+<td>איגוד ערים שרון-כרמל</td>
+<td>רקע עירוני/כללי</td>
+<td>שרון וכרמל (חדרה, קיסריה)</td>
+<td>65</td>
+<td>7</td>
+<td>32.4664</td>
+<td>34.9631</td>
+</tr>
+<tr>
+<td>109</td>
+<td>המעפיל</td>
+<td>המעפיל</td>
+<td>איגוד ערים שרון-כרמל</td>
+<td>רקע עירוני/כללי</td>
+<td>שרון וכרמל (חדרה, קיסריה)</td>
+<td>71</td>
+<td>11</td>
+<td>32.3700</td>
+<td>34.9751</td>
+</tr>
+<tr>
+<td>110</td>
+<td>כרם מהר"ל</td>
+<td>כרם מהרל</td>
+<td>איגוד ערים שרון-כרמל</td>
+<td>רקע עירוני/כללי</td>
+<td>שרון וכרמל (חדרה, קיסריה)</td>
+<td>119</td>
+<td>5</td>
+<td>32.6494</td>
+<td>34.9890</td>
+</tr>
+<tr>
+<td>115</td>
+<td>אזור תעשייה קלה</td>
+<td>אשדוד</td>
+<td>איגוד ערים אשדוד</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>16</td>
+<td>2</td>
+<td>31.8188</td>
+<td>34.6697</td>
+</tr>
+<tr>
+<td>116</td>
+<td>גן יבנה</td>
+<td>גן יבנה</td>
+<td>איגוד ערים אשדוד</td>
+<td>רקע עירוני/כללי</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>65</td>
+<td>7</td>
+<td>31.7830</td>
+<td>34.7060</td>
+</tr>
+<tr>
+<td>122</td>
+<td>יד בנימין</td>
+<td>יד בנימין</td>
+<td>איגוד ערים אשדוד</td>
+<td>רקע עירוני/כללי</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>96</td>
+<td>17</td>
+<td>31.7983</td>
+<td>34.8188</td>
+</tr>
+<tr>
+<td>123</td>
+<td>גן הוורדים</td>
+<td>אשקלון</td>
+<td>איגוד ערים אשקלון</td>
+<td>רקע עירוני/כללי</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>91</td>
+<td>2</td>
+<td>31.6560</td>
+<td>34.5692</td>
+</tr>
+<tr>
+<td>124</td>
+<td>קריית גת</td>
+<td>קריית גת</td>
+<td>איגוד ערים אשקלון</td>
+<td>רקע עירוני/כללי</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>143</td>
+<td>23</td>
+<td>31.6068</td>
+<td>34.7615</td>
+</tr>
+<tr>
+<td>125</td>
+<td>קריית מלאכי</td>
+<td>קריית מלאכי</td>
+<td>איגוד ערים אשקלון</td>
+<td>רקע עירוני/כללי</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>70</td>
+<td>14</td>
+<td>31.7284</td>
+<td>34.7411</td>
+</tr>
+<tr>
+<td>126</td>
+<td>שדרות</td>
+<td>שדרות</td>
+<td>איגוד ערים אשקלון</td>
+<td>רקע עירוני/כללי</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>117</td>
+<td>11</td>
+<td>31.5318</td>
+<td>34.5973</td>
+</tr>
+<tr>
+<td>127</td>
+<td>גברעם</td>
+<td>גברעם</td>
+<td>איגוד ערים אשקלון</td>
+<td>רקע עירוני/כללי</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>101</td>
+<td>9</td>
+<td>31.5896</td>
+<td>34.6106</td>
+</tr>
+<tr>
+<td>128</td>
+<td>שדה יואב</td>
+<td>שדה יואב</td>
+<td>איגוד ערים אשקלון</td>
+<td>רקע עירוני/כללי</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>105</td>
+<td>13</td>
+<td>31.6460</td>
+<td>34.6749</td>
+</tr>
+<tr>
+<td>129</td>
+<td>ניר ישראל</td>
+<td>ניר ישראל</td>
+<td>איגוד ערים אשקלון</td>
+<td>רקע עירוני/כללי</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>83</td>
+<td>7</td>
+<td>31.6865</td>
+<td>34.6369</td>
+</tr>
+<tr>
+<td>130</td>
+<td>כרמיה</td>
+<td>כרמיה</td>
+<td>איגוד ערים אשקלון</td>
+<td>רקע עירוני/כללי</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>35</td>
+<td>2</td>
+<td>31.6046</td>
+<td>34.5429</td>
+</tr>
+<tr>
+<td>131</td>
+<td>ארז</td>
+<td>ארז</td>
+<td>איגוד ערים אשקלון</td>
+<td>רקע עירוני/כללי</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>40</td>
+<td>6</td>
+<td>31.5598</td>
+<td>34.5652</td>
+</tr>
+<tr>
+<td>136</td>
+<td>אחוזה</td>
+<td>חיפה</td>
+<td>איגוד ערים חיפה</td>
+<td>רקע עירוני/כללי</td>
+<td>חיפה והקריות</td>
+<td>280</td>
+<td>0</td>
+<td>32.7859</td>
+<td>34.9857</td>
+</tr>
+<tr>
+<td>137</td>
+<td>קריית טבעון</td>
+<td>קריית טבעון</td>
+<td>איגוד ערים חיפה</td>
+<td>רקע עירוני/כללי</td>
+<td>טבעון</td>
+<td>201</td>
+<td>16</td>
+<td>32.7222</td>
+<td>35.1302</td>
+</tr>
+<tr>
+<td>139</td>
+<td>רחוב הרצל</td>
+<td>ראשון לציון</td>
+<td>המשרד להגנת הסביבה</td>
+<td>תחבורה</td>
+<td>תל אביב וגוש דן</td>
+<td>89</td>
+<td>9</td>
+<td>31.9582</td>
+<td>34.8021</td>
+</tr>
+<tr>
+<td>154</td>
+<td>רחוב אחוזה</td>
+<td>רעננה</td>
+<td>המשרד להגנת הסביבה</td>
+<td>תחבורה</td>
+<td>תל אביב וגוש דן</td>
+<td>54</td>
+<td>8</td>
+<td>32.1791</td>
+<td>34.8819</td>
+</tr>
+<tr>
+<td>158</td>
+<td>נגב מזרחי</td>
+<td>ערד</td>
+<td>המשרד להגנת הסביבה</td>
+<td>רקע עירוני/כללי</td>
+<td>נגב וערבה (באר שבע, ערד, אילת)</td>
+<td>572</td>
+<td>71</td>
+<td>31.2496</td>
+<td>35.2157</td>
+</tr>
+<tr>
+<td>160</td>
+<td>שמשון</td>
+<td>אשקלון</td>
+<td>איגוד ערים אשקלון</td>
+<td>רקע עירוני/כללי</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>45</td>
+<td>0</td>
+<td>31.6543</td>
+<td>34.5515</td>
+</tr>
+<tr>
+<td>170</td>
+<td>רחוב יפת</td>
+<td>תל אביב-יפו</td>
+<td>המשרד להגנת הסביבה</td>
+<td>תחבורה</td>
+<td>תל אביב וגוש דן</td>
+<td>25</td>
+<td>1</td>
+<td>32.0497</td>
+<td>34.7528</td>
+</tr>
+<tr>
+<td>183</td>
+<td>נחל אשלים</td>
+<td>סדום</td>
+<td>מפעלי ים המלח</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>נגב וערבה (באר שבע, ערד, אילת)</td>
+<td>-424</td>
+<td></td>
+<td>31.0155</td>
+<td>35.3534</td>
+</tr>
+<tr>
+<td>184</td>
+<td>נאות הכיכר</td>
+<td>נאות הכיכר</td>
+<td>מפעלי ים המלח</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>נגב וערבה (באר שבע, ערד, אילת)</td>
+<td>-415</td>
+<td></td>
+<td>30.9458</td>
+<td>35.3883</td>
+</tr>
+<tr>
+<td>185</td>
+<td>נאות חובב מרכזית</td>
+<td>מועצה תעשייתית נאות חובב</td>
+<td>מועצה נאות חובב</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>נגב וערבה (באר שבע, ערד, אילת)</td>
+<td>298</td>
+<td>30</td>
+<td>31.1351</td>
+<td>34.7862</td>
+</tr>
+<tr>
+<td>189</td>
+<td>עצמאות חיפה</td>
+<td>חיפה</td>
+<td>המשרד להגנת הסביבה</td>
+<td>תחבורה</td>
+<td>חיפה והקריות</td>
+<td>29</td>
+<td>0</td>
+<td>32.8171</td>
+<td>35.0024</td>
+</tr>
+<tr>
+<td>193</td>
+<td>רוממה</td>
+<td>ירושלים</td>
+<td>התחנה המרכזית בירושלים ניהול</td>
+<td>תחבורה</td>
+<td>ירושלים</td>
+<td>825</td>
+<td>54</td>
+<td>31.7897</td>
+<td>35.2039</td>
+</tr>
+<tr>
+<td>306</td>
+<td>מבקיעים</td>
+<td>מבקיעים</td>
+<td>איגוד ערים אשקלון</td>
+<td>רקע עירוני/כללי</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>90</td>
+<td>4</td>
+<td>31.6221</td>
+<td>34.5777</td>
+</tr>
+<tr>
+<td>309</td>
+<td>אום אל קוטוף</td>
+<td>אום אל קוטוף</td>
+<td>מחצבות</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>שרון וכרמל (חדרה, קיסריה)</td>
+<td>165</td>
+<td>16</td>
+<td>32.4736</td>
+<td>35.0577</td>
+</tr>
+<tr>
+<td>326</td>
+<td>כפר מסריק החדשה</td>
+<td>כפר מסריק</td>
+<td>המשרד להגנת הסביבה</td>
+<td>רקע עירוני/כללי</td>
+<td>חיפה והקריות</td>
+<td>25</td>
+<td>3</td>
+<td>32.8897</td>
+<td>35.0971</td>
+</tr>
+<tr>
+<td>328</td>
+<td>אזור תעשייה עטרות</td>
+<td>ירושלים</td>
+<td>עיריית ירושלים</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>ירושלים</td>
+<td>745</td>
+<td>52</td>
+<td>31.8534</td>
+<td>35.2152</td>
+</tr>
+<tr>
+<td>331</td>
+<td>שכונת ההרחבה</td>
+<td>כפר מנחם</td>
+<td>איגוד ערים אשקלון</td>
+<td>רקע עירוני/כללי</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>141</td>
+<td>23</td>
+<td>31.7275</td>
+<td>34.8339</td>
+</tr>
+<tr>
+<td>338</td>
+<td>יד רמב"ם החדשה</td>
+<td>יד רמב"ם</td>
+<td>נשר</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>שפלה ומודיעין (רחובות, מודיעין, בית שמש)</td>
+<td>87</td>
+<td>20</td>
+<td>31.9041</td>
+<td>34.8958</td>
+</tr>
+<tr>
+<td>341</td>
+<td>כפר הנוער שפיה</td>
+<td>מועצה אזורית חוף הכרמל</td>
+<td>חברת אבן וסיד</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>שרון וכרמל (חדרה, קיסריה)</td>
+<td>165</td>
+<td>5</td>
+<td>32.5883</td>
+<td>34.9733</td>
+</tr>
+<tr>
+<td>346</td>
+<td>תחנת רכבת השלום</td>
+<td>תל אביב-יפו</td>
+<td>רכבת ישראל</td>
+<td>תחבורה</td>
+<td>תל אביב וגוש דן</td>
+<td>5</td>
+<td>3</td>
+<td>32.0734</td>
+<td>34.7932</td>
+</tr>
+<tr>
+<td>357</td>
+<td>בני עטרות</td>
+<td>בני עטרות</td>
+<td>רשות שדות התעופה</td>
+<td>רקע עירוני/כללי</td>
+<td>שפלה ומודיעין (רחובות, מודיעין, בית שמש)</td>
+<td>74</td>
+<td>17</td>
+<td>32.0248</td>
+<td>34.9119</td>
+</tr>
+<tr>
+<td>365</td>
+<td>בני דרום</td>
+<td>בני דרום</td>
+<td>איגוד ערים אשדוד</td>
+<td>רקע עירוני/כללי</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>64</td>
+<td>4</td>
+<td>31.8196</td>
+<td>34.6935</td>
+</tr>
+<tr>
+<td>367</td>
+<td>בית חשמונאי</td>
+<td>בית חשמונאי</td>
+<td>בעלות משותפת</td>
+<td>רקע עירוני/כללי</td>
+<td>שפלה ומודיעין (רחובות, מודיעין, בית שמש)</td>
+<td>121</td>
+<td>22</td>
+<td>31.8895</td>
+<td>34.9152</td>
+</tr>
+<tr>
+<td>371</td>
+<td>אור יהודה</td>
+<td>אור יהודה</td>
+<td>רשות שדות התעופה</td>
+<td>רקע עירוני/כללי</td>
+<td>תל אביב וגוש דן</td>
+<td>30</td>
+<td>11</td>
+<td>32.0253</td>
+<td>34.8523</td>
+</tr>
+<tr>
+<td>377</td>
+<td>בית ספר גולדווטר</td>
+<td>אילת</td>
+<td>חברת חשמל</td>
+<td>רקע עירוני/כללי</td>
+<td>נגב וערבה (באר שבע, ערד, אילת)</td>
+<td>77</td>
+<td></td>
+<td>29.5545</td>
+<td>34.9492</td>
+</tr>
+<tr>
+<td>378</td>
+<td>קציר</td>
+<td>קציר</td>
+<td>חברת חשמל</td>
+<td>רקע עירוני/כללי</td>
+<td>שרון וכרמל (חדרה, קיסריה)</td>
+<td>340</td>
+<td>20</td>
+<td>32.4871</td>
+<td>35.0965</td>
+</tr>
+<tr>
+<td>380</td>
+<td>דרום</td>
+<td>קריית ביאליק</td>
+<td>איגוד ערים חיפה</td>
+<td>רקע עירוני/כללי</td>
+<td>חיפה והקריות</td>
+<td>25</td>
+<td>8</td>
+<td>32.8141</td>
+<td>35.0777</td>
+</tr>
+<tr>
+<td>382</td>
+<td>נווה גנים</td>
+<td>קריית מוצקין</td>
+<td>איגוד ערים חיפה</td>
+<td>רקע עירוני/כללי</td>
+<td>חיפה והקריות</td>
+<td>32</td>
+<td>6</td>
+<td>32.8547</td>
+<td>35.0919</td>
+</tr>
+<tr>
+<td>383</td>
+<td>רובע ט"ו החדשה</td>
+<td>אשדוד</td>
+<td>איגוד ערים אשדוד</td>
+<td>רקע עירוני/כללי</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>62</td>
+<td>1</td>
+<td>31.7732</td>
+<td>34.6282</td>
+</tr>
+<tr>
+<td>384</td>
+<td>תחנת רכבת ההגנה</td>
+<td>תל אביב-יפו</td>
+<td>רכבת ישראל</td>
+<td>תחבורה</td>
+<td>תל אביב וגוש דן</td>
+<td></td>
+<td>3</td>
+<td>32.0539</td>
+<td>34.7848</td>
+</tr>
+<tr>
+<td>385</td>
+<td>תחנת רכבת יוספטל</td>
+<td>בת ים</td>
+<td>רכבת ישראל</td>
+<td>תחבורה</td>
+<td>תל אביב וגוש דן</td>
+<td></td>
+<td>3</td>
+<td>32.0145</td>
+<td>34.7621</td>
+</tr>
+<tr>
+<td>387</td>
+<td>מכללת תל חי</td>
+<td>גליל עליון</td>
+<td>המשרד להגנת הסביבה</td>
+<td>רקע עירוני/כללי</td>
+<td>עמקים וגליל (עפולה, בית שאן, כרמיאל)</td>
+<td>252</td>
+<td>46</td>
+<td>33.2317</td>
+<td>35.5810</td>
+</tr>
+<tr>
+<td>391</td>
+<td>הרצל - בלפור</td>
+<td>חיפה</td>
+<td>איגוד ערים חיפה</td>
+<td>תחבורה</td>
+<td>חיפה והקריות</td>
+<td>78</td>
+<td>0</td>
+<td>32.8114</td>
+<td>34.9974</td>
+</tr>
+<tr>
+<td>400</td>
+<td>קטורה</td>
+<td>קטורה</td>
+<td>המשרד להגנת הסביבה</td>
+<td>רקע עירוני/כללי</td>
+<td>נגב וערבה (באר שבע, ערד, אילת)</td>
+<td>117</td>
+<td></td>
+<td>29.9669</td>
+<td>35.0596</td>
+</tr>
+<tr>
+<td>401</td>
+<td>חפציבה</td>
+<td>חדרה</td>
+<td>איגוד ערים שרון-כרמל</td>
+<td>רקע עירוני/כללי</td>
+<td>שרון וכרמל (חדרה, קיסריה)</td>
+<td>16</td>
+<td>2</td>
+<td>32.4585</td>
+<td>34.8985</td>
+</tr>
+<tr>
+<td>405</td>
+<td>שדרות ירושלים</td>
+<td>אשדוד</td>
+<td>איגוד ערים אשדוד</td>
+<td>תחבורה</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>0</td>
+<td>1</td>
+<td>31.7940</td>
+<td>34.6432</td>
+</tr>
+<tr>
+<td>406</td>
+<td>תל אביב יפו -  המשתלה</td>
+<td>תל אביב-יפו</td>
+<td>חברת חשמל</td>
+<td>רקע עירוני/כללי</td>
+<td>תל אביב וגוש דן</td>
+<td>65</td>
+<td>5</td>
+<td>32.1300</td>
+<td>34.8318</td>
+</tr>
+<tr>
+<td>414</td>
+<td>רחוב לוינסקי</td>
+<td>תל אביב-יפו</td>
+<td>תחנה מרכזית תל אביב</td>
+<td>תחבורה</td>
+<td>תל אביב וגוש דן</td>
+<td>64</td>
+<td>3</td>
+<td>32.0568</td>
+<td>34.7796</td>
+</tr>
+<tr>
+<td>423</td>
+<td>פארק לכיש</td>
+<td>אשדוד</td>
+<td>איגוד ערים אשדוד</td>
+<td>רקע עירוני/כללי</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>18</td>
+<td>0</td>
+<td>31.8133</td>
+<td>34.6501</td>
+</tr>
+<tr>
+<td>426</td>
+<td>מצפה נטופה</td>
+<td>מצפה נטופה</td>
+<td>חברת אבן וסיד</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>עמקים וגליל (עפולה, בית שאן, כרמיאל)</td>
+<td>408</td>
+<td>37</td>
+<td>32.8026</td>
+<td>35.3830</td>
+</tr>
+<tr>
+<td>427</td>
+<td>טורעאן החדשה</td>
+<td>טורעאן</td>
+<td>חברת אבן וסיד</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>עמקים וגליל (עפולה, בית שאן, כרמיאל)</td>
+<td>237</td>
+<td>38</td>
+<td>32.7773</td>
+<td>35.3797</td>
+</tr>
+<tr>
+<td>452</td>
+<td>מעיין צבי - איגוד</td>
+<td>מעיין צבי</td>
+<td>איגוד ערים שרון-כרמל</td>
+<td>רקע עירוני/כללי</td>
+<td>שרון וכרמל (חדרה, קיסריה)</td>
+<td>146</td>
+<td>3</td>
+<td>32.5669</td>
+<td>34.9403</td>
+</tr>
+<tr>
+<td>453</td>
+<td>מוזיאון ראלי</td>
+<td>קיסריה</td>
+<td>איגוד ערים שרון-כרמל</td>
+<td>רקע עירוני/כללי</td>
+<td>שרון וכרמל (חדרה, קיסריה)</td>
+<td>24</td>
+<td>1</td>
+<td>32.5140</td>
+<td>34.9073</td>
+</tr>
+<tr>
+<td>454</td>
+<td>ברקאי החדשה</td>
+<td>ברקאי</td>
+<td>איגוד ערים שרון-כרמל</td>
+<td>רקע עירוני/כללי</td>
+<td>שרון וכרמל (חדרה, קיסריה)</td>
+<td></td>
+<td>14</td>
+<td>32.4772</td>
+<td>35.0324</td>
+</tr>
+<tr>
+<td>458</td>
+<td>רחוב דבורה הנביאה</td>
+<td>ירושלים</td>
+<td>המשרד להגנת הסביבה</td>
+<td>תחבורה</td>
+<td>ירושלים</td>
+<td>795</td>
+<td>56</td>
+<td>31.7843</td>
+<td>35.2239</td>
+</tr>
+<tr>
+<td>465</td>
+<td>אלעד</td>
+<td>אלעד</td>
+<td>מחצבת מגדל צדק</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>שפלה ומודיעין (רחובות, מודיעין, בית שמש)</td>
+<td>150</td>
+<td>20</td>
+<td>32.0535</td>
+<td>34.9556</td>
+</tr>
+<tr>
+<td>468</td>
+<td>אביגדור</td>
+<td>אביגדור</td>
+<td>תחנת כוח באר טוביה</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>96</td>
+<td>15</td>
+<td>31.7107</td>
+<td>34.7447</td>
+</tr>
+<tr>
+<td>469</td>
+<td>תימורים</td>
+<td>תימורים</td>
+<td>תחנת כוח באר טוביה</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>103</td>
+<td>16</td>
+<td>31.7159</td>
+<td>34.7556</td>
+</tr>
+<tr>
+<td>472</td>
+<td>נחשולים</td>
+<td>נחשולים</td>
+<td>איגוד ערים שרון-כרמל</td>
+<td>רקע עירוני/כללי</td>
+<td>שרון וכרמל (חדרה, קיסריה)</td>
+<td>12</td>
+<td>0</td>
+<td>32.6141</td>
+<td>34.9210</td>
+</tr>
+<tr>
+<td>498</td>
+<td>כפר נופש חיילים</td>
+<td>אשקלון</td>
+<td>שברון</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>10</td>
+<td>0</td>
+<td>31.6725</td>
+<td>34.5519</td>
+</tr>
+<tr>
+<td>499</td>
+<td>קרית חיים - מערבית</td>
+<td>חיפה</td>
+<td>איגוד ערים חיפה</td>
+<td>רקע עירוני/כללי</td>
+<td>חיפה והקריות</td>
+<td>8</td>
+<td>5</td>
+<td>32.8291</td>
+<td>35.0565</td>
+</tr>
+<tr>
+<td>505</td>
+<td>חריש</td>
+<td>חריש</td>
+<td>המשרד להגנת הסביבה</td>
+<td>רקע עירוני/כללי</td>
+<td>שרון וכרמל (חדרה, קיסריה)</td>
+<td>105</td>
+<td>16</td>
+<td>32.4565</td>
+<td>35.0493</td>
+</tr>
+<tr>
+<td>511</td>
+<td>קבוצת יבנה מערב</td>
+<td>מ.א. חבל יבנה</td>
+<td>איגוד ערים אשדוד</td>
+<td>רקע עירוני/כללי</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>46</td>
+<td>6</td>
+<td>31.8201</td>
+<td>34.7161</td>
+</tr>
+<tr>
+<td>513</td>
+<td>שכונת האמנים</td>
+<td>רמלה</td>
+<td>נשר</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>שפלה ומודיעין (רחובות, מודיעין, בית שמש)</td>
+<td>79</td>
+<td>18</td>
+<td>31.9151</td>
+<td>34.8748</td>
+</tr>
+<tr>
+<td>515</td>
+<td>נמל המפרץ-רציף 6</td>
+<td>חיפה</td>
+<td>איגוד ערים חיפה</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>חיפה והקריות</td>
+<td>4</td>
+<td>2</td>
+<td>32.8253</td>
+<td>35.0280</td>
+</tr>
+<tr>
+<td>530</td>
+<td>כסייפה</td>
+<td>כסייפה</td>
+<td>המשרד להגנת הסביבה</td>
+<td>רקע עירוני/כללי</td>
+<td>נגב וערבה (באר שבע, ערד, אילת)</td>
+<td>505</td>
+<td>60</td>
+<td>31.2474</td>
+<td>35.0982</td>
+</tr>
+<tr>
+<td>531</td>
+<td>פלוגות</td>
+<td>פלוגות</td>
+<td>תחנת כוח או.פי.סי. צומת אנרגיה</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>110</td>
+<td>20</td>
+<td>31.6351</td>
+<td>34.7466</td>
+</tr>
+<tr>
+<td>532</td>
+<td>רובע הבנים</td>
+<td>קריית גת</td>
+<td>תחנת כוח או.פי.סי. צומת אנרגיה</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>130</td>
+<td>22</td>
+<td>31.6202</td>
+<td>34.7576</td>
+</tr>
+<tr>
+<td>535</td>
+<td>איזור תעשייה צפוני</td>
+<td>אשדוד</td>
+<td>איגוד ערים אשדוד</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>25</td>
+<td>3</td>
+<td>31.8388</td>
+<td>34.6839</td>
+</tr>
+<tr>
+<td>537</td>
+<td>געתון</td>
+<td>געתון</td>
+<td>מחצבת אשרת</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>עמקים וגליל (עפולה, בית שאן, כרמיאל)</td>
+<td>330</td>
+<td>12</td>
+<td>33.0051</td>
+<td>35.2131</td>
+</tr>
+<tr>
+<td>539</td>
+<td>אחוזת ברק</td>
+<td>אחוזת ברק</td>
+<td>תחנת הכוח MRC(אלון תבור)</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>עמקים וגליל (עפולה, בית שאן, כרמיאל)</td>
+<td>164</td>
+<td>38</td>
+<td>32.6454</td>
+<td>35.3367</td>
+</tr>
+<tr>
+<td>547</td>
+<td>כביש 16-מחלף בייט</td>
+<td>ירושלים</td>
+<td>שפיר הנדסה</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>ירושלים</td>
+<td>760</td>
+<td>54</td>
+<td>31.7695</td>
+<td>35.1878</td>
+</tr>
+<tr>
+<td>551</td>
+<td>עין דור החדשה</td>
+<td>עין דור</td>
+<td>תחנת הכוח MRC(אלון תבור)</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>עמקים וגליל (עפולה, בית שאן, כרמיאל)</td>
+<td>141</td>
+<td>45</td>
+<td>32.6533</td>
+<td>35.4141</td>
+</tr>
+<tr>
+<td>563</td>
+<td>כחל חדשה</td>
+<td>כחל</td>
+<td>מחצבות כפר גלעדי</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>עמקים וגליל (עפולה, בית שאן, כרמיאל)</td>
+<td></td>
+<td>42</td>
+<td>32.8935</td>
+<td>35.5055</td>
+</tr>
+<tr>
+<td>567</td>
+<td>ראש העין</td>
+<td>ראש העין</td>
+<td>המשרד להגנת הסביבה</td>
+<td>רקע עירוני/כללי</td>
+<td>שפלה ומודיעין (רחובות, מודיעין, בית שמש)</td>
+<td>181</td>
+<td>22</td>
+<td>32.0762</td>
+<td>34.9906</td>
+</tr>
+<tr>
+<td>568</td>
+<td>מוזיאון רוקפלר</td>
+<td>ירושלים</td>
+<td>המשרד להגנת הסביבה</td>
+<td>רקע עירוני/כללי</td>
+<td>ירושלים</td>
+<td>765</td>
+<td>58</td>
+<td>31.7839</td>
+<td>35.2362</td>
+</tr>
+<tr>
+<td>569</td>
+<td>רחוב מלכי ישראל - 2</td>
+<td>ירושלים</td>
+<td>המשרד להגנת הסביבה</td>
+<td>רקע עירוני/כללי</td>
+<td>ירושלים</td>
+<td>842</td>
+<td>55</td>
+<td>31.7917</td>
+<td>35.2124</td>
+</tr>
+<tr>
+<td>571</td>
+<td>רחוב ז'בוטינסקי</td>
+<td>פתח תקווה</td>
+<td>המשרד להגנת הסביבה</td>
+<td>תחבורה</td>
+<td>תל אביב וגוש דן</td>
+<td>41</td>
+<td>10</td>
+<td>32.0918</td>
+<td>34.8670</td>
+</tr>
+<tr>
+<td>579</td>
+<td>עמק המעיינות</td>
+<td>עמק המעיינות</td>
+<td>המשרד להגנת הסביבה</td>
+<td>רקע עירוני/כללי</td>
+<td>עמקים וגליל (עפולה, בית שאן, כרמיאל)</td>
+<td>-186</td>
+<td>59</td>
+<td>32.4931</td>
+<td>35.5139</td>
+</tr>
+<tr>
+<td>581</td>
+<td>נווה זוהר</td>
+<td>נווה זוהר</td>
+<td>תחנות לא פעילות</td>
+<td>רקע עירוני/כללי</td>
+<td>נגב וערבה (באר שבע, ערד, אילת)</td>
+<td>-370</td>
+<td>85</td>
+<td>31.1512</td>
+<td>35.3644</td>
+</tr>
+<tr>
+<td>582</td>
+<td>שדרות החדשה</td>
+<td>שדרות</td>
+<td>איגוד ערים אשקלון</td>
+<td>רקע עירוני/כללי</td>
+<td>דרום החוף והשפלה הדרומית (אשדוד, אשקלון, קריית גת)</td>
+<td>134</td>
+<td>11</td>
+<td>31.5319</td>
+<td>34.5974</td>
+</tr>
+<tr>
+<td>583</td>
+<td>דרך נמיר</td>
+<td>תל אביב-יפו</td>
+<td>המשרד להגנת הסביבה</td>
+<td>תחבורה</td>
+<td>תל אביב וגוש דן</td>
+<td>25</td>
+<td>3</td>
+<td>32.0888</td>
+<td>34.7953</td>
+</tr>
+<tr>
+<td>584</td>
+<td>דרך רזיאל</td>
+<td>נתניה</td>
+<td>המשרד להגנת הסביבה</td>
+<td>תחבורה</td>
+<td>שרון וכרמל (חדרה, קיסריה)</td>
+<td>30</td>
+<td>1</td>
+<td>32.3288</td>
+<td>34.8622</td>
+</tr>
+<tr>
+<td>586</td>
+<td>בית יוסף</td>
+<td>בית יוסף</td>
+<td>מחצבת דושן דרום</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>עמקים וגליל (עפולה, בית שאן, כרמיאל)</td>
+<td></td>
+<td>61</td>
+<td>32.5572</td>
+<td>35.5510</td>
+</tr>
+<tr>
+<td>588</td>
+<td>רחוב צמח דוד</td>
+<td>תל אביב-יפו</td>
+<td>המשרד להגנת הסביבה</td>
+<td>תחבורה</td>
+<td>תל אביב וגוש דן</td>
+<td>31</td>
+<td>3</td>
+<td>32.0558</td>
+<td>34.7810</td>
+</tr>
+<tr>
+<td>592</td>
+<td>נחם מזרח</td>
+<td>—</td>
+<td>מחצבת שורק</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>שפלה ומודיעין (רחובות, מודיעין, בית שמש)</td>
+<td>280</td>
+<td>37</td>
+<td>31.7644</td>
+<td>35.0078</td>
+</tr>
+<tr>
+<td>595</td>
+<td>גן העיר</td>
+<td>ראשון לציון</td>
+<td>המשרד להגנת הסביבה</td>
+<td>תחבורה</td>
+<td>תל אביב וגוש דן</td>
+<td>73</td>
+<td>9</td>
+<td>31.9625</td>
+<td>34.8028</td>
+</tr>
+<tr>
+<td>598</td>
+<td>שוהם</td>
+<td>שוהם</td>
+<td>חברת אבן וסיד</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>שפלה ומודיעין (רחובות, מודיעין, בית שמש)</td>
+<td>120</td>
+<td>21</td>
+<td>32.0066</td>
+<td>34.9516</td>
+</tr>
+<tr>
+<td>605</td>
+<td>טנא עומרים</td>
+<td>—</td>
+<td>מחצבות כפר גלעדי</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>נגב וערבה (באר שבע, ערד, אילת)</td>
+<td>600</td>
+<td>46</td>
+<td>31.3751</td>
+<td>34.9561</td>
+</tr>
+<tr>
+<td>607</td>
+<td>בית צפאפא</td>
+<td>ירושלים</td>
+<td>שפיר מפעל בטון בית צפאפא</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>ירושלים</td>
+<td>696</td>
+<td>56</td>
+<td>31.7487</td>
+<td>35.1972</td>
+</tr>
+<tr>
+<td>608</td>
+<td>קדרים</td>
+<td>קדרים</td>
+<td>חברת אבן וסיד</td>
+<td>תעשייה/מחצבה/תחנת כוח</td>
+<td>עמקים וגליל (עפולה, בית שאן, כרמיאל)</td>
+<td>102</td>
+<td>38</td>
+<td>32.9024</td>
+<td>35.4713</td>
+</tr>
+</tbody>
+</table></div>
+<h3>9.2 תוצאות לכל תחנה-שנה (אחרי בקרת איכות; תא ריק = לא עבר את הבקרה או אין מזהם)</h3>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>מזהה</th>
+<th>תחנה</th>
+<th>שנה</th>
+<th>PM2.5</th>
+<th>כיסוי PM2.5 %</th>
+<th>% ימים &gt;15</th>
+<th>PM10</th>
+<th>NO2</th>
+<th>ימי אוזון &gt;51 ppb</th>
+<th>MDA8 קיץ ppb</th>
+<th>כיסוי אוזון %</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>עפולה</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td>39.69</td>
+<td>15.39</td>
+<td>167.9</td>
+<td>56.54</td>
+<td>95</td>
+</tr>
+<tr>
+<td>1</td>
+<td>עפולה</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td>35.80</td>
+<td>13.59</td>
+<td>207.1</td>
+<td>64.02</td>
+<td>84</td>
+</tr>
+<tr>
+<td>1</td>
+<td>עפולה</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td>35.94</td>
+<td>13.89</td>
+<td>238.6</td>
+<td>66.61</td>
+<td>95</td>
+</tr>
+<tr>
+<td>2</td>
+<td>רחוב לחי</td>
+<td>2023</td>
+<td>18.23</td>
+<td>94</td>
+<td>65.3</td>
+<td>46.09</td>
+<td>29.68</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>רחוב לחי</td>
+<td>2024</td>
+<td>17.54</td>
+<td>97</td>
+<td>55.9</td>
+<td>44.10</td>
+<td>29.94</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>רחוב לחי</td>
+<td>2025</td>
+<td>17.43</td>
+<td>100</td>
+<td>54.4</td>
+<td>47.29</td>
+<td>30.51</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>אריאל</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td>38.25</td>
+<td>8.44</td>
+<td>122.3</td>
+<td>52.99</td>
+<td>99</td>
+</tr>
+<tr>
+<td>3</td>
+<td>אריאל</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td>37.34</td>
+<td>7.36</td>
+<td>118.7</td>
+<td>54.53</td>
+<td>99</td>
+</tr>
+<tr>
+<td>3</td>
+<td>אריאל</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td>30.46</td>
+<td>7.12</td>
+<td>152.3</td>
+<td>55.35</td>
+<td>99</td>
+</tr>
+<tr>
+<td>5</td>
+<td>רחוב בר אילן</td>
+<td>2023</td>
+<td>16.92</td>
+<td>96</td>
+<td>57.3</td>
+<td></td>
+<td>35.28</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>רחוב בר אילן</td>
+<td>2024</td>
+<td>14.98</td>
+<td>98</td>
+<td>38.7</td>
+<td></td>
+<td>29.37</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>רחוב בר אילן</td>
+<td>2025</td>
+<td>14.23</td>
+<td>97</td>
+<td>38.3</td>
+<td></td>
+<td>30.78</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>שכונה ו</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>12.54</td>
+<td>152.6</td>
+<td>55.05</td>
+<td>98</td>
+</tr>
+<tr>
+<td>6</td>
+<td>שכונה ו</td>
+<td>2024</td>
+<td>14.50</td>
+<td>93</td>
+<td>34.1</td>
+<td></td>
+<td>12.41</td>
+<td>152.7</td>
+<td>56.26</td>
+<td>99</td>
+</tr>
+<tr>
+<td>6</td>
+<td>שכונה ו</td>
+<td>2025</td>
+<td>16.83</td>
+<td>98</td>
+<td>45.1</td>
+<td>44.28</td>
+<td>13.18</td>
+<td>107.5</td>
+<td>52.49</td>
+<td>97</td>
+</tr>
+<tr>
+<td>7</td>
+<td>בית שמש</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td>52.76</td>
+<td>12.97</td>
+<td></td>
+<td></td>
+<td>99</td>
+</tr>
+<tr>
+<td>7</td>
+<td>בית שמש</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td>41.40</td>
+<td>11.53</td>
+<td></td>
+<td></td>
+<td>99</td>
+</tr>
+<tr>
+<td>7</td>
+<td>בית שמש</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td>33.92</td>
+<td>12.54</td>
+<td></td>
+<td></td>
+<td>99</td>
+</tr>
+<tr>
+<td>11</td>
+<td>גליל מערבי</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td>31.57</td>
+<td>8.07</td>
+<td></td>
+<td></td>
+<td>99</td>
+</tr>
+<tr>
+<td>11</td>
+<td>גליל מערבי</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td>32.07</td>
+<td>8.07</td>
+<td></td>
+<td></td>
+<td>100</td>
+</tr>
+<tr>
+<td>11</td>
+<td>גליל מערבי</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td>32.11</td>
+<td>8.16</td>
+<td></td>
+<td></td>
+<td>99</td>
+</tr>
+<tr>
+<td>13</td>
+<td>בקעה</td>
+<td>2023</td>
+<td>14.41</td>
+<td>99</td>
+<td>34.3</td>
+<td>41.91</td>
+<td>18.45</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>13</td>
+<td>בקעה</td>
+<td>2024</td>
+<td>13.64</td>
+<td>98</td>
+<td>28.9</td>
+<td>40.87</td>
+<td>15.65</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>13</td>
+<td>בקעה</td>
+<td>2025</td>
+<td>12.46</td>
+<td>97</td>
+<td>23.2</td>
+<td>39.77</td>
+<td>16.92</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>21</td>
+<td>גוש עציון</td>
+<td>2023</td>
+<td>13.89</td>
+<td>94</td>
+<td>28.8</td>
+<td>35.17</td>
+<td>7.30</td>
+<td>184.7</td>
+<td>57.03</td>
+<td>93</td>
+</tr>
+<tr>
+<td>21</td>
+<td>גוש עציון</td>
+<td>2024</td>
+<td>11.59</td>
+<td>92</td>
+<td>20.8</td>
+<td>33.89</td>
+<td>5.41</td>
+<td>215.5</td>
+<td>63.84</td>
+<td>98</td>
+</tr>
+<tr>
+<td>21</td>
+<td>גוש עציון</td>
+<td>2025</td>
+<td>11.39</td>
+<td>91</td>
+<td>17.1</td>
+<td>41.29</td>
+<td>5.88</td>
+<td>277.8</td>
+<td>69.74</td>
+<td>98</td>
+</tr>
+<tr>
+<td>24</td>
+<td>חולון</td>
+<td>2023</td>
+<td>15.86</td>
+<td>98</td>
+<td>44.8</td>
+<td></td>
+<td>18.87</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>24</td>
+<td>חולון</td>
+<td>2024</td>
+<td>14.68</td>
+<td>94</td>
+<td>39.9</td>
+<td></td>
+<td>18.22</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>24</td>
+<td>חולון</td>
+<td>2025</td>
+<td>14.67</td>
+<td>98</td>
+<td>38.7</td>
+<td></td>
+<td>19.54</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>26</td>
+<td>רחוב יהודה המכבי</td>
+<td>2023</td>
+<td>16.58</td>
+<td>97</td>
+<td>51.7</td>
+<td></td>
+<td>26.33</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>26</td>
+<td>רחוב יהודה המכבי</td>
+<td>2024</td>
+<td>16.37</td>
+<td>98</td>
+<td>46.0</td>
+<td></td>
+<td>25.49</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>26</td>
+<td>רחוב יהודה המכבי</td>
+<td>2025</td>
+<td>15.79</td>
+<td>98</td>
+<td>44.8</td>
+<td></td>
+<td>26.07</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>32</td>
+<td>רחובות</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td>38.82</td>
+<td>15.55</td>
+<td>232.3</td>
+<td>56.76</td>
+<td>90</td>
+</tr>
+<tr>
+<td>32</td>
+<td>רחובות</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td>34.75</td>
+<td>12.90</td>
+<td>227.1</td>
+<td>57.42</td>
+<td>93</td>
+</tr>
+<tr>
+<td>32</td>
+<td>רחובות</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td>30.89</td>
+<td>13.42</td>
+<td>224.5</td>
+<td>58.08</td>
+<td>95</td>
+</tr>
+<tr>
+<td>33</td>
+<td>רחוב ז'בוטינסקי</td>
+<td>2023</td>
+<td>17.49</td>
+<td>96</td>
+<td>59.0</td>
+<td></td>
+<td>27.46</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>33</td>
+<td>רחוב ז'בוטינסקי</td>
+<td>2024</td>
+<td>16.83</td>
+<td>97</td>
+<td>54.6</td>
+<td></td>
+<td>28.22</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>33</td>
+<td>רחוב ז'בוטינסקי</td>
+<td>2025</td>
+<td>16.76</td>
+<td>97</td>
+<td>49.7</td>
+<td></td>
+<td>27.64</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>34</td>
+<td>כביש 4</td>
+<td>2023</td>
+<td>19.21</td>
+<td>97</td>
+<td>68.6</td>
+<td></td>
+<td>34.91</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>34</td>
+<td>כביש 4</td>
+<td>2024</td>
+<td>17.37</td>
+<td>97</td>
+<td>54.2</td>
+<td></td>
+<td>33.76</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>34</td>
+<td>כביש 4</td>
+<td>2025</td>
+<td>15.27</td>
+<td>99</td>
+<td>40.2</td>
+<td></td>
+<td>33.02</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>36</td>
+<td>כיכר ספרא</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td>45.33</td>
+<td>14.74</td>
+<td>172.1</td>
+<td>62.02</td>
+<td>97</td>
+</tr>
+<tr>
+<td>36</td>
+<td>כיכר ספרא</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td>40.70</td>
+<td>13.98</td>
+<td>205.6</td>
+<td>63.04</td>
+<td>99</td>
+</tr>
+<tr>
+<td>36</td>
+<td>כיכר ספרא</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td>42.61</td>
+<td>14.71</td>
+<td>224.0</td>
+<td>64.78</td>
+<td>98</td>
+</tr>
+<tr>
+<td>39</td>
+<td>אוניברסיטה</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td>38.03</td>
+<td>17.54</td>
+<td>200.5</td>
+<td>52.78</td>
+<td>100</td>
+</tr>
+<tr>
+<td>39</td>
+<td>אוניברסיטה</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td>35.34</td>
+<td>17.43</td>
+<td></td>
+<td></td>
+<td>71</td>
+</tr>
+<tr>
+<td>39</td>
+<td>אוניברסיטה</td>
+<td>2025</td>
+<td></td>
+<td>49</td>
+<td></td>
+<td>35.36</td>
+<td>18.23</td>
+<td>213.6</td>
+<td>54.70</td>
+<td>97</td>
+</tr>
+<tr>
+<td>53</td>
+<td>רחוב גיסין</td>
+<td>2023</td>
+<td>19.42</td>
+<td>98</td>
+<td>68.5</td>
+<td></td>
+<td>33.89</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>53</td>
+<td>רחוב גיסין</td>
+<td>2024</td>
+<td>17.47</td>
+<td>99</td>
+<td>56.4</td>
+<td></td>
+<td>32.15</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>53</td>
+<td>רחוב גיסין</td>
+<td>2025</td>
+<td>18.37</td>
+<td>98</td>
+<td>65.2</td>
+<td></td>
+<td>33.34</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>56</td>
+<td>מכבי אש</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>23.07</td>
+<td>103.2</td>
+<td>47.04</td>
+<td>92</td>
+</tr>
+<tr>
+<td>56</td>
+<td>מכבי אש</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>22.78</td>
+<td>122.0</td>
+<td>49.84</td>
+<td>94</td>
+</tr>
+<tr>
+<td>56</td>
+<td>מכבי אש</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>23.22</td>
+<td>71.0</td>
+<td>48.02</td>
+<td>95</td>
+</tr>
+<tr>
+<td>59</td>
+<td>הצפון החדש</td>
+<td>2023</td>
+<td>17.79</td>
+<td>98</td>
+<td>56.9</td>
+<td></td>
+<td>19.94</td>
+<td>65.1</td>
+<td>46.86</td>
+<td>94</td>
+</tr>
+<tr>
+<td>59</td>
+<td>הצפון החדש</td>
+<td>2024</td>
+<td>16.88</td>
+<td>92</td>
+<td>54.3</td>
+<td></td>
+<td>18.39</td>
+<td>142.7</td>
+<td>48.12</td>
+<td>93</td>
+</tr>
+<tr>
+<td>59</td>
+<td>הצפון החדש</td>
+<td>2025</td>
+<td>16.42</td>
+<td>88</td>
+<td>50.5</td>
+<td></td>
+<td>18.12</td>
+<td>83.8</td>
+<td>47.82</td>
+<td>94</td>
+</tr>
+<tr>
+<td>61</td>
+<td>ניר גלים 1</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td>45.15</td>
+<td>17.16</td>
+<td>122.4</td>
+<td>47.31</td>
+<td>88</td>
+</tr>
+<tr>
+<td>61</td>
+<td>ניר גלים 1</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td>43.54</td>
+<td>14.49</td>
+<td>106.4</td>
+<td>48.14</td>
+<td>92</td>
+</tr>
+<tr>
+<td>61</td>
+<td>ניר גלים 1</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td>48.95</td>
+<td>14.39</td>
+<td>49.4</td>
+<td>43.86</td>
+<td>95</td>
+</tr>
+<tr>
+<td>63</td>
+<td>גן דרום</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>14.19</td>
+<td>49.8</td>
+<td>45.27</td>
+<td>88</td>
+</tr>
+<tr>
+<td>63</td>
+<td>גן דרום</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>11.67</td>
+<td>69.1</td>
+<td>46.63</td>
+<td>92</td>
+</tr>
+<tr>
+<td>63</td>
+<td>גן דרום</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>12.87</td>
+<td>59.0</td>
+<td>41.69</td>
+<td>94</td>
+</tr>
+<tr>
+<td>64</td>
+<td>מודיעין</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td>45.22</td>
+<td>10.57</td>
+<td>203.3</td>
+<td>61.13</td>
+<td>91</td>
+</tr>
+<tr>
+<td>64</td>
+<td>מודיעין</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td>43.53</td>
+<td>10.84</td>
+<td>250.8</td>
+<td>63.82</td>
+<td>92</td>
+</tr>
+<tr>
+<td>64</td>
+<td>מודיעין</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td>44.25</td>
+<td>11.23</td>
+<td>267.0</td>
+<td>64.63</td>
+<td>93</td>
+</tr>
+<tr>
+<td>65</td>
+<td>יבנה</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>58</td>
+</tr>
+<tr>
+<td>65</td>
+<td>יבנה</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td>41.93</td>
+<td>12.56</td>
+<td>149.6</td>
+<td>50.42</td>
+<td>92</td>
+</tr>
+<tr>
+<td>65</td>
+<td>יבנה</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td>39.94</td>
+<td>12.39</td>
+<td>69.8</td>
+<td>47.99</td>
+<td>95</td>
+</tr>
+<tr>
+<td>69</td>
+<td>פארק הכרמל</td>
+<td>2023</td>
+<td>15.16</td>
+<td>96</td>
+<td>42.7</td>
+<td></td>
+<td>5.94</td>
+<td>197.3</td>
+<td>54.22</td>
+<td>89</td>
+</tr>
+<tr>
+<td>69</td>
+<td>פארק הכרמל</td>
+<td>2024</td>
+<td>14.62</td>
+<td>98</td>
+<td>37.7</td>
+<td></td>
+<td>5.12</td>
+<td>188.9</td>
+<td>56.56</td>
+<td>87</td>
+</tr>
+<tr>
+<td>69</td>
+<td>פארק הכרמל</td>
+<td>2025</td>
+<td>13.53</td>
+<td>92</td>
+<td>31.1</td>
+<td></td>
+<td>4.79</td>
+<td>213.5</td>
+<td>56.83</td>
+<td>86</td>
+</tr>
+<tr>
+<td>71</td>
+<td>כפר מנחם</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>8.98</td>
+<td>181.5</td>
+<td>55.24</td>
+<td>90</td>
+</tr>
+<tr>
+<td>71</td>
+<td>כפר מנחם</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>7.63</td>
+<td>248.8</td>
+<td>60.87</td>
+<td>90</td>
+</tr>
+<tr>
+<td>71</td>
+<td>כפר מנחם</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>8.77</td>
+<td>235.1</td>
+<td>59.50</td>
+<td>90</td>
+</tr>
+<tr>
+<td>73</td>
+<td>דחי</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>4.89</td>
+<td>243.3</td>
+<td>60.58</td>
+<td>94</td>
+</tr>
+<tr>
+<td>73</td>
+<td>דחי</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>3.30</td>
+<td>249.8</td>
+<td>61.60</td>
+<td>94</td>
+</tr>
+<tr>
+<td>73</td>
+<td>דחי</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>3.81</td>
+<td>216.7</td>
+<td>57.84</td>
+<td>86</td>
+</tr>
+<tr>
+<td>76</td>
+<td>כרמי יוסף</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>10.44</td>
+<td>205.0</td>
+<td>58.80</td>
+<td>89</td>
+</tr>
+<tr>
+<td>76</td>
+<td>כרמי יוסף</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>8.51</td>
+<td>216.5</td>
+<td>59.09</td>
+<td>89</td>
+</tr>
+<tr>
+<td>76</td>
+<td>כרמי יוסף</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>9.11</td>
+<td>230.2</td>
+<td>60.24</td>
+<td>88</td>
+</tr>
+<tr>
+<td>78</td>
+<td>אחיסמך</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>20.81</td>
+<td>166.0</td>
+<td>56.38</td>
+<td>88</td>
+</tr>
+<tr>
+<td>78</td>
+<td>אחיסמך</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>18.09</td>
+<td>165.4</td>
+<td>52.83</td>
+<td>86</td>
+</tr>
+<tr>
+<td>78</td>
+<td>אחיסמך</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>20.73</td>
+<td>189.7</td>
+<td>59.26</td>
+<td>80</td>
+</tr>
+<tr>
+<td>80</td>
+<td>מרכז הכרמל</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>8.11</td>
+<td>162.1</td>
+<td>50.32</td>
+<td>88</td>
+</tr>
+<tr>
+<td>80</td>
+<td>מרכז הכרמל</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>7.50</td>
+<td>129.2</td>
+<td>52.41</td>
+<td>89</td>
+</tr>
+<tr>
+<td>80</td>
+<td>מרכז הכרמל</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>7.98</td>
+<td>135.5</td>
+<td>53.26</td>
+<td>94</td>
+</tr>
+<tr>
+<td>81</td>
+<td>בת הדר</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td>44.84</td>
+<td>11.44</td>
+<td>161.5</td>
+<td>50.35</td>
+<td>95</td>
+</tr>
+<tr>
+<td>81</td>
+<td>בת הדר</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td>42.43</td>
+<td>10.59</td>
+<td>177.8</td>
+<td>51.66</td>
+<td>93</td>
+</tr>
+<tr>
+<td>81</td>
+<td>בת הדר</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td>40.91</td>
+<td>11.87</td>
+<td>144.6</td>
+<td>52.81</td>
+<td>94</td>
+</tr>
+<tr>
+<td>82</td>
+<td>לב תל אביב</td>
+<td>2023</td>
+<td>18.03</td>
+<td>99</td>
+<td>62.2</td>
+<td></td>
+<td>25.10</td>
+<td>112.9</td>
+<td>48.93</td>
+<td>93</td>
+</tr>
+<tr>
+<td>82</td>
+<td>לב תל אביב</td>
+<td>2024</td>
+<td>18.06</td>
+<td>98</td>
+<td>61.9</td>
+<td></td>
+<td>22.77</td>
+<td>202.5</td>
+<td>52.57</td>
+<td>98</td>
+</tr>
+<tr>
+<td>82</td>
+<td>לב תל אביב</td>
+<td>2025</td>
+<td>16.68</td>
+<td>97</td>
+<td>50.6</td>
+<td></td>
+<td>23.28</td>
+<td>160.8</td>
+<td>52.35</td>
+<td>96</td>
+</tr>
+<tr>
+<td>84</td>
+<td>תחנת הכוח אורות רבין</td>
+<td>2023</td>
+<td></td>
+<td>12</td>
+<td></td>
+<td>39.21</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>84</td>
+<td>תחנת הכוח אורות רבין</td>
+<td>2024</td>
+<td></td>
+<td>92</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>84</td>
+<td>תחנת הכוח אורות רבין</td>
+<td>2025</td>
+<td>13.91</td>
+<td>96</td>
+<td>52.2</td>
+<td>46.24</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>85</td>
+<td>לוזית</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>6.91</td>
+<td>222.0</td>
+<td>59.73</td>
+<td>91</td>
+</tr>
+<tr>
+<td>85</td>
+<td>לוזית</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>5.97</td>
+<td>245.7</td>
+<td>61.42</td>
+<td>91</td>
+</tr>
+<tr>
+<td>85</td>
+<td>לוזית</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>6.18</td>
+<td>259.8</td>
+<td>62.46</td>
+<td>91</td>
+</tr>
+<tr>
+<td>86</td>
+<td>נווה שאנן</td>
+<td>2023</td>
+<td>13.02</td>
+<td>100</td>
+<td>31.6</td>
+<td>27.04</td>
+<td>10.87</td>
+<td>117.3</td>
+<td>49.53</td>
+<td>96</td>
+</tr>
+<tr>
+<td>86</td>
+<td>נווה שאנן</td>
+<td>2024</td>
+<td>12.02</td>
+<td>94</td>
+<td>25.9</td>
+<td>26.15</td>
+<td>9.81</td>
+<td>149.5</td>
+<td>52.39</td>
+<td>95</td>
+</tr>
+<tr>
+<td>86</td>
+<td>נווה שאנן</td>
+<td>2025</td>
+<td>11.90</td>
+<td>95</td>
+<td>24.1</td>
+<td>25.54</td>
+<td>10.23</td>
+<td>176.3</td>
+<td>54.56</td>
+<td>94</td>
+</tr>
+<tr>
+<td>87</td>
+<td>נשר</td>
+<td>2023</td>
+<td>13.55</td>
+<td>98</td>
+<td>33.9</td>
+<td>25.69</td>
+<td>12.51</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>87</td>
+<td>נשר</td>
+<td>2024</td>
+<td>13.51</td>
+<td>98</td>
+<td>31.2</td>
+<td>28.60</td>
+<td>11.43</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>87</td>
+<td>נשר</td>
+<td>2025</td>
+<td>13.52</td>
+<td>93</td>
+<td>34.2</td>
+<td>28.39</td>
+<td>12.49</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>88</td>
+<td>מרכז העיר</td>
+<td>2023</td>
+<td>16.99</td>
+<td>95</td>
+<td>58.2</td>
+<td>36.08</td>
+<td>9.38</td>
+<td>132.2</td>
+<td>50.73</td>
+<td>96</td>
+</tr>
+<tr>
+<td>88</td>
+<td>מרכז העיר</td>
+<td>2024</td>
+<td>16.10</td>
+<td>90</td>
+<td>50.9</td>
+<td>33.44</td>
+<td>9.57</td>
+<td>202.7</td>
+<td>56.62</td>
+<td>95</td>
+</tr>
+<tr>
+<td>88</td>
+<td>מרכז העיר</td>
+<td>2025</td>
+<td></td>
+<td>66</td>
+<td></td>
+<td></td>
+<td>12.06</td>
+<td>142.4</td>
+<td>53.06</td>
+<td>91</td>
+</tr>
+<tr>
+<td>90</td>
+<td>אינשטיין</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>9.03</td>
+<td>81.1</td>
+<td>48.14</td>
+<td>84</td>
+</tr>
+<tr>
+<td>90</td>
+<td>אינשטיין</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>8.51</td>
+<td>139.9</td>
+<td>52.81</td>
+<td>90</td>
+</tr>
+<tr>
+<td>90</td>
+<td>אינשטיין</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>8.69</td>
+<td>187.3</td>
+<td>53.02</td>
+<td>92</td>
+</tr>
+<tr>
+<td>92</td>
+<td>קריית ים</td>
+<td>2023</td>
+<td>16.16</td>
+<td>96</td>
+<td>55.3</td>
+<td></td>
+<td>13.96</td>
+<td>164.6</td>
+<td>51.86</td>
+<td>84</td>
+</tr>
+<tr>
+<td>92</td>
+<td>קריית ים</td>
+<td>2024</td>
+<td>15.14</td>
+<td>85</td>
+<td>40.5</td>
+<td></td>
+<td>15.81</td>
+<td>191.5</td>
+<td>52.08</td>
+<td>91</td>
+</tr>
+<tr>
+<td>92</td>
+<td>קריית ים</td>
+<td>2025</td>
+<td>15.66</td>
+<td>96</td>
+<td>46.6</td>
+<td></td>
+<td>14.68</td>
+<td>143.2</td>
+<td>51.43</td>
+<td>91</td>
+</tr>
+<tr>
+<td>93</td>
+<td>קריית שפרינצק</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>7.21</td>
+<td>123.7</td>
+<td>48.89</td>
+<td>95</td>
+</tr>
+<tr>
+<td>93</td>
+<td>קריית שפרינצק</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>6.87</td>
+<td>158.5</td>
+<td>51.67</td>
+<td>95</td>
+</tr>
+<tr>
+<td>93</td>
+<td>קריית שפרינצק</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>7.53</td>
+<td>125.4</td>
+<td>49.32</td>
+<td>95</td>
+</tr>
+<tr>
+<td>96</td>
+<td>צ'ק פוסט</td>
+<td>2023</td>
+<td>17.30</td>
+<td>95</td>
+<td>61.1</td>
+<td>37.74</td>
+<td>15.67</td>
+<td>80.9</td>
+<td>44.89</td>
+<td>96</td>
+</tr>
+<tr>
+<td>96</td>
+<td>צ'ק פוסט</td>
+<td>2024</td>
+<td>16.51</td>
+<td>75</td>
+<td>49.8</td>
+<td>35.67</td>
+<td>15.23</td>
+<td>122.0</td>
+<td>51.44</td>
+<td>96</td>
+</tr>
+<tr>
+<td>96</td>
+<td>צ'ק פוסט</td>
+<td>2025</td>
+<td>19.31</td>
+<td>89</td>
+<td>69.4</td>
+<td>35.83</td>
+<td>17.58</td>
+<td>150.8</td>
+<td>54.08</td>
+<td>96</td>
+</tr>
+<tr>
+<td>97</td>
+<td>קריית בנימין</td>
+<td>2023</td>
+<td>13.73</td>
+<td>96</td>
+<td>36.3</td>
+<td>30.07</td>
+<td>8.90</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>97</td>
+<td>קריית בנימין</td>
+<td>2024</td>
+<td>13.92</td>
+<td>98</td>
+<td>38.7</td>
+<td>28.97</td>
+<td>7.37</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>97</td>
+<td>קריית בנימין</td>
+<td>2025</td>
+<td>15.32</td>
+<td>96</td>
+<td>41.2</td>
+<td>32.91</td>
+<td>10.96</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>98</td>
+<td>כפר חסידים</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>8.16</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>98</td>
+<td>כפר חסידים</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>8.45</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>98</td>
+<td>כפר חסידים</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>8.82</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>100</td>
+<td>אזור התעשייה</td>
+<td>2023</td>
+<td>19.57</td>
+<td>97</td>
+<td>77.0</td>
+<td></td>
+<td>14.82</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>100</td>
+<td>אזור התעשייה</td>
+<td>2024</td>
+<td>19.97</td>
+<td>100</td>
+<td>71.3</td>
+<td>47.06</td>
+<td>16.25</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>100</td>
+<td>אזור התעשייה</td>
+<td>2025</td>
+<td>17.63</td>
+<td>100</td>
+<td>46.0</td>
+<td>47.13</td>
+<td>16.96</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>102</td>
+<td>אליקים</td>
+<td>2023</td>
+<td></td>
+<td>11</td>
+<td></td>
+<td>30.65</td>
+<td>11.66</td>
+<td>97.4</td>
+<td>47.35</td>
+<td>85</td>
+</tr>
+<tr>
+<td>102</td>
+<td>אליקים</td>
+<td>2024</td>
+<td>13.21</td>
+<td>96</td>
+<td>32.0</td>
+<td></td>
+<td>11.63</td>
+<td>127.4</td>
+<td>50.27</td>
+<td>91</td>
+</tr>
+<tr>
+<td>102</td>
+<td>אליקים</td>
+<td>2025</td>
+<td>12.04</td>
+<td>97</td>
+<td>23.7</td>
+<td></td>
+<td>11.14</td>
+<td>154.4</td>
+<td>52.71</td>
+<td>90</td>
+</tr>
+<tr>
+<td>104</td>
+<td>פרדס חנה</td>
+<td>2023</td>
+<td>19.51</td>
+<td>98</td>
+<td>72.4</td>
+<td></td>
+<td>13.06</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>104</td>
+<td>פרדס חנה</td>
+<td>2024</td>
+<td>15.82</td>
+<td>97</td>
+<td>48.3</td>
+<td></td>
+<td>12.16</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>104</td>
+<td>פרדס חנה</td>
+<td>2025</td>
+<td>16.23</td>
+<td>96</td>
+<td>53.9</td>
+<td></td>
+<td>11.12</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>109</td>
+<td>המעפיל</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>12.85</td>
+<td>150.1</td>
+<td>52.19</td>
+<td>95</td>
+</tr>
+<tr>
+<td>109</td>
+<td>המעפיל</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>11.31</td>
+<td>182.0</td>
+<td>53.91</td>
+<td>95</td>
+</tr>
+<tr>
+<td>109</td>
+<td>המעפיל</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>11.00</td>
+<td>198.0</td>
+<td>54.84</td>
+<td>96</td>
+</tr>
+<tr>
+<td>110</td>
+<td>כרם מהר"ל</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>4.76</td>
+<td>256.3</td>
+<td>56.37</td>
+<td>92</td>
+</tr>
+<tr>
+<td>110</td>
+<td>כרם מהר"ל</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>4.53</td>
+<td>282.8</td>
+<td>61.52</td>
+<td>95</td>
+</tr>
+<tr>
+<td>110</td>
+<td>כרם מהר"ל</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>4.48</td>
+<td>308.8</td>
+<td>62.08</td>
+<td>93</td>
+</tr>
+<tr>
+<td>115</td>
+<td>אזור תעשייה קלה</td>
+<td>2023</td>
+<td>15.70</td>
+<td>92</td>
+<td>45.3</td>
+<td></td>
+<td>17.47</td>
+<td>82.4</td>
+<td>42.69</td>
+<td>97</td>
+</tr>
+<tr>
+<td>115</td>
+<td>אזור תעשייה קלה</td>
+<td>2024</td>
+<td>15.51</td>
+<td>96</td>
+<td>42.5</td>
+<td></td>
+<td>16.90</td>
+<td>112.1</td>
+<td>47.43</td>
+<td>97</td>
+</tr>
+<tr>
+<td>115</td>
+<td>אזור תעשייה קלה</td>
+<td>2025</td>
+<td>15.54</td>
+<td>96</td>
+<td>38.5</td>
+<td></td>
+<td>19.54</td>
+<td>88.6</td>
+<td>47.68</td>
+<td>97</td>
+</tr>
+<tr>
+<td>116</td>
+<td>גן יבנה</td>
+<td>2023</td>
+<td>16.17</td>
+<td>91</td>
+<td>47.2</td>
+<td></td>
+<td>17.32</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>116</td>
+<td>גן יבנה</td>
+<td>2024</td>
+<td></td>
+<td>85</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>116</td>
+<td>גן יבנה</td>
+<td>2025</td>
+<td>17.82</td>
+<td>94</td>
+<td>53.0</td>
+<td></td>
+<td>15.84</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>122</td>
+<td>יד בנימין</td>
+<td>2023</td>
+<td>16.20</td>
+<td>98</td>
+<td>51.0</td>
+<td></td>
+<td>12.90</td>
+<td></td>
+<td></td>
+<td>99</td>
+</tr>
+<tr>
+<td>122</td>
+<td>יד בנימין</td>
+<td>2024</td>
+<td>16.79</td>
+<td>99</td>
+<td>54.0</td>
+<td></td>
+<td>12.57</td>
+<td></td>
+<td></td>
+<td>91</td>
+</tr>
+<tr>
+<td>122</td>
+<td>יד בנימין</td>
+<td>2025</td>
+<td>17.57</td>
+<td>97</td>
+<td>59.8</td>
+<td></td>
+<td>14.74</td>
+<td></td>
+<td></td>
+<td>97</td>
+</tr>
+<tr>
+<td>123</td>
+<td>גן הוורדים</td>
+<td>2023</td>
+<td>17.13</td>
+<td>96</td>
+<td>54.8</td>
+<td></td>
+<td>14.71</td>
+<td>175.7</td>
+<td>50.73</td>
+<td>87</td>
+</tr>
+<tr>
+<td>123</td>
+<td>גן הוורדים</td>
+<td>2024</td>
+<td>15.56</td>
+<td>98</td>
+<td>44.4</td>
+<td></td>
+<td>12.05</td>
+<td>198.6</td>
+<td>51.04</td>
+<td>88</td>
+</tr>
+<tr>
+<td>123</td>
+<td>גן הוורדים</td>
+<td>2025</td>
+<td>15.81</td>
+<td>98</td>
+<td>46.5</td>
+<td></td>
+<td>12.27</td>
+<td>214.0</td>
+<td>53.74</td>
+<td>94</td>
+</tr>
+<tr>
+<td>124</td>
+<td>קריית גת</td>
+<td>2023</td>
+<td>16.43</td>
+<td>98</td>
+<td>52.2</td>
+<td></td>
+<td>12.61</td>
+<td>204.5</td>
+<td>58.19</td>
+<td>98</td>
+</tr>
+<tr>
+<td>124</td>
+<td>קריית גת</td>
+<td>2024</td>
+<td>17.35</td>
+<td>94</td>
+<td>55.1</td>
+<td></td>
+<td>11.37</td>
+<td>243.7</td>
+<td>60.99</td>
+<td>98</td>
+</tr>
+<tr>
+<td>124</td>
+<td>קריית גת</td>
+<td>2025</td>
+<td>17.59</td>
+<td>95</td>
+<td>58.0</td>
+<td></td>
+<td>12.33</td>
+<td>271.1</td>
+<td>63.82</td>
+<td>96</td>
+</tr>
+<tr>
+<td>125</td>
+<td>קריית מלאכי</td>
+<td>2023</td>
+<td>16.84</td>
+<td>98</td>
+<td>53.4</td>
+<td></td>
+<td>13.68</td>
+<td>178.3</td>
+<td>53.30</td>
+<td>96</td>
+</tr>
+<tr>
+<td>125</td>
+<td>קריית מלאכי</td>
+<td>2024</td>
+<td>16.18</td>
+<td>98</td>
+<td>52.6</td>
+<td></td>
+<td>12.26</td>
+<td>165.1</td>
+<td>52.43</td>
+<td>95</td>
+</tr>
+<tr>
+<td>125</td>
+<td>קריית מלאכי</td>
+<td>2025</td>
+<td>15.93</td>
+<td>99</td>
+<td>45.6</td>
+<td></td>
+<td>11.90</td>
+<td>178.4</td>
+<td>53.98</td>
+<td>98</td>
+</tr>
+<tr>
+<td>126</td>
+<td>שדרות</td>
+<td>2023</td>
+<td>16.41</td>
+<td>94</td>
+<td>48.4</td>
+<td></td>
+<td>10.58</td>
+<td>233.0</td>
+<td>57.73</td>
+<td>93</td>
+</tr>
+<tr>
+<td>126</td>
+<td>שדרות</td>
+<td>2024</td>
+<td></td>
+<td>4</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>4</td>
+</tr>
+<tr>
+<td>127</td>
+<td>גברעם</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>6.98</td>
+<td>167.2</td>
+<td>51.89</td>
+<td>95</td>
+</tr>
+<tr>
+<td>127</td>
+<td>גברעם</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>6.00</td>
+<td>209.2</td>
+<td>55.96</td>
+<td>93</td>
+</tr>
+<tr>
+<td>127</td>
+<td>גברעם</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>6.61</td>
+<td>182.0</td>
+<td>53.33</td>
+<td>94</td>
+</tr>
+<tr>
+<td>128</td>
+<td>שדה יואב</td>
+<td>2023</td>
+<td>15.78</td>
+<td>97</td>
+<td>43.0</td>
+<td></td>
+<td>8.58</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>128</td>
+<td>שדה יואב</td>
+<td>2024</td>
+<td>15.60</td>
+<td>91</td>
+<td>43.1</td>
+<td></td>
+<td>7.20</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>128</td>
+<td>שדה יואב</td>
+<td>2025</td>
+<td>14.90</td>
+<td>97</td>
+<td>38.4</td>
+<td></td>
+<td>7.76</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>129</td>
+<td>ניר ישראל</td>
+<td>2023</td>
+<td>16.51</td>
+<td>98</td>
+<td>47.3</td>
+<td></td>
+<td>9.54</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>129</td>
+<td>ניר ישראל</td>
+<td>2024</td>
+<td></td>
+<td>51</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>130</td>
+<td>כרמיה</td>
+<td>2023</td>
+<td>18.12</td>
+<td>95</td>
+<td>56.9</td>
+<td></td>
+<td>14.60</td>
+<td>124.7</td>
+<td>48.80</td>
+<td>91</td>
+</tr>
+<tr>
+<td>130</td>
+<td>כרמיה</td>
+<td>2024</td>
+<td>17.31</td>
+<td>88</td>
+<td>58.9</td>
+<td></td>
+<td>13.19</td>
+<td>112.7</td>
+<td>45.69</td>
+<td>93</td>
+</tr>
+<tr>
+<td>130</td>
+<td>כרמיה</td>
+<td>2025</td>
+<td>16.15</td>
+<td>99</td>
+<td>48.6</td>
+<td></td>
+<td>10.90</td>
+<td>107.9</td>
+<td>46.18</td>
+<td>97</td>
+</tr>
+<tr>
+<td>131</td>
+<td>ארז</td>
+<td>2023</td>
+<td>16.57</td>
+<td>99</td>
+<td>48.5</td>
+<td></td>
+<td>9.28</td>
+<td>211.5</td>
+<td>55.45</td>
+<td>98</td>
+</tr>
+<tr>
+<td>131</td>
+<td>ארז</td>
+<td>2024</td>
+<td>15.10</td>
+<td>96</td>
+<td>40.8</td>
+<td></td>
+<td>8.00</td>
+<td>219.6</td>
+<td>55.13</td>
+<td>99</td>
+</tr>
+<tr>
+<td>131</td>
+<td>ארז</td>
+<td>2025</td>
+<td>16.62</td>
+<td>91</td>
+<td>50.9</td>
+<td></td>
+<td>9.54</td>
+<td>173.2</td>
+<td>53.43</td>
+<td>97</td>
+</tr>
+<tr>
+<td>136</td>
+<td>אחוזה</td>
+<td>2023</td>
+<td>13.86</td>
+<td>99</td>
+<td>35.4</td>
+<td>28.98</td>
+<td>9.03</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>136</td>
+<td>אחוזה</td>
+<td>2024</td>
+<td>12.86</td>
+<td>97</td>
+<td>29.0</td>
+<td>27.19</td>
+<td>9.32</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>136</td>
+<td>אחוזה</td>
+<td>2025</td>
+<td>12.58</td>
+<td>96</td>
+<td>28.7</td>
+<td>26.87</td>
+<td>10.66</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>137</td>
+<td>קריית טבעון</td>
+<td>2023</td>
+<td>15.35</td>
+<td>99</td>
+<td>45.3</td>
+<td>27.84</td>
+<td>6.82</td>
+<td>117.3</td>
+<td>51.02</td>
+<td>95</td>
+</tr>
+<tr>
+<td>137</td>
+<td>קריית טבעון</td>
+<td>2024</td>
+<td>14.19</td>
+<td>97</td>
+<td>33.0</td>
+<td>28.77</td>
+<td>8.58</td>
+<td>107.0</td>
+<td>51.53</td>
+<td>96</td>
+</tr>
+<tr>
+<td>137</td>
+<td>קריית טבעון</td>
+<td>2025</td>
+<td>14.58</td>
+<td>99</td>
+<td>37.3</td>
+<td>29.62</td>
+<td>9.44</td>
+<td>162.9</td>
+<td>55.16</td>
+<td>96</td>
+</tr>
+<tr>
+<td>139</td>
+<td>רחוב הרצל</td>
+<td>2023</td>
+<td>18.42</td>
+<td>97</td>
+<td>60.5</td>
+<td></td>
+<td>31.22</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>139</td>
+<td>רחוב הרצל</td>
+<td>2024</td>
+<td>15.78</td>
+<td>99</td>
+<td>50.7</td>
+<td></td>
+<td>28.87</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>139</td>
+<td>רחוב הרצל</td>
+<td>2025</td>
+<td>16.07</td>
+<td>96</td>
+<td>47.9</td>
+<td></td>
+<td>29.58</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>154</td>
+<td>רחוב אחוזה</td>
+<td>2023</td>
+<td>17.84</td>
+<td>94</td>
+<td>62.8</td>
+<td></td>
+<td>20.89</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>154</td>
+<td>רחוב אחוזה</td>
+<td>2024</td>
+<td>16.04</td>
+<td>95</td>
+<td>46.9</td>
+<td></td>
+<td>20.58</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>154</td>
+<td>רחוב אחוזה</td>
+<td>2025</td>
+<td>15.86</td>
+<td>96</td>
+<td>48.3</td>
+<td></td>
+<td>19.90</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>158</td>
+<td>נגב מזרחי</td>
+<td>2023</td>
+<td>20.54</td>
+<td>93</td>
+<td>69.4</td>
+<td>54.27</td>
+<td>8.08</td>
+<td>236.2</td>
+<td>62.13</td>
+<td>98</td>
+</tr>
+<tr>
+<td>158</td>
+<td>נגב מזרחי</td>
+<td>2024</td>
+<td>13.52</td>
+<td>95</td>
+<td>27.5</td>
+<td>50.16</td>
+<td>7.52</td>
+<td>222.0</td>
+<td>63.10</td>
+<td>99</td>
+</tr>
+<tr>
+<td>158</td>
+<td>נגב מזרחי</td>
+<td>2025</td>
+<td>13.97</td>
+<td>97</td>
+<td>34.5</td>
+<td>45.36</td>
+<td>7.76</td>
+<td>244.0</td>
+<td>63.77</td>
+<td>98</td>
+</tr>
+<tr>
+<td>160</td>
+<td>שמשון</td>
+<td>2023</td>
+<td>16.69</td>
+<td>100</td>
+<td>47.9</td>
+<td></td>
+<td>9.35</td>
+<td>221.9</td>
+<td>53.73</td>
+<td>95</td>
+</tr>
+<tr>
+<td>160</td>
+<td>שמשון</td>
+<td>2024</td>
+<td>14.77</td>
+<td>96</td>
+<td>36.5</td>
+<td></td>
+<td>8.18</td>
+<td>209.7</td>
+<td>51.73</td>
+<td>94</td>
+</tr>
+<tr>
+<td>160</td>
+<td>שמשון</td>
+<td>2025</td>
+<td>14.11</td>
+<td>97</td>
+<td>36.0</td>
+<td></td>
+<td>8.19</td>
+<td>228.3</td>
+<td>53.83</td>
+<td>94</td>
+</tr>
+<tr>
+<td>170</td>
+<td>רחוב יפת</td>
+<td>2023</td>
+<td></td>
+<td>77</td>
+<td></td>
+<td></td>
+<td>21.52</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>170</td>
+<td>רחוב יפת</td>
+<td>2024</td>
+<td>15.17</td>
+<td>96</td>
+<td>41.0</td>
+<td></td>
+<td>20.98</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>170</td>
+<td>רחוב יפת</td>
+<td>2025</td>
+<td>14.69</td>
+<td>97</td>
+<td>36.5</td>
+<td></td>
+<td>21.12</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>183</td>
+<td>נחל אשלים</td>
+<td>2023</td>
+<td>17.21</td>
+<td>95</td>
+<td>56.8</td>
+<td></td>
+<td>1.80</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>183</td>
+<td>נחל אשלים</td>
+<td>2024</td>
+<td>18.07</td>
+<td>98</td>
+<td>61.7</td>
+<td></td>
+<td>3.33</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>183</td>
+<td>נחל אשלים</td>
+<td>2025</td>
+<td>19.22</td>
+<td>96</td>
+<td>70.4</td>
+<td></td>
+<td>5.09</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>184</td>
+<td>נאות הכיכר</td>
+<td>2023</td>
+<td>15.56</td>
+<td>97</td>
+<td>44.6</td>
+<td></td>
+<td>3.78</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>184</td>
+<td>נאות הכיכר</td>
+<td>2024</td>
+<td>12.60</td>
+<td>99</td>
+<td>26.2</td>
+<td></td>
+<td>3.18</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>184</td>
+<td>נאות הכיכר</td>
+<td>2025</td>
+<td>18.84</td>
+<td>95</td>
+<td>72.6</td>
+<td></td>
+<td>5.39</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>185</td>
+<td>נאות חובב מרכזית</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>9.25</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>185</td>
+<td>נאות חובב מרכזית</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>8.87</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>185</td>
+<td>נאות חובב מרכזית</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>7.86</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>189</td>
+<td>עצמאות חיפה</td>
+<td>2023</td>
+<td>17.57</td>
+<td>93</td>
+<td>63.5</td>
+<td></td>
+<td>28.58</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>189</td>
+<td>עצמאות חיפה</td>
+<td>2024</td>
+<td>16.53</td>
+<td>97</td>
+<td>49.4</td>
+<td></td>
+<td>28.49</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>189</td>
+<td>עצמאות חיפה</td>
+<td>2025</td>
+<td>15.58</td>
+<td>97</td>
+<td>47.1</td>
+<td></td>
+<td>31.12</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>193</td>
+<td>רוממה</td>
+<td>2023</td>
+<td>12.86</td>
+<td>96</td>
+<td>29.8</td>
+<td></td>
+<td>22.88</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>193</td>
+<td>רוממה</td>
+<td>2024</td>
+<td>11.33</td>
+<td>91</td>
+<td>21.1</td>
+<td></td>
+<td>19.10</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>193</td>
+<td>רוממה</td>
+<td>2025</td>
+<td>10.36</td>
+<td>94</td>
+<td>17.1</td>
+<td></td>
+<td>18.84</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>306</td>
+<td>מבקיעים</td>
+<td>2023</td>
+<td>15.51</td>
+<td>94</td>
+<td>41.6</td>
+<td></td>
+<td>9.98</td>
+<td>189.0</td>
+<td>51.93</td>
+<td>90</td>
+</tr>
+<tr>
+<td>306</td>
+<td>מבקיעים</td>
+<td>2024</td>
+<td>14.84</td>
+<td>96</td>
+<td>41.0</td>
+<td></td>
+<td>8.35</td>
+<td>117.5</td>
+<td>47.48</td>
+<td>92</td>
+</tr>
+<tr>
+<td>306</td>
+<td>מבקיעים</td>
+<td>2025</td>
+<td>15.17</td>
+<td>99</td>
+<td>37.3</td>
+<td></td>
+<td>9.29</td>
+<td>104.6</td>
+<td>51.19</td>
+<td>94</td>
+</tr>
+<tr>
+<td>309</td>
+<td>אום אל קוטוף</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td>39.73</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>309</td>
+<td>אום אל קוטוף</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td>49.00</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>309</td>
+<td>אום אל קוטוף</td>
+<td>2025</td>
+<td></td>
+<td>2</td>
+<td></td>
+<td>46.23</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>326</td>
+<td>כפר מסריק החדשה</td>
+<td>2023</td>
+<td>17.93</td>
+<td>89</td>
+<td>66.9</td>
+<td></td>
+<td>12.89</td>
+<td>155.1</td>
+<td>49.88</td>
+<td>95</td>
+</tr>
+<tr>
+<td>326</td>
+<td>כפר מסריק החדשה</td>
+<td>2024</td>
+<td>17.32</td>
+<td>91</td>
+<td>60.0</td>
+<td></td>
+<td>11.98</td>
+<td>173.0</td>
+<td>57.82</td>
+<td>87</td>
+</tr>
+<tr>
+<td>326</td>
+<td>כפר מסריק החדשה</td>
+<td>2025</td>
+<td>15.55</td>
+<td>99</td>
+<td>45.3</td>
+<td></td>
+<td>13.71</td>
+<td>198.2</td>
+<td>54.04</td>
+<td>95</td>
+</tr>
+<tr>
+<td>328</td>
+<td>אזור תעשייה עטרות</td>
+<td>2023</td>
+<td>24.73</td>
+<td>91</td>
+<td>76.4</td>
+<td>129.13</td>
+<td>32.35</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>328</td>
+<td>אזור תעשייה עטרות</td>
+<td>2024</td>
+<td>21.93</td>
+<td>98</td>
+<td>68.8</td>
+<td>122.39</td>
+<td>28.07</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>328</td>
+<td>אזור תעשייה עטרות</td>
+<td>2025</td>
+<td>22.64</td>
+<td>97</td>
+<td>67.6</td>
+<td>103.81</td>
+<td>32.34</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>331</td>
+<td>שכונת ההרחבה</td>
+<td>2023</td>
+<td>14.73</td>
+<td>99</td>
+<td>36.8</td>
+<td></td>
+<td>7.87</td>
+<td>198.2</td>
+<td>57.18</td>
+<td>99</td>
+</tr>
+<tr>
+<td>331</td>
+<td>שכונת ההרחבה</td>
+<td>2024</td>
+<td>14.60</td>
+<td>98</td>
+<td>39.8</td>
+<td></td>
+<td>6.33</td>
+<td>150.9</td>
+<td>54.76</td>
+<td>96</td>
+</tr>
+<tr>
+<td>331</td>
+<td>שכונת ההרחבה</td>
+<td>2025</td>
+<td>13.47</td>
+<td>98</td>
+<td>33.8</td>
+<td></td>
+<td>8.19</td>
+<td>124.1</td>
+<td>54.16</td>
+<td>94</td>
+</tr>
+<tr>
+<td>338</td>
+<td>יד רמב"ם החדשה</td>
+<td>2023</td>
+<td>18.45</td>
+<td>98</td>
+<td>60.8</td>
+<td>45.41</td>
+<td>13.75</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>338</td>
+<td>יד רמב"ם החדשה</td>
+<td>2024</td>
+<td>17.44</td>
+<td>97</td>
+<td>58.0</td>
+<td>43.82</td>
+<td>11.69</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>338</td>
+<td>יד רמב"ם החדשה</td>
+<td>2025</td>
+<td>18.03</td>
+<td>97</td>
+<td>60.5</td>
+<td>41.70</td>
+<td>11.42</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>341</td>
+<td>כפר הנוער שפיה</td>
+<td>2023</td>
+<td>15.28</td>
+<td>90</td>
+<td>45.1</td>
+<td>29.46</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>341</td>
+<td>כפר הנוער שפיה</td>
+<td>2024</td>
+<td>14.20</td>
+<td>96</td>
+<td>38.5</td>
+<td>31.37</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>341</td>
+<td>כפר הנוער שפיה</td>
+<td>2025</td>
+<td>13.54</td>
+<td>97</td>
+<td>38.5</td>
+<td>28.95</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>346</td>
+<td>תחנת רכבת השלום</td>
+<td>2023</td>
+<td>31.50</td>
+<td>98</td>
+<td>95.3</td>
+<td></td>
+<td>100.47</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>346</td>
+<td>תחנת רכבת השלום</td>
+<td>2024</td>
+<td>27.43</td>
+<td>99</td>
+<td>90.8</td>
+<td></td>
+<td>82.24</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>346</td>
+<td>תחנת רכבת השלום</td>
+<td>2025</td>
+<td>28.89</td>
+<td>97</td>
+<td>91.4</td>
+<td></td>
+<td>77.30</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>357</td>
+<td>בני עטרות</td>
+<td>2023</td>
+<td>23.57</td>
+<td>93</td>
+<td>88.4</td>
+<td></td>
+<td>15.61</td>
+<td>251.5</td>
+<td>65.76</td>
+<td>93</td>
+</tr>
+<tr>
+<td>357</td>
+<td>בני עטרות</td>
+<td>2024</td>
+<td>19.09</td>
+<td>89</td>
+<td>65.6</td>
+<td></td>
+<td>14.87</td>
+<td>261.8</td>
+<td>68.75</td>
+<td>92</td>
+</tr>
+<tr>
+<td>357</td>
+<td>בני עטרות</td>
+<td>2025</td>
+<td>20.73</td>
+<td>98</td>
+<td>81.6</td>
+<td></td>
+<td>15.72</td>
+<td>307.3</td>
+<td>74.81</td>
+<td>93</td>
+</tr>
+<tr>
+<td>365</td>
+<td>בני דרום</td>
+<td>2023</td>
+<td>16.55</td>
+<td>98</td>
+<td>52.5</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>365</td>
+<td>בני דרום</td>
+<td>2024</td>
+<td>16.01</td>
+<td>97</td>
+<td>49.0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>365</td>
+<td>בני דרום</td>
+<td>2025</td>
+<td>15.28</td>
+<td>98</td>
+<td>42.1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>367</td>
+<td>בית חשמונאי</td>
+<td>2023</td>
+<td>19.31</td>
+<td>99</td>
+<td>66.6</td>
+<td>51.30</td>
+<td>13.35</td>
+<td>168.4</td>
+<td>58.09</td>
+<td>93</td>
+</tr>
+<tr>
+<td>367</td>
+<td>בית חשמונאי</td>
+<td>2024</td>
+<td>15.67</td>
+<td>99</td>
+<td>43.6</td>
+<td>42.03</td>
+<td>12.01</td>
+<td>218.4</td>
+<td>65.33</td>
+<td>91</td>
+</tr>
+<tr>
+<td>367</td>
+<td>בית חשמונאי</td>
+<td>2025</td>
+<td>17.81</td>
+<td>100</td>
+<td>57.3</td>
+<td>41.47</td>
+<td>13.50</td>
+<td>215.2</td>
+<td>61.54</td>
+<td>93</td>
+</tr>
+<tr>
+<td>371</td>
+<td>אור יהודה</td>
+<td>2023</td>
+<td>26.80</td>
+<td>97</td>
+<td>89.7</td>
+<td></td>
+<td>16.37</td>
+<td>293.1</td>
+<td>68.40</td>
+<td>93</td>
+</tr>
+<tr>
+<td>371</td>
+<td>אור יהודה</td>
+<td>2024</td>
+<td>21.92</td>
+<td>97</td>
+<td>80.8</td>
+<td></td>
+<td>13.60</td>
+<td>308.2</td>
+<td>72.46</td>
+<td>92</td>
+</tr>
+<tr>
+<td>371</td>
+<td>אור יהודה</td>
+<td>2025</td>
+<td>22.60</td>
+<td>97</td>
+<td>86.4</td>
+<td></td>
+<td>16.63</td>
+<td>323.6</td>
+<td>76.88</td>
+<td>94</td>
+</tr>
+<tr>
+<td>377</td>
+<td>בית ספר גולדווטר</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>8.24</td>
+<td>220.0</td>
+<td>56.74</td>
+<td>91</td>
+</tr>
+<tr>
+<td>377</td>
+<td>בית ספר גולדווטר</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>7.24</td>
+<td>221.1</td>
+<td>66.51</td>
+<td>81</td>
+</tr>
+<tr>
+<td>377</td>
+<td>בית ספר גולדווטר</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>7.04</td>
+<td>286.5</td>
+<td>65.14</td>
+<td>82</td>
+</tr>
+<tr>
+<td>378</td>
+<td>קציר</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td>39.58</td>
+<td>7.93</td>
+<td>221.1</td>
+<td>56.29</td>
+<td>93</td>
+</tr>
+<tr>
+<td>378</td>
+<td>קציר</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td>37.49</td>
+<td>7.64</td>
+<td>244.0</td>
+<td>57.82</td>
+<td>93</td>
+</tr>
+<tr>
+<td>378</td>
+<td>קציר</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td>35.14</td>
+<td>7.23</td>
+<td>263.4</td>
+<td>60.06</td>
+<td>92</td>
+</tr>
+<tr>
+<td>380</td>
+<td>דרום</td>
+<td>2023</td>
+<td>16.65</td>
+<td>93</td>
+<td>55.9</td>
+<td>33.70</td>
+<td>14.19</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>380</td>
+<td>דרום</td>
+<td>2024</td>
+<td>16.45</td>
+<td>86</td>
+<td>50.3</td>
+<td>33.55</td>
+<td>14.57</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>380</td>
+<td>דרום</td>
+<td>2025</td>
+<td></td>
+<td>72</td>
+<td></td>
+<td></td>
+<td>15.74</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>382</td>
+<td>נווה גנים</td>
+<td>2023</td>
+<td>18.79</td>
+<td>97</td>
+<td>69.7</td>
+<td>38.75</td>
+<td>12.61</td>
+<td>116.7</td>
+<td>50.06</td>
+<td>92</td>
+</tr>
+<tr>
+<td>382</td>
+<td>נווה גנים</td>
+<td>2024</td>
+<td>15.68</td>
+<td>93</td>
+<td>45.6</td>
+<td>32.88</td>
+<td>11.64</td>
+<td>162.8</td>
+<td>50.33</td>
+<td>95</td>
+</tr>
+<tr>
+<td>382</td>
+<td>נווה גנים</td>
+<td>2025</td>
+<td></td>
+<td>69</td>
+<td></td>
+<td></td>
+<td>14.66</td>
+<td>139.2</td>
+<td>52.67</td>
+<td>93</td>
+</tr>
+<tr>
+<td>383</td>
+<td>רובע ט"ו החדשה</td>
+<td>2023</td>
+<td>15.57</td>
+<td>96</td>
+<td>45.9</td>
+<td></td>
+<td>12.71</td>
+<td>77.5</td>
+<td>43.92</td>
+<td>95</td>
+</tr>
+<tr>
+<td>383</td>
+<td>רובע ט"ו החדשה</td>
+<td>2024</td>
+<td>14.73</td>
+<td>93</td>
+<td>41.1</td>
+<td></td>
+<td>13.19</td>
+<td>99.3</td>
+<td>45.86</td>
+<td>95</td>
+</tr>
+<tr>
+<td>383</td>
+<td>רובע ט"ו החדשה</td>
+<td>2025</td>
+<td>14.60</td>
+<td>92</td>
+<td>37.5</td>
+<td></td>
+<td>14.03</td>
+<td>184.1</td>
+<td>53.08</td>
+<td>94</td>
+</tr>
+<tr>
+<td>384</td>
+<td>תחנת רכבת ההגנה</td>
+<td>2023</td>
+<td>27.64</td>
+<td>93</td>
+<td>96.1</td>
+<td></td>
+<td>61.83</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>384</td>
+<td>תחנת רכבת ההגנה</td>
+<td>2024</td>
+<td>24.10</td>
+<td>99</td>
+<td>87.8</td>
+<td></td>
+<td>57.13</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>384</td>
+<td>תחנת רכבת ההגנה</td>
+<td>2025</td>
+<td>26.68</td>
+<td>95</td>
+<td>93.5</td>
+<td></td>
+<td>59.12</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>385</td>
+<td>תחנת רכבת יוספטל</td>
+<td>2023</td>
+<td>26.10</td>
+<td>97</td>
+<td>90.7</td>
+<td></td>
+<td>31.86</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>385</td>
+<td>תחנת רכבת יוספטל</td>
+<td>2024</td>
+<td>21.96</td>
+<td>97</td>
+<td>74.9</td>
+<td></td>
+<td>34.99</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>385</td>
+<td>תחנת רכבת יוספטל</td>
+<td>2025</td>
+<td>27.20</td>
+<td>95</td>
+<td>93.0</td>
+<td></td>
+<td>34.63</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>387</td>
+<td>מכללת תל חי</td>
+<td>2023</td>
+<td>15.14</td>
+<td>96</td>
+<td>48.0</td>
+<td></td>
+<td>10.59</td>
+<td>195.5</td>
+<td>59.05</td>
+<td>98</td>
+</tr>
+<tr>
+<td>387</td>
+<td>מכללת תל חי</td>
+<td>2024</td>
+<td>17.13</td>
+<td>90</td>
+<td>58.2</td>
+<td></td>
+<td>8.73</td>
+<td>179.3</td>
+<td>57.36</td>
+<td>96</td>
+</tr>
+<tr>
+<td>387</td>
+<td>מכללת תל חי</td>
+<td>2025</td>
+<td>14.02</td>
+<td>93</td>
+<td>36.5</td>
+<td></td>
+<td>10.84</td>
+<td>221.2</td>
+<td>57.89</td>
+<td>100</td>
+</tr>
+<tr>
+<td>391</td>
+<td>הרצל - בלפור</td>
+<td>2023</td>
+<td>14.15</td>
+<td>95</td>
+<td>36.8</td>
+<td></td>
+<td>18.67</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>391</td>
+<td>הרצל - בלפור</td>
+<td>2024</td>
+<td>14.25</td>
+<td>96</td>
+<td>38.0</td>
+<td></td>
+<td>19.27</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>391</td>
+<td>הרצל - בלפור</td>
+<td>2025</td>
+<td>14.97</td>
+<td>88</td>
+<td>42.2</td>
+<td></td>
+<td>19.45</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>400</td>
+<td>קטורה</td>
+<td>2023</td>
+<td>16.84</td>
+<td>91</td>
+<td>48.0</td>
+<td></td>
+<td>3.06</td>
+<td>275.6</td>
+<td>63.85</td>
+<td>96</td>
+</tr>
+<tr>
+<td>400</td>
+<td>קטורה</td>
+<td>2024</td>
+<td>14.56</td>
+<td>100</td>
+<td>38.8</td>
+<td></td>
+<td>2.36</td>
+<td>242.0</td>
+<td>64.16</td>
+<td>100</td>
+</tr>
+<tr>
+<td>400</td>
+<td>קטורה</td>
+<td>2025</td>
+<td>14.78</td>
+<td>97</td>
+<td>33.9</td>
+<td></td>
+<td>2.91</td>
+<td>251.7</td>
+<td>61.91</td>
+<td>98</td>
+</tr>
+<tr>
+<td>401</td>
+<td>חפציבה</td>
+<td>2023</td>
+<td>20.43</td>
+<td>97</td>
+<td>83.7</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>401</td>
+<td>חפציבה</td>
+<td>2024</td>
+<td>18.34</td>
+<td>97</td>
+<td>65.4</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>401</td>
+<td>חפציבה</td>
+<td>2025</td>
+<td>18.40</td>
+<td>100</td>
+<td>56.0</td>
+<td>41.52</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>405</td>
+<td>שדרות ירושלים</td>
+<td>2023</td>
+<td>16.37</td>
+<td>98</td>
+<td>50.8</td>
+<td></td>
+<td>22.46</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>405</td>
+<td>שדרות ירושלים</td>
+<td>2024</td>
+<td>15.61</td>
+<td>94</td>
+<td>45.2</td>
+<td></td>
+<td>19.62</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>405</td>
+<td>שדרות ירושלים</td>
+<td>2025</td>
+<td>16.74</td>
+<td>96</td>
+<td>51.0</td>
+<td></td>
+<td>19.34</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>406</td>
+<td>תל אביב יפו -  המשתלה</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>18.26</td>
+<td>109.4</td>
+<td>49.40</td>
+<td>91</td>
+</tr>
+<tr>
+<td>406</td>
+<td>תל אביב יפו -  המשתלה</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>17.03</td>
+<td>108.5</td>
+<td>49.86</td>
+<td>94</td>
+</tr>
+<tr>
+<td>406</td>
+<td>תל אביב יפו -  המשתלה</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>17.25</td>
+<td>147.3</td>
+<td>52.48</td>
+<td>92</td>
+</tr>
+<tr>
+<td>414</td>
+<td>רחוב לוינסקי</td>
+<td>2023</td>
+<td>21.21</td>
+<td>94</td>
+<td>76.5</td>
+<td>51.37</td>
+<td>36.45</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>414</td>
+<td>רחוב לוינסקי</td>
+<td>2024</td>
+<td>19.54</td>
+<td>97</td>
+<td>66.3</td>
+<td>56.47</td>
+<td>31.55</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>414</td>
+<td>רחוב לוינסקי</td>
+<td>2025</td>
+<td>15.49</td>
+<td>99</td>
+<td>38.4</td>
+<td>54.68</td>
+<td>32.35</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>423</td>
+<td>פארק לכיש</td>
+<td>2023</td>
+<td>17.96</td>
+<td>97</td>
+<td>59.9</td>
+<td></td>
+<td>17.27</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>423</td>
+<td>פארק לכיש</td>
+<td>2024</td>
+<td>16.34</td>
+<td>95</td>
+<td>45.8</td>
+<td></td>
+<td>15.76</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>423</td>
+<td>פארק לכיש</td>
+<td>2025</td>
+<td>16.47</td>
+<td>98</td>
+<td>41.5</td>
+<td></td>
+<td>16.14</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>426</td>
+<td>מצפה נטופה</td>
+<td>2023</td>
+<td>13.23</td>
+<td>98</td>
+<td>32.5</td>
+<td>38.25</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>426</td>
+<td>מצפה נטופה</td>
+<td>2024</td>
+<td>13.81</td>
+<td>97</td>
+<td>33.9</td>
+<td>35.57</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>426</td>
+<td>מצפה נטופה</td>
+<td>2025</td>
+<td>13.29</td>
+<td>98</td>
+<td>30.6</td>
+<td>36.91</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>427</td>
+<td>טורעאן החדשה</td>
+<td>2023</td>
+<td>16.75</td>
+<td>95</td>
+<td>50.7</td>
+<td>51.70</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>427</td>
+<td>טורעאן החדשה</td>
+<td>2024</td>
+<td>17.14</td>
+<td>97</td>
+<td>56.5</td>
+<td>48.53</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>427</td>
+<td>טורעאן החדשה</td>
+<td>2025</td>
+<td>17.86</td>
+<td>97</td>
+<td>61.4</td>
+<td>42.27</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>452</td>
+<td>מעיין צבי - איגוד</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>6.17</td>
+<td>129.8</td>
+<td>49.33</td>
+<td>99</td>
+</tr>
+<tr>
+<td>452</td>
+<td>מעיין צבי - איגוד</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>6.67</td>
+<td>108.1</td>
+<td>46.28</td>
+<td>99</td>
+</tr>
+<tr>
+<td>452</td>
+<td>מעיין צבי - איגוד</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>8.12</td>
+<td>196.8</td>
+<td>57.77</td>
+<td>92</td>
+</tr>
+<tr>
+<td>453</td>
+<td>מוזיאון ראלי</td>
+<td>2023</td>
+<td></td>
+<td>79</td>
+<td></td>
+<td></td>
+<td>8.46</td>
+<td>211.3</td>
+<td>52.80</td>
+<td>91</td>
+</tr>
+<tr>
+<td>453</td>
+<td>מוזיאון ראלי</td>
+<td>2024</td>
+<td>15.29</td>
+<td>95</td>
+<td>42.2</td>
+<td></td>
+<td>9.07</td>
+<td>249.8</td>
+<td>58.31</td>
+<td>91</td>
+</tr>
+<tr>
+<td>453</td>
+<td>מוזיאון ראלי</td>
+<td>2025</td>
+<td>11.88</td>
+<td>96</td>
+<td>22.9</td>
+<td></td>
+<td>11.02</td>
+<td>130.6</td>
+<td>54.29</td>
+<td>95</td>
+</tr>
+<tr>
+<td>454</td>
+<td>ברקאי החדשה</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>14.99</td>
+<td>61.5</td>
+<td>41.81</td>
+<td>97</td>
+</tr>
+<tr>
+<td>454</td>
+<td>ברקאי החדשה</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>16.11</td>
+<td>60.3</td>
+<td>47.54</td>
+<td>94</td>
+</tr>
+<tr>
+<td>454</td>
+<td>ברקאי החדשה</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>14.79</td>
+<td>85.9</td>
+<td>49.12</td>
+<td>97</td>
+</tr>
+<tr>
+<td>458</td>
+<td>רחוב דבורה הנביאה</td>
+<td>2023</td>
+<td>13.43</td>
+<td>96</td>
+<td>27.1</td>
+<td></td>
+<td>35.65</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>458</td>
+<td>רחוב דבורה הנביאה</td>
+<td>2024</td>
+<td>13.54</td>
+<td>94</td>
+<td>33.6</td>
+<td></td>
+<td>31.87</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>458</td>
+<td>רחוב דבורה הנביאה</td>
+<td>2025</td>
+<td>17.17</td>
+<td>99</td>
+<td>51.9</td>
+<td></td>
+<td>31.60</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>465</td>
+<td>אלעד</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td>56.18</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>465</td>
+<td>אלעד</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td>50.25</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>465</td>
+<td>אלעד</td>
+<td>2025</td>
+<td>10.96</td>
+<td>88</td>
+<td>22.0</td>
+<td>48.61</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>468</td>
+<td>אביגדור</td>
+<td>2023</td>
+<td>13.58</td>
+<td>97</td>
+<td>29.0</td>
+<td></td>
+<td>10.68</td>
+<td>186.6</td>
+<td>54.50</td>
+<td>95</td>
+</tr>
+<tr>
+<td>468</td>
+<td>אביגדור</td>
+<td>2024</td>
+<td>14.46</td>
+<td>98</td>
+<td>41.2</td>
+<td></td>
+<td>9.18</td>
+<td>146.0</td>
+<td>52.72</td>
+<td>95</td>
+</tr>
+<tr>
+<td>468</td>
+<td>אביגדור</td>
+<td>2025</td>
+<td>14.73</td>
+<td>95</td>
+<td>42.1</td>
+<td></td>
+<td>12.00</td>
+<td>125.9</td>
+<td>51.66</td>
+<td>93</td>
+</tr>
+<tr>
+<td>469</td>
+<td>תימורים</td>
+<td>2023</td>
+<td>14.48</td>
+<td>97</td>
+<td>35.1</td>
+<td></td>
+<td>12.23</td>
+<td>237.1</td>
+<td>60.29</td>
+<td>95</td>
+</tr>
+<tr>
+<td>469</td>
+<td>תימורים</td>
+<td>2024</td>
+<td>14.43</td>
+<td>97</td>
+<td>39.8</td>
+<td></td>
+<td>10.99</td>
+<td>106.6</td>
+<td>44.59</td>
+<td>94</td>
+</tr>
+<tr>
+<td>469</td>
+<td>תימורים</td>
+<td>2025</td>
+<td>13.44</td>
+<td>98</td>
+<td>31.3</td>
+<td></td>
+<td>12.80</td>
+<td>211.2</td>
+<td>60.61</td>
+<td>95</td>
+</tr>
+<tr>
+<td>472</td>
+<td>נחשולים</td>
+<td>2023</td>
+<td>20.46</td>
+<td>88</td>
+<td>81.0</td>
+<td></td>
+<td>6.95</td>
+<td></td>
+<td></td>
+<td>94</td>
+</tr>
+<tr>
+<td>472</td>
+<td>נחשולים</td>
+<td>2024</td>
+<td>13.67</td>
+<td>95</td>
+<td>33.4</td>
+<td></td>
+<td>6.19</td>
+<td></td>
+<td></td>
+<td>97</td>
+</tr>
+<tr>
+<td>472</td>
+<td>נחשולים</td>
+<td>2025</td>
+<td>11.28</td>
+<td>97</td>
+<td>22.0</td>
+<td></td>
+<td>7.12</td>
+<td></td>
+<td></td>
+<td>97</td>
+</tr>
+<tr>
+<td>498</td>
+<td>כפר נופש חיילים</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>9.67</td>
+<td>246.2</td>
+<td>53.77</td>
+<td>93</td>
+</tr>
+<tr>
+<td>498</td>
+<td>כפר נופש חיילים</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>8.18</td>
+<td>259.1</td>
+<td>55.30</td>
+<td>93</td>
+</tr>
+<tr>
+<td>498</td>
+<td>כפר נופש חיילים</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>9.72</td>
+<td>207.2</td>
+<td>52.31</td>
+<td>94</td>
+</tr>
+<tr>
+<td>499</td>
+<td>קרית חיים - מערבית</td>
+<td>2023</td>
+<td>13.88</td>
+<td>97</td>
+<td>36.1</td>
+<td>34.03</td>
+<td>11.50</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>499</td>
+<td>קרית חיים - מערבית</td>
+<td>2024</td>
+<td>15.39</td>
+<td>96</td>
+<td>50.4</td>
+<td>33.76</td>
+<td>13.13</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>499</td>
+<td>קרית חיים - מערבית</td>
+<td>2025</td>
+<td>15.98</td>
+<td>93</td>
+<td>50.9</td>
+<td>37.23</td>
+<td>13.20</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>505</td>
+<td>חריש</td>
+<td>2023</td>
+<td>16.87</td>
+<td>97</td>
+<td>55.8</td>
+<td></td>
+<td>11.67</td>
+<td>229.4</td>
+<td>55.77</td>
+<td>99</td>
+</tr>
+<tr>
+<td>505</td>
+<td>חריש</td>
+<td>2024</td>
+<td>16.06</td>
+<td>98</td>
+<td>48.9</td>
+<td></td>
+<td>11.01</td>
+<td>219.2</td>
+<td>58.75</td>
+<td>90</td>
+</tr>
+<tr>
+<td>505</td>
+<td>חריש</td>
+<td>2025</td>
+<td>15.57</td>
+<td>98</td>
+<td>45.6</td>
+<td></td>
+<td>9.43</td>
+<td>169.4</td>
+<td>56.10</td>
+<td>99</td>
+</tr>
+<tr>
+<td>511</td>
+<td>קבוצת יבנה מערב</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>13.45</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>511</td>
+<td>קבוצת יבנה מערב</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>11.98</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>511</td>
+<td>קבוצת יבנה מערב</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>14.35</td>
+<td></td>
+<td></td>
+<td>67</td>
+</tr>
+<tr>
+<td>513</td>
+<td>שכונת האמנים</td>
+<td>2023</td>
+<td>21.61</td>
+<td>100</td>
+<td>73.7</td>
+<td>55.35</td>
+<td>19.40</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>513</td>
+<td>שכונת האמנים</td>
+<td>2024</td>
+<td>21.91</td>
+<td>99</td>
+<td>76.6</td>
+<td>54.36</td>
+<td>17.18</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>513</td>
+<td>שכונת האמנים</td>
+<td>2025</td>
+<td>21.33</td>
+<td>99</td>
+<td>73.8</td>
+<td>52.75</td>
+<td>18.40</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>515</td>
+<td>נמל המפרץ-רציף 6</td>
+<td>2023</td>
+<td>16.46</td>
+<td>99</td>
+<td>54.3</td>
+<td></td>
+<td>20.78</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>515</td>
+<td>נמל המפרץ-רציף 6</td>
+<td>2024</td>
+<td>14.06</td>
+<td>98</td>
+<td>37.2</td>
+<td></td>
+<td>18.76</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>515</td>
+<td>נמל המפרץ-רציף 6</td>
+<td>2025</td>
+<td>13.58</td>
+<td>82</td>
+<td>31.2</td>
+<td></td>
+<td>19.81</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>528</td>
+<td>nan</td>
+<td>2023</td>
+<td></td>
+<td>0</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>530</td>
+<td>כסייפה</td>
+<td>2023</td>
+<td>18.19</td>
+<td>96</td>
+<td>63.3</td>
+<td>65.04</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>530</td>
+<td>כסייפה</td>
+<td>2024</td>
+<td>17.97</td>
+<td>97</td>
+<td>57.8</td>
+<td>67.66</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>530</td>
+<td>כסייפה</td>
+<td>2025</td>
+<td>17.25</td>
+<td>97</td>
+<td>57.3</td>
+<td>65.30</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>531</td>
+<td>פלוגות</td>
+<td>2023</td>
+<td></td>
+<td>51</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>49</td>
+</tr>
+<tr>
+<td>531</td>
+<td>פלוגות</td>
+<td>2024</td>
+<td></td>
+<td>78</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>72</td>
+</tr>
+<tr>
+<td>531</td>
+<td>פלוגות</td>
+<td>2025</td>
+<td>17.75</td>
+<td>96</td>
+<td>61.3</td>
+<td></td>
+<td>23.90</td>
+<td>162.7</td>
+<td>59.64</td>
+<td>90</td>
+</tr>
+<tr>
+<td>532</td>
+<td>רובע הבנים</td>
+<td>2023</td>
+<td>17.40</td>
+<td>97</td>
+<td>53.1</td>
+<td></td>
+<td>7.37</td>
+<td>214.8</td>
+<td>61.42</td>
+<td>94</td>
+</tr>
+<tr>
+<td>532</td>
+<td>רובע הבנים</td>
+<td>2024</td>
+<td>17.94</td>
+<td>95</td>
+<td>57.4</td>
+<td></td>
+<td>11.56</td>
+<td>242.3</td>
+<td>60.84</td>
+<td>95</td>
+</tr>
+<tr>
+<td>532</td>
+<td>רובע הבנים</td>
+<td>2025</td>
+<td>17.11</td>
+<td>97</td>
+<td>51.3</td>
+<td></td>
+<td>12.62</td>
+<td>202.4</td>
+<td>59.87</td>
+<td>88</td>
+</tr>
+<tr>
+<td>535</td>
+<td>איזור תעשייה צפוני</td>
+<td>2023</td>
+<td>19.85</td>
+<td>97</td>
+<td>73.7</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>535</td>
+<td>איזור תעשייה צפוני</td>
+<td>2024</td>
+<td>23.90</td>
+<td>98</td>
+<td>82.5</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>535</td>
+<td>איזור תעשייה צפוני</td>
+<td>2025</td>
+<td>21.02</td>
+<td>95</td>
+<td>73.9</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>537</td>
+<td>געתון</td>
+<td>2023</td>
+<td></td>
+<td>78</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>537</td>
+<td>געתון</td>
+<td>2024</td>
+<td>14.38</td>
+<td>94</td>
+<td>39.1</td>
+<td>25.86</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>537</td>
+<td>געתון</td>
+<td>2025</td>
+<td>13.82</td>
+<td>97</td>
+<td>32.1</td>
+<td>19.78</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>539</td>
+<td>אחוזת ברק</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>6.74</td>
+<td></td>
+<td></td>
+<td>93</td>
+</tr>
+<tr>
+<td>539</td>
+<td>אחוזת ברק</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>4.66</td>
+<td></td>
+<td></td>
+<td>94</td>
+</tr>
+<tr>
+<td>539</td>
+<td>אחוזת ברק</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>5.24</td>
+<td></td>
+<td></td>
+<td>95</td>
+</tr>
+<tr>
+<td>547</td>
+<td>כביש 16-מחלף בייט</td>
+<td>2023</td>
+<td>13.32</td>
+<td>93</td>
+<td>39.9</td>
+<td>46.78</td>
+<td>17.95</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>547</td>
+<td>כביש 16-מחלף בייט</td>
+<td>2024</td>
+<td>16.77</td>
+<td>96</td>
+<td>54.0</td>
+<td>46.65</td>
+<td>16.67</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>547</td>
+<td>כביש 16-מחלף בייט</td>
+<td>2025</td>
+<td>22.42</td>
+<td>96</td>
+<td>88.3</td>
+<td>54.24</td>
+<td>18.08</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>551</td>
+<td>עין דור החדשה</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>4.98</td>
+<td>186.8</td>
+<td>58.08</td>
+<td>93</td>
+</tr>
+<tr>
+<td>551</td>
+<td>עין דור החדשה</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>4.17</td>
+<td>127.5</td>
+<td>53.30</td>
+<td>94</td>
+</tr>
+<tr>
+<td>551</td>
+<td>עין דור החדשה</td>
+<td>2025</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>4.54</td>
+<td>163.7</td>
+<td>59.45</td>
+<td>85</td>
+</tr>
+<tr>
+<td>563</td>
+<td>כחל חדשה</td>
+<td>2023</td>
+<td></td>
+<td></td>
+<td></td>
+<td>45.45</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>563</td>
+<td>כחל חדשה</td>
+<td>2024</td>
+<td></td>
+<td>33</td>
+<td></td>
+<td>45.79</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>563</td>
+<td>כחל חדשה</td>
+<td>2025</td>
+<td>16.49</td>
+<td>99</td>
+<td>50.8</td>
+<td>42.28</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>567</td>
+<td>ראש העין</td>
+<td>2023</td>
+<td></td>
+<td>63</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>64</td>
+</tr>
+<tr>
+<td>567</td>
+<td>ראש העין</td>
+<td>2024</td>
+<td>15.27</td>
+<td>95</td>
+<td>42.6</td>
+<td></td>
+<td>11.36</td>
+<td>170.9</td>
+<td>57.97</td>
+<td>89</td>
+</tr>
+<tr>
+<td>567</td>
+<td>ראש העין</td>
+<td>2025</td>
+<td>15.11</td>
+<td>96</td>
+<td>42.9</td>
+<td></td>
+<td>11.55</td>
+<td>204.7</td>
+<td>57.98</td>
+<td>95</td>
+</tr>
+<tr>
+<td>568</td>
+<td>מוזיאון רוקפלר</td>
+<td>2024</td>
+<td>16.07</td>
+<td>91</td>
+<td>44.7</td>
+<td>39.90</td>
+<td>31.64</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>568</td>
+<td>מוזיאון רוקפלר</td>
+<td>2025</td>
+<td></td>
+<td>80</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>569</td>
+<td>רחוב מלכי ישראל - 2</td>
+<td>2023</td>
+<td></td>
+<td>55</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>569</td>
+<td>רחוב מלכי ישראל - 2</td>
+<td>2024</td>
+<td>15.38</td>
+<td>80</td>
+<td>39.7</td>
+<td></td>
+<td>28.03</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>569</td>
+<td>רחוב מלכי ישראל - 2</td>
+<td>2025</td>
+<td>15.80</td>
+<td>96</td>
+<td>44.5</td>
+<td></td>
+<td>25.42</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>571</td>
+<td>רחוב ז'בוטינסקי</td>
+<td>2023</td>
+<td></td>
+<td>38</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>571</td>
+<td>רחוב ז'בוטינסקי</td>
+<td>2024</td>
+<td>17.19</td>
+<td>99</td>
+<td>55.3</td>
+<td></td>
+<td>28.59</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>571</td>
+<td>רחוב ז'בוטינסקי</td>
+<td>2025</td>
+<td>16.45</td>
+<td>98</td>
+<td>47.5</td>
+<td></td>
+<td>26.34</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>579</td>
+<td>עמק המעיינות</td>
+<td>2024</td>
+<td>16.65</td>
+<td>98</td>
+<td>51.5</td>
+<td>40.26</td>
+<td>10.15</td>
+<td>224.8</td>
+<td>64.44</td>
+<td>98</td>
+</tr>
+<tr>
+<td>579</td>
+<td>עמק המעיינות</td>
+<td>2025</td>
+<td>16.07</td>
+<td>100</td>
+<td>48.4</td>
+<td>38.88</td>
+<td>9.20</td>
+<td>229.5</td>
+<td>64.02</td>
+<td>99</td>
+</tr>
+<tr>
+<td>581</td>
+<td>נווה זוהר</td>
+<td>2024</td>
+<td>11.12</td>
+<td>87</td>
+<td>19.7</td>
+<td>64.75</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>581</td>
+<td>נווה זוהר</td>
+<td>2025</td>
+<td>11.88</td>
+<td>95</td>
+<td>24.3</td>
+<td>59.74</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>582</td>
+<td>שדרות החדשה</td>
+<td>2024</td>
+<td></td>
+<td>86</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>78</td>
+</tr>
+<tr>
+<td>582</td>
+<td>שדרות החדשה</td>
+<td>2025</td>
+<td>14.28</td>
+<td>95</td>
+<td>32.6</td>
+<td></td>
+<td>10.17</td>
+<td>245.7</td>
+<td>57.53</td>
+<td>95</td>
+</tr>
+<tr>
+<td>583</td>
+<td>דרך נמיר</td>
+<td>2024</td>
+<td></td>
+<td>82</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>583</td>
+<td>דרך נמיר</td>
+<td>2025</td>
+<td>14.55</td>
+<td>99</td>
+<td>36.0</td>
+<td></td>
+<td>30.54</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>584</td>
+<td>דרך רזיאל</td>
+<td>2024</td>
+<td></td>
+<td>66</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>584</td>
+<td>דרך רזיאל</td>
+<td>2025</td>
+<td>14.44</td>
+<td>98</td>
+<td>35.7</td>
+<td></td>
+<td>18.10</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>586</td>
+<td>בית יוסף</td>
+<td>2024</td>
+<td></td>
+<td>69</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>586</td>
+<td>בית יוסף</td>
+<td>2025</td>
+<td>18.01</td>
+<td>96</td>
+<td>56.4</td>
+<td>42.93</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>588</td>
+<td>רחוב צמח דוד</td>
+<td>2024</td>
+<td></td>
+<td>44</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>588</td>
+<td>רחוב צמח דוד</td>
+<td>2025</td>
+<td>12.73</td>
+<td>98</td>
+<td>28.2</td>
+<td></td>
+<td>35.11</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>592</td>
+<td>נחם מזרח</td>
+<td>2024</td>
+<td>14.53</td>
+<td>94</td>
+<td>36.6</td>
+<td>57.76</td>
+<td>8.76</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>592</td>
+<td>נחם מזרח</td>
+<td>2025</td>
+<td>13.61</td>
+<td>96</td>
+<td>34.5</td>
+<td>38.55</td>
+<td>9.22</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>595</td>
+<td>גן העיר</td>
+<td>2024</td>
+<td></td>
+<td>22</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>595</td>
+<td>גן העיר</td>
+<td>2025</td>
+<td>13.86</td>
+<td>99</td>
+<td>34.4</td>
+<td></td>
+<td>20.62</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>596</td>
+<td>nan</td>
+<td>2024</td>
+<td></td>
+<td>59</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>596</td>
+<td>nan</td>
+<td>2025</td>
+<td></td>
+<td>42</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>598</td>
+<td>שוהם</td>
+<td>2024</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>598</td>
+<td>שוהם</td>
+<td>2025</td>
+<td>14.48</td>
+<td>93</td>
+<td>39.7</td>
+<td>43.69</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>604</td>
+<td>nan</td>
+<td>2025</td>
+<td></td>
+<td>62</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>605</td>
+<td>טנא עומרים</td>
+<td>2025</td>
+<td></td>
+<td>85</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>607</td>
+<td>בית צפאפא</td>
+<td>2025</td>
+<td>19.59</td>
+<td>86</td>
+<td>59.2</td>
+<td>62.95</td>
+<td>19.08</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>608</td>
+<td>קדרים</td>
+<td>2025</td>
+<td>9.54</td>
+<td>87</td>
+<td>12.1</td>
+<td>44.68</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>609</td>
+<td>nan</td>
+<td>2025</td>
+<td></td>
+<td>37</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>610</td>
+<td>nan</td>
+<td>2025</td>
+<td></td>
+<td>29</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>614</td>
+<td>nan</td>
+<td>2025</td>
+<td></td>
+<td>57</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>616</td>
+<td>nan</td>
+<td>2025</td>
+<td></td>
+<td>50</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>618</td>
+<td>nan</td>
+<td>2025</td>
+<td></td>
+<td>34</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>35</td>
+</tr>
+<tr>
+<td>619</td>
+<td>nan</td>
+<td>2025</td>
+<td></td>
+<td>35</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>622</td>
+<td>nan</td>
+<td>2025</td>
+<td></td>
+<td>32</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>623</td>
+<td>nan</td>
+<td>2025</td>
+<td></td>
+<td>40</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>625</td>
+<td>nan</td>
+<td>2025</td>
+<td></td>
+<td>27</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>626</td>
+<td>nan</td>
+<td>2025</td>
+<td></td>
+<td>26</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<p>(הממוצע התלת-שנתי לכל תחנה, כפי שמופיע בדוח, בנספח ב של דוח ההשוואה וב-<code>national_summary_station.csv</code>.)</p>
+<h2>10. קבצים ו-SHA-256</h2>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>קובץ</th>
+<th>MB</th>
+<th>SHA-256 (16 ראשונים)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>01 - דוחות רשמיים ומסמכי ייחוס/WHO_2021_Table_0.1_עמוד_19.pdf</td>
+<td>0.06</td>
+<td>d05abe4279cff752</td>
+</tr>
+<tr>
+<td>01 - דוחות רשמיים ומסמכי ייחוס/WHO_global_air_quality_guidelines_2021.pdf</td>
+<td>4.13</td>
+<td>d4a559ad954a40c3</td>
+</tr>
+<tr>
+<td>01 - דוחות רשמיים ומסמכי ייחוס/gov_il_ערכי_איכות_אוויר_תוקף_תקנות.txt</td>
+<td>0.00</td>
+<td>a2c5502854239f01</td>
+</tr>
+<tr>
+<td>01 - דוחות רשמיים ומסמכי ייחוס/איגוד_אשדוד_חבל_יבנה_דוח_2025.pdf</td>
+<td>11.90</td>
+<td>2adc933ae1f25739</td>
+</tr>
+<tr>
+<td>01 - דוחות רשמיים ומסמכי ייחוס/איגוד_אשדוד_חבל_יבנה_דוח_פעילות_2024.pdf</td>
+<td>13.14</td>
+<td>0d94be38dd7c5d49</td>
+</tr>
+<tr>
+<td>01 - דוחות רשמיים ומסמכי ייחוס/איגוד_אשדוד_חבל_יבנה_דוח_שנתי_2023.pdf</td>
+<td>12.23</td>
+<td>bfe8923459dfca0a</td>
+</tr>
+<tr>
+<td>01 - דוחות רשמיים ומסמכי ייחוס/איגוד_אשקלון_דוח_שנתי_2024.pdf</td>
+<td>5.19</td>
+<td>6608af307701ac3a</td>
+</tr>
+<tr>
+<td>01 - דוחות רשמיים ומסמכי ייחוס/איגוד_שרון_כרמל_דוח_שנתי_2024.pdf</td>
+<td>3.82</td>
+<td>3f964cb6cc8f7e27</td>
+</tr>
+<tr>
+<td>01 - דוחות רשמיים ומסמכי ייחוס/דוח_שנתי_איגוד_ערים_מפרץ_חיפה_2023.pdf</td>
+<td>9.33</td>
+<td>9d6f89eadc64b8a5</td>
+</tr>
+<tr>
+<td>01 - דוחות רשמיים ומסמכי ייחוס/דוח_שנתי_איגוד_ערים_מפרץ_חיפה_2024.pdf</td>
+<td>7.71</td>
+<td>3e22460bccb9b8be</td>
+</tr>
+<tr>
+<td>01 - דוחות רשמיים ומסמכי ייחוס/דוח_שנתי_איגוד_ערים_מפרץ_חיפה_2025.pdf</td>
+<td>5.79</td>
+<td>5322a5bb4a1dc346</td>
+</tr>
+<tr>
+<td>01 - דוחות רשמיים ומסמכי ייחוס/קטעים_איגוד_אשדוד_חבל_יבנה_דוח_2025.pdf</td>
+<td>0.68</td>
+<td>683481593daf48e5</td>
+</tr>
+<tr>
+<td>01 - דוחות רשמיים ומסמכי ייחוס/קטעים_איגוד_אשדוד_חבל_יבנה_דוח_פעילות_2024.pdf</td>
+<td>0.52</td>
+<td>5976ded93d85b944</td>
+</tr>
+<tr>
+<td>01 - דוחות רשמיים ומסמכי ייחוס/קטעים_איגוד_אשדוד_חבל_יבנה_דוח_שנתי_2023.pdf</td>
+<td>0.59</td>
+<td>8de6da6aa0a3c802</td>
+</tr>
+<tr>
+<td>01 - דוחות רשמיים ומסמכי ייחוס/קטעים_איגוד_אשקלון_דוח_שנתי_2024.pdf</td>
+<td>0.32</td>
+<td>afa9cbbe701d61dd</td>
+</tr>
+<tr>
+<td>01 - דוחות רשמיים ומסמכי ייחוס/קטעים_איגוד_שרון_כרמל_דוח_שנתי_2024.pdf</td>
+<td>0.39</td>
+<td>30acfc63c85a5221</td>
+</tr>
+<tr>
+<td>01 - דוחות רשמיים ומסמכי ייחוס/קטעים_רלוונטיים_דוח_2023.pdf</td>
+<td>0.26</td>
+<td>37eb7b771a1a453e</td>
+</tr>
+<tr>
+<td>01 - דוחות רשמיים ומסמכי ייחוס/קטעים_רלוונטיים_דוח_2024.pdf</td>
+<td>0.28</td>
+<td>77cab6e9ba44dced</td>
+</tr>
+<tr>
+<td>01 - דוחות רשמיים ומסמכי ייחוס/קטעים_רלוונטיים_דוח_2025.pdf</td>
+<td>0.17</td>
+<td>01b5e6229153f643</td>
+</tr>
+<tr>
+<td>02 - רשימת תחנות/mana_stations_list_2026-10-17.json</td>
+<td>0.92</td>
+<td>207d900c1aa5af30</td>
+</tr>
+<tr>
+<td>02 - רשימת תחנות/stations_used_161.csv</td>
+<td>0.02</td>
+<td>08766d234c2418dc</td>
+</tr>
+<tr>
+<td>03 - נתונים גולמיים (zip)/national_2023.zip</td>
+<td>13.75</td>
+<td>eaede2a2a6f3f2a2</td>
+</tr>
+<tr>
+<td>03 - נתונים גולמיים (zip)/national_2024.zip</td>
+<td>14.78</td>
+<td>aa0ea3877f34fa73</td>
+</tr>
+<tr>
+<td>03 - נתונים גולמיים (zip)/national_2025.zip</td>
+<td>15.87</td>
+<td>4cf7c4f51760546d</td>
+</tr>
+<tr>
+<td>04 - תוצאות מעובדות ופלטי בדיקה/audit_recompute_output.txt</td>
+<td>0.00</td>
+<td>5ceb1ec05511a37b</td>
+</tr>
+<tr>
+<td>04 - תוצאות מעובדות ופלטי בדיקה/audit_sensitivity_output.txt</td>
+<td>0.00</td>
+<td>f5b0c7c9145dfe3e</td>
+</tr>
+<tr>
+<td>04 - תוצאות מעובדות ופלטי בדיקה/classification_sensitivity_output.txt</td>
+<td>0.00</td>
+<td>afe00463ec76b411</td>
+</tr>
+<tr>
+<td>04 - תוצאות מעובדות ופלטי בדיקה/national_analysis_output.txt</td>
+<td>0.05</td>
+<td>52be7d5a99cfb1c7</td>
+</tr>
+<tr>
+<td>04 - תוצאות מעובדות ופלטי בדיקה/national_compare_2025_output.txt</td>
+<td>0.02</td>
+<td>8f51c84019ff1286</td>
+</tr>
+<tr>
+<td>04 - תוצאות מעובדות ופלטי בדיקה/national_summary_station.csv</td>
+<td>0.04</td>
+<td>be651544a2fb4634</td>
+</tr>
+<tr>
+<td>04 - תוצאות מעובדות ופלטי בדיקה/national_summary_station_year.csv</td>
+<td>0.06</td>
+<td>7efa03bba7e95a2e</td>
+</tr>
+<tr>
+<td>04 - תוצאות מעובדות ופלטי בדיקה/validate_national_vs_official_output.txt</td>
+<td>0.01</td>
+<td>a0e2bcf744bfc234</td>
+</tr>
+<tr>
+<td>04 - תוצאות מעובדות ופלטי בדיקה/validate_no2_o3_other_associations_output.txt</td>
+<td>0.01</td>
+<td>607ecf51d5b12bf8</td>
+</tr>
+<tr>
+<td>04 - תוצאות מעובדות ופלטי בדיקה/validate_other_associations_output.txt</td>
+<td>0.00</td>
+<td>600af6cfe6529d2f</td>
+</tr>
+<tr>
+<td>04 - תוצאות מעובדות ופלטי בדיקה/validation_national_vs_official.csv</td>
+<td>0.00</td>
+<td>2d6e91e28cd17957</td>
+</tr>
+<tr>
+<td>04 - תוצאות מעובדות ופלטי בדיקה/validation_no2_other_associations.csv</td>
+<td>0.00</td>
+<td>4cc103dad163341e</td>
+</tr>
+<tr>
+<td>04 - תוצאות מעובדות ופלטי בדיקה/validation_o3_other_associations.csv</td>
+<td>0.00</td>
+<td>b6578d83ebe41758</td>
+</tr>
+<tr>
+<td>04 - תוצאות מעובדות ופלטי בדיקה/validation_other_associations.csv</td>
+<td>0.00</td>
+<td>59637a65a0de9fdd</td>
+</tr>
+<tr>
+<td>05 - סקריפטים/audit_recompute.py</td>
+<td>0.01</td>
+<td>178c7e02afbc4d63</td>
+</tr>
+<tr>
+<td>05 - סקריפטים/audit_sensitivity.py</td>
+<td>0.00</td>
+<td>0c52a123173dd29a</td>
+</tr>
+<tr>
+<td>05 - סקריפטים/build_charts.py</td>
+<td>0.00</td>
+<td>9c1738b1a96a92f9</td>
+</tr>
+<tr>
+<td>05 - סקריפטים/build_national_report2.py</td>
+<td>0.04</td>
+<td>fd00e3aa01f9c424</td>
+</tr>
+<tr>
+<td>05 - סקריפטים/build_package.py</td>
+<td>0.03</td>
+<td>84d71f385a131ce2</td>
+</tr>
+<tr>
+<td>05 - סקריפטים/build_package2.py</td>
+<td>0.02</td>
+<td>89b685e2a1edfc0f</td>
+</tr>
+<tr>
+<td>05 - סקריפטים/charts_template.html</td>
+<td>0.02</td>
+<td>f159ac08443ed7dd</td>
+</tr>
+<tr>
+<td>05 - סקריפטים/classification_sensitivity.py</td>
+<td>0.00</td>
+<td>aa90d0e9762c5473</td>
+</tr>
+<tr>
+<td>05 - סקריפטים/fetch_national_year.py</td>
+<td>0.00</td>
+<td>cb4c883167de4477</td>
+</tr>
+<tr>
+<td>05 - סקריפטים/national_analysis.py</td>
+<td>0.02</td>
+<td>c4c851de9886aeba</td>
+</tr>
+<tr>
+<td>05 - סקריפטים/update_7a.py</td>
+<td>0.00</td>
+<td>47c82762c0cbec8c</td>
+</tr>
+<tr>
+<td>05 - סקריפטים/validate_national_vs_official.py</td>
+<td>0.01</td>
+<td>03dc8a23afae518a</td>
+</tr>
+<tr>
+<td>05 - סקריפטים/validate_no2_o3_other_associations.py</td>
+<td>0.01</td>
+<td>c1a32025a78b2867</td>
+</tr>
+<tr>
+<td>05 - סקריפטים/validate_other_associations.py</td>
+<td>0.00</td>
+<td>4b91badb94c174a0</td>
+</tr>
+</tbody>
+</table></div>
+<p>תיקיית <code>06 - מסמכי הפרסום</code> מכילה עותקים של המסמכים המפורסמים (לא נכללים ברשימה כי הם עשויים להתעדכן).</p></div></body></html>

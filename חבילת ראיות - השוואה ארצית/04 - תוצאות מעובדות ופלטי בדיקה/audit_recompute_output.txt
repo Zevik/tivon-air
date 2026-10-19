@@ -1,0 +1,28 @@
+audit: ozone-unstable stations excluded: [7, 11, 122, 472, 539] | implausible PM2.5 station-years set to NaN: 1
+station-years recomputed: 415 | in pipeline file: 415
+pm25         compared  262 | max abs diff 0.0000 | diffs above tol 0 | only audit has value 0 | only pipeline has value 0
+pm10         compared  133 | max abs diff 0.0000 | diffs above tol 0 | only audit has value 0 | only pipeline has value 0
+no2          compared  342 | max abs diff 0.0000 | diffs above tol 0 | only audit has value 0 | only pipeline has value 0
+o3_days51    compared  194 | max abs diff 0.0000 | diffs above tol 0 | only audit has value 0 | only pipeline has value 0
+o3_jja       compared  194 | max abs diff 0.0000 | diffs above tol 0 | only audit has value 0 | only pipeline has value 0
+pm25_days15  compared  262 | max abs diff 0.0000 | diffs above tol 0 | only audit has value 0 | only pipeline has value 0
+
+sanity: station-years with negative valid hourly values: {'NO2': 87, 'O3': 17, 'PM10': 102, 'PM2.5': 239} | total negative hours by channel: {'NO2': 8831, 'O3': 66, 'PM10': 2008, 'PM2.5': 19555} | values above 1000: 349
+ id  year    ch  negatives  above1000
+472  2024   NO2       1710          0
+453  2024   NO2        961          0
+551  2025   NO2        930          0
+183  2025   NO2        511          0
+160  2025   NO2        500          0
+128  2025 PM2.5        433          0
+ 21  2024 PM2.5        425          0
+472  2023   NO2        423          0
+453  2025   NO2        362          0
+499  2023   NO2        352          0
+
+Tivon recomputed by year:
+          pm25_cov   pm25   pm10   no2  o3_cov  o3_days51  o3_jja  pm25_days15
+id  year                                                                      
+137 2023     98.80  15.35  27.84  6.82   95.30     117.29   51.02        45.28
+    2024     97.48  14.19  28.77  8.58   95.55     107.00   51.53        32.96
+    2025     98.81  14.58  29.62  9.44   95.57     162.89   55.16        37.29

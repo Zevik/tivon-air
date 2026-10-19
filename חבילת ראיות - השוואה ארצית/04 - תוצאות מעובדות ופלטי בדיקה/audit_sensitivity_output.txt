@@ -1,0 +1,9 @@
+hours above 1000 by channel: {'NO2': 0, 'PM10': 346, 'PM2.5': 3} | channels with such values: {'PM10': 77, 'PM2.5': 2}
+stations/years with max>1000 PM2.5 or NO2:
+ id  year    ch  n_gt1000     max
+306  2023 PM2.5         1 1174.45
+607  2025 PM2.5         2 1083.69
+(stations with at least two valid years, as in the report)
+PM2.5 | base: Tivon 14.71 rank 67 of 88 median 16.17 | noneg: Tivon 14.83 rank 68 of 88 median 16.36 | zero: Tivon 14.72 rank 69 of 88 median 16.22 | nohi: Tivon 14.71 rank 67 of 88 median 16.17
+NO2 | base: Tivon 8.28 rank 91 of 113 median 12.61 | noneg: Tivon 8.28 rank 91 of 113 median 12.71 | zero: Tivon 8.28 rank 91 of 113 median 12.64 | nohi: Tivon 8.28 rank 91 of 113 median 12.61
+PM10 | base: Tivon 28.74 rank 41 of 45 median 40.85 | noneg: Tivon 28.76 rank 41 of 45 median 41.05 | zero: Tivon 28.74 rank 41 of 45 median 40.95 | nohi: Tivon 28.74 rank 41 of 45 median 39.69

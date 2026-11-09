@@ -78,6 +78,14 @@ a{color:var(--accent)}
   .home-btn{font-size:.85rem;padding:8px 14px}
   .kpi .v{font-size:1.6rem}
   .legend{gap:4px 10px}
+  #rank{display:flex;flex-direction:column}
+  #rank .controls{order:5;margin:12px 0 0;padding-top:12px;border-top:1px solid var(--line)}
+  #rank .note{order:6}
+  #rank #barTitle{order:1}
+  #rank h2{order:0}
+  #rank #barBox{order:2}
+  #rank .legend{order:3}
+  #rank .note:not(#barTitle){order:6}
 }
 svg{-webkit-tap-highlight-color:transparent}
 .scroll{max-height:640px;overflow-y:auto;border-top:1px solid var(--line);margin-top:6px}
@@ -102,7 +110,7 @@ svg{-webkit-tap-highlight-color:transparent}
 
   <div class="card" id="vsAfula"></div>
 
-  <div class="card">
+  <div class="card" id="rank">
     <h2>1. איפה טבעון בדירוג</h2>
     <div class="controls">
       <div class="group" role="group" aria-label="מזהם"><span>מזהם:</span>

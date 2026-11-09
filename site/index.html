@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>טבעון מול שאר הארץ</title>
+<title>איכות האוויר בטבעון מול שאר ישראל</title>
 <style>
 :root{
   --bg:#f6f7f9; --card:#ffffff; --ink:#1c2430; --muted:#5b6675; --line:#dfe3e8; --bar:#9db3cc; --bar2:#c9d4e2; --afula:#6f4fb0;--tiv:#e4572e; --tivbg:#fdeee9; --ref:#b42318; --med:#2c6e49; --accent:#2b5fa5;
@@ -44,13 +44,35 @@ svg text{fill:var(--ink);font-family:inherit}
 #tip{position:fixed;pointer-events:none;background:var(--ink);color:var(--bg);padding:6px 10px;border-radius:8px;font-size:.82rem;max-width:260px;display:none;z-index:9;white-space:pre-line}
 .caveat{border-inline-start:4px solid var(--tiv);background:var(--tivbg)}
 a{color:var(--accent)}
+.topbar{display:flex;justify-content:center;margin:0 0 14px}
+.hero{text-align:center;margin:0 auto 22px;padding:8px 0 4px}
+.hero .eyebrow{display:inline-block;font-size:.85rem;font-weight:600;color:var(--tiv);background:var(--tivbg);border-radius:99px;padding:3px 14px;margin-bottom:10px}
+.hero h1{font-size:2.1rem;line-height:1.25;margin:0 auto 10px;max-width:22ch}
+.hero .sub{margin:0 auto;max-width:62ch;font-size:1.02rem}
+@media (max-width:560px){.hero h1{font-size:1.6rem}}
+.home-btn{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:99px;background:linear-gradient(135deg,var(--accent),#1f4a85);color:#fff;text-decoration:none;font-weight:600;font-size:.92rem;box-shadow:0 2px 8px rgba(43,95,165,.3);transition:transform .15s,box-shadow .15s}
+.home-btn:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(43,95,165,.4)}
+.home-btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.home-btn svg{width:18px;height:18px;display:inline-block;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;direction:ltr}
+.home-btn .arr{transition:transform .15s}
+.home-btn:hover .arr{transform:translateX(-3px)}
 .scroll{max-height:640px;overflow-y:auto;border-top:1px solid var(--line);margin-top:6px}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>טבעון מול שאר הארץ</h1>
-  <p class="sub">השוואת איכות האוויר בתחנת קריית טבעון לתחנות ברחבי ישראל, ממוצע 2023–2025. חלקיקים עדינים (PM2.5), אוזון וחנקן דו-חמצני (NO2). טבעון מסומנת בכתום.</p>
+  <div class="topbar">
+    <a class="home-btn" href="https://tivon.me" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+      <span>לאתר הראשי של טבעון</span>
+      <svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5"/><path d="M11 6l-6 6 6 6"/></svg>
+    </a>
+  </div>
+  <header class="hero">
+    <div class="eyebrow">איכות האוויר בקריית טבעון</div>
+    <h1>כמה נקי האוויר בטבעון, בהשוואה לשאר ישראל?</h1>
+    <p class="sub">השוואה בין תחנת הניטור של קריית טבעון ל-161 תחנות ברחבי הארץ, לפי נתוני 2023–2025. נבדקים שלושה מזהמים: חלקיקים עדינים (PM2.5), אוזון וחנקן דו-חמצני (NO2). טבעון מסומנת בכתום.</p>
+  </header>
 
   <div class="cards" id="kpis"></div>
 

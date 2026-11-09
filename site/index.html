@@ -53,7 +53,7 @@ svg text{fill:var(--ink);font-family:inherit}
 .note{color:var(--muted);font-size:.85rem;margin:8px 0 0}
 .legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.82rem;color:var(--muted);margin-top:8px}
 .legend i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-inline-end:5px;vertical-align:-1px}
-#tip{position:fixed;pointer-events:none;background:var(--ink);color:var(--bg);padding:6px 10px;border-radius:8px;font-size:.82rem;max-width:260px;display:none;z-index:9;white-space:pre-line}
+#tip{direction:rtl;text-align:right;position:fixed;pointer-events:none;background:var(--ink);color:var(--bg);padding:6px 10px;border-radius:8px;font-size:.82rem;max-width:260px;display:none;z-index:9;white-space:pre-line}
 .caveat{border-inline-start:4px solid var(--tiv);background:var(--tivbg)}
 a{color:var(--accent)}
 .topbar{display:flex;justify-content:center;margin:0 0 14px}
@@ -68,6 +68,18 @@ a{color:var(--accent)}
 .home-btn svg{width:18px;height:18px;display:inline-block;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;direction:ltr}
 .home-btn .arr{transition:transform .15s}
 .home-btn:hover .arr{transform:translateX(-3px)}
+.card{overflow:hidden}
+@media (max-width:560px){
+  .wrap{padding:14px 12px 40px}
+  .card{padding:12px}
+  .controls{gap:10px 14px}
+  .group{gap:5px}
+  button.seg{font-size:.85rem;padding:7px 12px}
+  .home-btn{font-size:.85rem;padding:8px 14px}
+  .kpi .v{font-size:1.6rem}
+  .legend{gap:4px 10px}
+}
+svg{-webkit-tap-highlight-color:transparent}
 .scroll{max-height:640px;overflow-y:auto;border-top:1px solid var(--line);margin-top:6px}
 </style>
 </head>
@@ -166,9 +178,13 @@ const NS='http://www.w3.org/2000/svg';
 function el(tag,attrs={},text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null){if(tag==='text'&&/[֐-׿]/.test(text))text='‏'+text+'‏';e.textContent=text}return e}
 const tip=document.getElementById('tip');
 function tipOn(e,t){tip.textContent=t;tip.style.display='block';tipMove(e)}
-function tipMove(e){tip.style.left=Math.min(window.innerWidth-280,Math.max(8,e.clientX-250))+'px';tip.style.top=(e.clientY+16)+'px'}
-function tipOff(){tip.style.display='none'}
-function hover(n,t){n.addEventListener('mousemove',e=>tipOn(e,t));n.addEventListener('mouseleave',tipOff);n.addEventListener('touchstart',e=>{const x=e.touches[0];tipOn({clientX:x.clientX,clientY:x.clientY},t)},{passive:true})}
+let tipT;
+function tipMove(e){const w=Math.min(260,window.innerWidth-16);tip.style.maxWidth=w+'px';tip.style.left=Math.min(window.innerWidth-w-8,Math.max(8,e.clientX-w/2))+'px';
+  const h=tip.offsetHeight;tip.style.top=(e.touch?Math.max(8,e.clientY-h-28):e.clientY+16)+'px'}
+function tipOff(){tip.style.display='none';clearTimeout(tipT)}
+document.addEventListener('touchstart',e=>{if(!e.target.closest||!e.target.closest('svg'))tipOff()},{passive:true});
+window.addEventListener('scroll',tipOff,{passive:true});
+function hover(n,t){n.addEventListener('mousemove',e=>tipOn(e,t));n.addEventListener('mouseleave',tipOff);n.addEventListener('touchstart',e=>{const x=e.touches[0];tipOn({clientX:x.clientX,clientY:x.clientY,touch:1},t);clearTimeout(tipT);tipT=setTimeout(tipOff,3500)},{passive:true})}
 
 function stations(metric,filt){return DATA.filter(r=>r[metric]!=null&&(filt==='all'||r.cls===BG||r.id===TIV))}
 
@@ -224,6 +240,10 @@ function bar(){
   const step=niceStep(maxv/5);
   for(let v=0;v<=maxv;v+=step){svg.appendChild(el('line',{x1:X(v),x2:X(v),y1:top,y2:H-bot,stroke:css('--line'),'stroke-width':1}));svg.appendChild(el('text',{x:X(v),y:H-bot+16,'text-anchor':'middle','font-size':11,class:'muted'},fmt(v,0)))}
   svg.appendChild(el('text',{x:plotR,y:H-6,'text-anchor':'end','font-size':11,class:'muted'},M[state.metric].unit));
+  const mx=X(allMed);
+  svg.appendChild(el('line',{x1:mx,x2:mx,y1:top-6,y2:H-bot,stroke:css('--med'),'stroke-width':2,'stroke-dasharray':'5 4'}));
+  const rOrd=refs.map((r,i)=>i).sort((i,j)=>X(refs[i].v)-X(refs[j].v));const lvl={};rOrd.forEach((i,k)=>{lvl[i]=k>0&&Math.abs(X(refs[i].v)-X(refs[rOrd[k-1]].v))<110&&!lvl[rOrd[k-1]]?1:0});
+  refs.forEach((r,i)=>{const rx=X(r.v);svg.appendChild(el('line',{x1:rx,x2:rx,y1:top-26-lvl[i]*14,y2:H-bot,stroke:css('--ref'),'stroke-width':2,opacity:.85}))});
   shown.forEach((d,i)=>{
     const y=top+i*row;const x=X(d.v);const hl=d.tiv||d.afu;const hc=d.tiv?css('--tiv'):css('--afula');const c=hl?hc:css('--bar');
     const r=el('rect',{x:x,y:y+3,width:plotR-x,height:row-6,rx:4,fill:c,opacity:hl?1:.9});
@@ -232,13 +252,11 @@ function bar(){
     const lab=d.k+(d.n>1?` (${d.n})`:'');
     const t=el('text',{x:W-8,y:y+row/2+4,'text-anchor':'end','font-size':narrow?11:12.5,'font-weight':hl?700:400,fill:hl?hc:css('--ink')},lab.length>(narrow?20:30)?lab.slice(0,narrow?19:29)+'…':lab);
     svg.appendChild(t);
-    svg.appendChild(el('text',{x:x-5,y:y+row/2+4,'text-anchor':'end','font-size':11.5,'font-weight':hl?700:400,fill:hl?hc:css('--muted'),stroke:css('--card'),'stroke-width':3,'paint-order':'stroke'},fmt(d.v,M[state.metric].dec)));
+    svg.appendChild(el('text',{x:x-5,y:y+row/2+4,'text-anchor':'end','font-size':11.5,'font-weight':hl?700:400,fill:hl?hc:css('--muted'),stroke:css('--card'),'stroke-width':4,'stroke-linejoin':'round','paint-order':'stroke'},fmt(d.v,M[state.metric].dec)));
   });
   // median and refs
-  const mx=X(allMed);svg.appendChild(el('line',{x1:mx,x2:mx,y1:top-6,y2:H-bot,stroke:css('--med'),'stroke-width':2,'stroke-dasharray':'5 4'}));
   svg.appendChild(el('text',{x:mx,y:top-8,'text-anchor':'middle','font-size':11,fill:css('--med'),'font-weight':700},'חציון '+fmt(allMed,M[state.metric].dec)));
-  const rOrd=refs.map((r,i)=>i).sort((i,j)=>X(refs[i].v)-X(refs[j].v));const lvl={};rOrd.forEach((i,k)=>{lvl[i]=k>0&&Math.abs(X(refs[i].v)-X(refs[rOrd[k-1]].v))<110&&!lvl[rOrd[k-1]]?1:0});
-  refs.forEach((r,i)=>{const rx=X(r.v);const dy=lvl[i]*14;svg.appendChild(el('line',{x1:rx,x2:rx,y1:top-26-dy,y2:H-bot,stroke:css('--ref'),'stroke-width':2}));svg.appendChild(el('text',{x:Math.min(W-6,Math.max(6,rx)),y:top-30-dy,'text-anchor':rx>W-80?'end':'middle','font-size':11,fill:css('--ref'),'font-weight':700},r.l))});
+  refs.forEach((r,i)=>{const rx=X(r.v);const dy=lvl[i]*14;svg.appendChild(el('text',{x:Math.min(W-6,Math.max(6,rx)),y:top-30-dy,'text-anchor':rx>W-80?'end':'middle','font-size':11,fill:css('--ref'),'font-weight':700},r.l))});
   document.getElementById('barTitle').textContent=`${M[state.metric].label}. ${state.filt==='bg'?'תחנות רקע עירוני בלבד':'כל התחנות'}. ${state.scope==='near'&&g.length>25?'מוצגים 25 ערכים סביב טבעון מתוך '+g.length:'מוצגים '+g.length+' ערכים'}.`;
 }
 function niceStep(x){const p=Math.pow(10,Math.floor(Math.log10(x)));const n=x/p;return (n<1.5?1:n<3?2:n<7?5:10)*p}

@@ -1,5 +1,6 @@
 """בונה את אתר העמוד האחד לפריסה ב-Vercel (תיקיית site/).
-index.html = הגרפים; report.html, appendix.html, main-report.html = המסמכים מומרים מ-Markdown.
+index.html = הגרפים (נערך ידנית ב-site/; לא נדרס אלא עם --rebuild-index);
+report.html, appendix.html, main-report.html = המסמכים מומרים מ-Markdown.
 הרצה: python -I tools/build_site.py (מתיקיית הפרויקט)."""
 import html as H
 import os
@@ -62,7 +63,11 @@ for name, (fn, title) in PAGES.items():
     open(os.path.join(out, fn), 'w', encoding='utf-8').write(page)
     print(fn, len(page) // 1024, 'KB')
 
-# עמוד הגרפים: החלפת קישורי הפוטר
+# עמוד הבית (site/index.html) נערך ידנית (כותרת, תצוגה מקדימה לשיתוף, מובייל) ולכן אינו נבנה מחדש כברירת מחדל.
+# --rebuild-index בונה אותו מחדש מ"השוואה ארצית - גרפים.html" ודורס את כל העריכות הידניות.
+if '--rebuild-index' not in sys.argv:
+    print('index.html: skipped (hand-edited; pass --rebuild-index to regenerate and overwrite it)')
+    sys.exit(0)
 idx = open(os.path.join(root, 'השוואה ארצית - גרפים.html'), encoding='utf-8').read()
 n0 = idx.count('.md"')
 idx = idx.replace('href="השוואה%20ארצית%20-%20קריית%20טבעון%20מול%20שאר%20הארץ.md"', 'href="report"')
